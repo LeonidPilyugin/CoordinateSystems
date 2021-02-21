@@ -48,21 +48,21 @@ void ICStoHICS(double julianDate, double* x, double* y, double* z)
 	PUT;
 }
 
-COORDSYSTEMS_API void turnX(double* x, double* y, double* z, double angle)
+void turnX(double* x, double* y, double* z, double angle)
 {
 	crd::RectangleVector vector = { *x, *y, *z };
 	vector = crd::getRx(angle) * vector;
 	PUT;
 }
 
-COORDSYSTEMS_API void turnY(double* x, double* y, double* z, double angle)
+void turnY(double* x, double* y, double* z, double angle)
 {
 	crd::RectangleVector vector = { *x, *y, *z };
 	vector = crd::getRy(angle) * vector;
 	PUT;
 }
 
-COORDSYSTEMS_API void turnZ(double* x, double* y, double* z, double angle)
+void turnZ(double* x, double* y, double* z, double angle)
 {
 	crd::RectangleVector vector = { *x, *y, *z };
 	vector = crd::getRz(angle) * vector;
