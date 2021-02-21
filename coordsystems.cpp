@@ -846,6 +846,6 @@ namespace crd
 
 	RotationMatrix getEulerRotationMatrix(double precession, double nutation, double rotation)
 	{
-		return getRz(precession) * getRx(nutation) * getRz(rotation);
+		return getRz(rotation) * getRx(nutation) * getRz(precession);
 	}
 }
