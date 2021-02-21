@@ -73,9 +73,11 @@ namespace CoordinateSystems
                 {
                     if (value <= 0)
                         throw new System.Exception("Value must be > 0");
-                    x = value * Sin(theta) * Cos(phi);
-                    y = value * Sin(theta) * Sin(phi);
-                    z = value * Cos(theta);
+                    double t = theta;
+                    double p = phi;
+                    x = value * Sin(t) * Cos(p);
+                    y = value * Sin(t) * Sin(p);
+                    z = value * Cos(t);
                 }
             }
             public double theta
@@ -83,9 +85,11 @@ namespace CoordinateSystems
                 get { return Acos(z / length); }
                 set
                 {
-                    x = length * Sin(value) * Cos(phi);
-                    y = length * Sin(value) * Sin(phi);
-                    z = length * Cos(value);
+                    double l = length;
+                    double p = phi;
+                    x = l * Sin(value) * Cos(p);
+                    y = l * Sin(value) * Sin(p);
+                    z = l * Cos(value);
                 }
             }
             public double phi
@@ -93,9 +97,11 @@ namespace CoordinateSystems
                 get { return Atan(y / x); }
                 set
                 {
-                    x = length * Sin(theta) * Cos(value);
-                    y = length * Sin(theta) * Sin(value);
-                    z = length * Cos(theta);
+                    double l = length;
+                    double t = theta;
+                    x = l * Sin(t) * Cos(value);
+                    y = l * Sin(t) * Sin(value);
+                    z = l * Cos(t);
                 }
             }
 
