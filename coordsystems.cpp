@@ -504,6 +504,11 @@ namespace crd
 		return result;
 	}
 
+	double multiplyScalar(const RectangleVector& vector1, const RectangleVector& vector2)
+	{
+		return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
+	}
+
 	PolarVector operator*(const PolarVector& vector1, const PolarVector& vector2)
 	{
 		return convertRectangleToPolar(
@@ -690,7 +695,7 @@ namespace crd
 		double xst = vector.x;
 		double yst = vector.y;
 		double zst = vector.z;
-		double c = 1 / (1 - POLAR_COMPRESSION);
+		double c = 1 / (1 - EARTH_POLAR_COMPRESSION);
 		double Rst = sqrt(xst * xst + yst * yst + c * c * c * c * zst * zst);
 		double f = sqrt(xst * xst + yst * yst);
 
@@ -847,5 +852,67 @@ namespace crd
 	RotationMatrix getEulerRotationMatrix(double precession, double nutation, double rotation)
 	{
 		return getRz(rotation) * getRx(nutation) * getRz(precession);
+	}
+
+	RotationMatrix getAxisRottionMatrix(RectangleVector axis, double angle)
+	{
+		axis /= length(axis);
+		RotationMatrix result = RotationMatrix();
+		double c = cos(angle);
+		double s = sin(angle);
+		result(0, 0) = c + (1 - c) * axis.x * axis.x;
+		result(0, 1) = (1 - c) * axis.x * axis.y - s * axis.z;
+		result(0, 2) = (1 - c) * axis.x * axis.z + s * axis.y;
+		result(1, 0) = (1 - c) * axis.x * axis.y + s * axis.z;
+		result(1, 1) = c + (1 - c) * axis.y * axis.y;
+		result(1, 2) = (1 - c) * axis.z * axis.y - s * axis.x;
+		result(2, 0) = (1 - c) * axis.z * axis.x - s * axis.y;
+		result(2, 1) = (1 - c) * axis.z * axis.y + s * axis.x;
+		result(2, 2) = c + (1 - c) * axis.z * axis.z;
+		return result;
+	}
+
+	RectangleVector turnAroundAxis(RectangleVector vector, RectangleVector axis, double angle)
+	{
+		return getAxisRottionMatrix(axis, angle) * vector;
+	}
+
+	bool isInsideEarth(const RectangleVector& vector)
+	{
+		return vector.x * vector.x / EARTH_MAX_RADIUS / EARTH_MAX_RADIUS +
+			vector.y * vector.y / EARTH_MAX_RADIUS / EARTH_MAX_RADIUS +
+			vector.z * vector.z / EARTH_MIN_RADIUS / EARTH_MIN_RADIUS < 1.0;
+	}
+
+	RectangleVector getDirectionVector(const RectangleVector& point1, const RectangleVector& point2)
+	{
+		RectangleVector result = point2 - point1;
+		result /= length(result);
+		return result;
+	}
+
+	RectangleVector getProjection(const RectangleVector& vector1, const RectangleVector& vector2,
+		                          const RectangleVector& point)
+	{
+		RectangleVector direction = getDirectionVector(vector1, vector2);
+		return vector1 - direction * crd::multiplyScalar((vector1 - point), direction) / length(direction) / length(direction);
+	}
+
+	bool isCrossingEarth(const RectangleVector& vector1, const RectangleVector& vector2)
+	{
+		RectangleVector projection = getProjection(vector1, vector2, { 0.0, 0.0, 0.0 });
+		if (!isInsideEarth(projection))
+			return false;
+
+		if (vector1.x != vector2.x)
+			return (projection.x < vector1.x && projection.x > vector2.x) ||
+				(projection.x < vector2.x && projection.x > vector1.x);
+
+		if (vector1.y != vector2.y)
+			return (projection.y < vector1.y && projection.y > vector2.y) ||
+			(projection.y < vector2.y && projection.y > vector1.y);
+
+		return (projection.z < vector1.z && projection.z > vector2.z) ||
+			(projection.z < vector2.z && projection.z > vector1.z);
 	}
 }

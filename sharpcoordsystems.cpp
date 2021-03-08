@@ -68,3 +68,15 @@ void turnZ(double* x, double* y, double* z, double angle)
 	vector = crd::getRz(angle) * vector;
 	PUT;
 }
+
+void turnAxis(double* x, double* y, double* z, double axisX, double axisY, double axisZ, double angle)
+{
+	crd::RectangleVector vector = { *x, *y, *z };
+	vector = crd::turnAroundAxis(vector, { axisX, axisY, axisZ }, angle);
+	PUT;
+}
+
+int isCrossingEarth(double x1, double y1, double z1, double x2, double y2, double z2)
+{
+	return crd::isCrossingEarth({ x1, y1, z1 }, { x2, y2, z2 });
+}

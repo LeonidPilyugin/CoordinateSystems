@@ -12,8 +12,10 @@
 
 namespace crd
 {
-	static const double POLAR_COMPRESSION = 1/298.3;
+	static const double EARTH_POLAR_COMPRESSION = 1/298.3;
 	static const double EARTH_MEAN_RADIUS = 6371000.0;
+	static const double EARTH_MAX_RADIUS = 6378245.0;
+	static const double EARTH_MIN_RADIUS = EARTH_MAX_RADIUS * (1 - EARTH_POLAR_COMPRESSION);
 
 	class COORDSYSTEMS_API RotationMatrix {
 		friend COORDSYSTEMS_API RotationMatrix operator+(const RotationMatrix&, const RotationMatrix&);
@@ -109,6 +111,7 @@ namespace crd
 	extern COORDSYSTEMS_API RectangleVector operator-(const RectangleVector&, const RectangleVector&);
 	extern COORDSYSTEMS_API RectangleVector operator*(const RectangleVector&, double value);
 	extern COORDSYSTEMS_API RectangleVector operator/(const RectangleVector&, double value);
+	extern COORDSYSTEMS_API double multiplyScalar(const RectangleVector&, const RectangleVector&);
 
 
 	extern COORDSYSTEMS_API PolarVector operator*(const PolarVector&, const PolarVector&);
@@ -310,4 +313,13 @@ namespace crd
 	// Third argument — rotation angle
 	// Example: coords::RotationMatrix = coords::getEulerRotationMatrix(precession, nutation, rotation);
 	extern COORDSYSTEMS_API RotationMatrix getEulerRotationMatrix(double precession, double nutation, double rotation);
+
+	extern COORDSYSTEMS_API RotationMatrix getAxisRottionMatrix(RectangleVector axis, double angle);
+	extern COORDSYSTEMS_API RectangleVector turnAroundAxis(RectangleVector vector, RectangleVector axis, double angle);
+	extern COORDSYSTEMS_API RectangleVector getDirectionVector(const RectangleVector& point1, const RectangleVector& point2);
+	extern COORDSYSTEMS_API RectangleVector getProjection(const RectangleVector& vector1, const RectangleVector& vector2,
+		                                                  const RectangleVector& point);
+	// Vectors in ICS or GCS
+	extern COORDSYSTEMS_API bool isInsideEarth(const RectangleVector& vector);
+	extern COORDSYSTEMS_API bool isCrossingEarth(const RectangleVector& vector1, const RectangleVector& vector2);
 }
