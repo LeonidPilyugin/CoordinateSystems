@@ -8,8 +8,15 @@ using static System.Math;
 
 namespace CoordinateSystems
 {
+    // набор методов для преобразования координат
+    // ICS — иннерциальная система координат (вторая экваториальная)
+    // GCS — неиннерциальная система координат (первая экваториальная)
+    // TCS — топоцентрическая система координат (горизонтальная)
+    // HICS — гелиоцентрическая иннерциальная
     public static class Coordinates
     {
+        // определение методов, написанных на С++
+        // в коде ими лучше не пользоваться
         public static class UnmanagedCoordinates
         {
             [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -64,6 +71,7 @@ namespace CoordinateSystems
 
             return result;
         }
+
         public static Vector GCStoICS(Vector vector, double julianDate)
         {
             Vector result = new Vector();
@@ -80,6 +88,7 @@ namespace CoordinateSystems
 
             return result;
         }
+
         public static Vector HICStoICS(Vector vector, double julianDate)
         {
             Vector result = new Vector();
@@ -96,6 +105,7 @@ namespace CoordinateSystems
 
             return result;
         }
+
         public static Vector ICStoHICS(Vector vector, double julianDate)
         {
             Vector result = new Vector();
@@ -112,6 +122,7 @@ namespace CoordinateSystems
 
             return result;
         }
+
         public static Vector GCStoTCS(Vector vector, double latitude, double longitude)
         {
             Vector result = new Vector();
@@ -128,6 +139,7 @@ namespace CoordinateSystems
 
             return result;
         }
+
         public static Vector TCStoGCS(Vector vector, double latitude, double longitude)
         {
             Vector result = new Vector();
@@ -144,7 +156,9 @@ namespace CoordinateSystems
 
             return result;
         }
-        public static bool isCrossingEarth(Vector vector1, Vector vector2)
+
+        // vector1 и vector2 заданы в GCS
+        public static bool IsCrossingEarth(Vector vector1, Vector vector2)
         {
             return UnmanagedCoordinates.isCrossingEarth(vector1.X, vector1.Y, vector1.Z,
                                                         vector2.X, vector2.Y, vector2.Z);
