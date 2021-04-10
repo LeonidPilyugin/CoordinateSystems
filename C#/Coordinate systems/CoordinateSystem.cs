@@ -138,7 +138,7 @@ namespace CoordinateSystems
         }
 
         // вектор от Солнца до этой СК
-        public Vector VectorFromSun
+        protected Vector VectorFromSun
         {
             get { return GetVectorFromSun(); }
         }
@@ -175,7 +175,7 @@ namespace CoordinateSystems
         }
 
         // возвращает вектор от Солнца до точки, заданной в этой СК
-        public Vector GetVectorFromSun(Vector point = null)
+        protected Vector GetVectorFromSun(Vector point = null)
         {
             var result = point;
             if(result == null)

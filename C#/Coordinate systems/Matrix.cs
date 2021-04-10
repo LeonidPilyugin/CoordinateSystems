@@ -33,6 +33,20 @@ namespace CoordinateSystems
             Copy(matrix);
         }
 
+        public Matrix(double[,] matrix)
+        {
+            this.matrix = new List<List<double>>();
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                this.matrix.Add(new List<double>());
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    this.matrix[i].Add(0.0);
+                }
+            }
+        }
+
         public Matrix(int m) : this(m, m)
         {
             for(int i = 0; i < m; i++)
@@ -378,6 +392,84 @@ namespace CoordinateSystems
         public void Inverse()
         {
             Copy(Inversed);
+        }
+
+        public static Matrix GetRx(double angle)
+        {
+            Matrix result = new Matrix();
+
+            result[0, 0] = 1.0;
+            result[0, 1] = 0.0;
+            result[0, 2] = 0.0;
+            result[1, 0] = 0.0;
+            result[1, 1] = Cos(angle);
+            result[1, 2] = Sin(angle);
+            result[2, 0] = 0.0;
+            result[2, 1] = -Sin(angle);
+            result[2, 2] = Cos(angle);
+
+            return result;
+        }
+
+        public static Matrix GetRy(double angle)
+        {
+            Matrix result = new Matrix();
+
+            result[0, 0] = Cos(angle);
+            result[0, 1] = 0.0;
+            result[0, 2] = -Sin(angle);
+            result[1, 0] = 0.0;
+            result[1, 1] = 1.0;
+            result[1, 2] = 0.0;
+            result[2, 0] = Sin(angle);
+            result[2, 1] = 0.0;
+            result[2, 2] = Cos(angle);
+
+            return result;
+        }
+
+        public static Matrix GetRz(double angle)
+        {
+            Matrix result = new Matrix();
+
+            result[0, 0] = Cos(angle);
+            result[0, 1] = Sin(angle);
+            result[0, 2] = 0.0;
+            result[1, 0] = -Sin(angle);
+            result[1, 1] = Cos(angle);
+            result[1, 2] = 0.0;
+            result[2, 0] = 0.0;
+            result[2, 1] = 0.0;
+            result[2, 2] = 1.0;
+
+            return result;
+        }
+
+        public static Matrix GetEulerMatrix(double precession, double nutation, double rotation)
+        {
+            return GetRz(rotation) * GetRx(nutation) * GetRz(precession);
+        }
+
+        public static Matrix GetAxisRotationMatrix(Vector axis, double angle)
+        {
+            axis /= axis.Length;
+
+            Matrix result = new Matrix();
+
+            double c = Cos(angle);
+            double s = Sin(angle);
+
+            result[0, 0] = c + (1 - c) * axis.X * axis.X;
+            result[0, 1] = (1 - c) * axis.X * axis.Y - s * axis.Z;
+            result[0, 2] = (1 - c) * axis.X * axis.Z + s * axis.Y;
+            result[1, 0] = (1 - c) * axis.X * axis.Y + s * axis.Z;
+            result[1, 1] = c + (1 - c) * axis.Y * axis.Y;
+            result[1, 2] = (1 - c) * axis.Z * axis.Y - s * axis.X;
+            result[2, 0] = (1 - c) * axis.Z * axis.X - s * axis.Y;
+            result[2, 1] = (1 - c) * axis.Z * axis.Y + s * axis.X;
+            result[2, 2] = c + (1 - c) * axis.Z * axis.Z;
+
+            return result;
         }
     }
 }
