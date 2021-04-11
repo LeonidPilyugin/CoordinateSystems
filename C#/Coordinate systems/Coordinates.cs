@@ -202,10 +202,11 @@ namespace CoordinateSystems
 
         public static Matrix GetICStoHICSmatrix(double julianDate)
         {
-            double eps0 = 0, deps = 0;
+            /*double eps0 = 0, deps = 0;
             UnmanagedCoordinates.iauNut06a(Date.J2000, julianDate - Date.J2000, ref eps0, ref deps);
             eps0 = 84381.406 * DAS2R + deps; // from iauP06e
-            return Matrix.GetRx(eps0);
+            return Matrix.GetRx(eps0);*/
+            return new Matrix();
         }
 
         public static Matrix GetHICStoICSmatrix(double julianDate)
@@ -246,15 +247,15 @@ namespace CoordinateSystems
 
         public static Vector ConvertICStoGCS(double julianDate, Vector point)
         {
-            return ConvertTo(GetICStoGCSmatrix(julianDate), new Vector(0.0, 0.0, 0.0), point);
+            return GetICStoGCSmatrix(julianDate) * point;
         }
 
         public static Vector ConvertGCStoICS(double julianDate, Vector point)
         {
-            return ConvertTo(GetGCStoICSmatrix(julianDate), new Vector(0.0, 0.0, 0.0), point);
+            return GetGCStoICSmatrix(julianDate) * point;
         }
 
-        public static Vector ConvertGCStoTCS(Vector vector, Vector point)
+        /*public static Vector ConvertGCStoTCS(Vector vector, Vector point)
         {
             return ConvertTo(GetGCStoTCSmatrix(vector), vector, point);
         }
@@ -275,125 +276,16 @@ namespace CoordinateSystems
             Vector vector = GetTCStoGCSvector(latitude, longitude);
             return ConvertTo(GetTCStoGCSmatrix(vector), vector, point);
         }
-
+        */
         public static Vector ConvertICStoHICS(double julianDate, Vector point)
         {
-            return ConvertTo(GetICStoHICSmatrix(julianDate), GetICStoHICSvector(julianDate), point);
+            return GetICStoHICSmatrix(julianDate) * (point - GetICStoHICSvector(julianDate));
         }
 
         public static Vector ConvertHICStoICS(double julianDate, Vector point)
         {
-            return ConvertTo(GetHICStoICSmatrix(julianDate), GetHICStoICSvector(julianDate), point);
+            return GetHICStoICSmatrix(julianDate) * (point - GetHICStoICSvector(julianDate));
         }
-
-        /*public static Vector ICStoGCS(Vector vector, double julianDate)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.ICStoGCS(julianDate, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        public static Vector GCStoICS(Vector vector, double julianDate)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.GCStoICS(julianDate, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        public static Vector HICStoICS(Vector vector, double julianDate)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.HICStoICS(julianDate, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        public static Vector ICStoHICS(Vector vector, double julianDate)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.ICStoHICS(julianDate, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        public static Vector GCStoTCS(Vector vector, double latitude, double longitude)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.GCStoTCS(latitude, longitude, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        public static Vector TCStoGCS(Vector vector, double latitude, double longitude)
-        {
-            Vector result = new Vector();
-
-            double x = vector.X;
-            double y = vector.Y;
-            double z = vector.Z;
-
-            UnmanagedCoordinates.TCStoGCS(latitude, longitude, ref x, ref y, ref z);
-
-            result.X = x;
-            result.Y = y;
-            result.Z = z;
-
-            return result;
-        }
-
-        // vector1 и vector2 заданы в GCS
-        public static bool IsCrossingEarth(Vector vector1, Vector vector2)
-        {
-            return UnmanagedCoordinates.isCrossingEarth(vector1.X, vector1.Y, vector1.Z,
-                                                        vector2.X, vector2.Y, vector2.Z);
-        }*/
     }
 
 }
