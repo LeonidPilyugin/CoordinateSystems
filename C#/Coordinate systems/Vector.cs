@@ -202,22 +202,34 @@ namespace CoordinateSystems
 
         public void TurnX(double angle)
         {
-            Coordinates.UnmanagedCoordinates.turnX(ref x, ref y, ref z, angle);
+            Vector result = Matrix.GetRx(angle) * this;
+            this.X = result.X;
+            this.Y = result.Y;
+            this.Z = result.Z;
         }
 
         public void TurnY(double angle)
         {
-            Coordinates.UnmanagedCoordinates.turnY(ref x, ref y, ref z, angle);
+            Vector result = Matrix.GetRy(angle) * this;
+            this.X = result.X;
+            this.Y = result.Y;
+            this.Z = result.Z;
         }
 
         public void TurnZ(double angle)
         {
-            Coordinates.UnmanagedCoordinates.turnZ(ref x, ref y, ref z, angle);
+            Vector result = Matrix.GetRz(angle) * this;
+            this.X = result.X;
+            this.Y = result.Y;
+            this.Z = result.Z;
         }
 
         public void TurnAxis(Vector axis, double angle)
         {
-            Coordinates.UnmanagedCoordinates.turnAxis(ref x, ref y, ref z, axis.X, axis.Y, axis.Z, angle);
+            Vector result = Matrix.GetAxisRotationMatrix(axis, angle) * this;
+            this.X = result.X;
+            this.Y = result.Y;
+            this.Z = result.Z;
         }
 
         public void TurnEuler(double precession, double nutation, double rotation)

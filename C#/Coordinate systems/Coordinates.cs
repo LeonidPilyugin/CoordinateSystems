@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using static System.Math;
 
 namespace CoordinateSystems
@@ -22,67 +21,6 @@ namespace CoordinateSystems
         public const double EARTH_MIN_RADIUS = EARTH_MAX_RADIUS * (1 - EARTH_POLAR_COMPRESSION);
         public const double DAU = 149597870.7e3;
         public const double DAS2R = 4.848136811095359935899141e-6;
-        // определение методов, написанных на С++
-        // в коде ими лучше не пользоваться
-        public static class UnmanagedCoordinates
-        {
-            /*[DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void ICStoGCS(double julianDate, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void GCStoICS(double julianDate, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void HICStoICS(double julianDate, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void ICStoHICS(double julianDate, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void GCStoTCS(double latitude, double longitude, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void TCStoGCS(double latitude, double longitude, ref double x, ref double y, ref double z);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void turnX(ref double x, ref double y, ref double z, double angle);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void turnY(ref double x, ref double y, ref double z, double angle);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void turnZ(ref double x, ref double y, ref double z, double angle);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern bool turnAxis(ref double x, ref double y, ref double z,
-                                               double axisX, double axisY, double axisZ, double angle);
-
-            [DllImport("coordsystems.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern bool isCrossingEarth(double x1, double y1, double z1,
-                                                      double x2, double y2, double z2);*/
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void iauPmat06(double date1, double date2, [In, Out] double[,] matrix);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern double iauGst06a(double uta, double utb, double tta, double ttb);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern double iauObl06(double date1, double date2);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void iauNut06a(double date1, double date2, ref double dpsi, ref double deps);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void iauNumat(double epsa, double dpsi, double deps, [In, Out] double[,] matrix);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern int iauEpv00(double date1, double daye2,
-                [In, Out] double[,] pvh, [In, Out] double[,] pvb);
-
-            [DllImport("iausofa.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern int iauPlan94(double date1, double date2, int np, [In, Out] double[,] pv);
-        }
 
         public static Vector ConvertTo(Matrix matrix, Vector vector, Vector point)
         {
@@ -92,7 +30,7 @@ namespace CoordinateSystems
         public static Matrix GetPrecessionMatrix(double julianDate)
         {
             double[,] matrix = new double[3, 3];
-            UnmanagedCoordinates.iauPmat06(Date.J2000, julianDate - Date.J2000, matrix);
+            IAUSOFA.iauPmat06(Date.J2000, julianDate - Date.J2000, matrix);
             return new Matrix(matrix);
         }
 
@@ -100,9 +38,9 @@ namespace CoordinateSystems
         {
             double epsa, dpsi = 0, deps = 0;
             double[,] matrix = new double[3, 3];
-            epsa = UnmanagedCoordinates.iauObl06(Date.J2000, julianDate - Date.J2000);
-            UnmanagedCoordinates.iauNut06a(Date.J2000, julianDate - Date.J2000, ref dpsi, ref deps);
-            UnmanagedCoordinates.iauNumat(epsa, dpsi, deps, matrix);
+            epsa = IAUSOFA.iauObl06(Date.J2000, julianDate - Date.J2000);
+            IAUSOFA.iauNut06a(Date.J2000, julianDate - Date.J2000, ref dpsi, ref deps);
+            IAUSOFA.iauNumat(epsa, dpsi, deps, matrix);
             return new Matrix(matrix);
         }
 
@@ -130,7 +68,7 @@ namespace CoordinateSystems
 
         public static Matrix GetEarthMatrix(double julianDate)
         {
-            double sa = UnmanagedCoordinates.iauGst06a(Date.J2000,
+            double sa = IAUSOFA.iauGst06a(Date.J2000,
                 julianDate - Date.J2000, Date.J2000, julianDate - Date.J2000);
 
             double[,] matrix = new double[3, 3];
@@ -234,7 +172,7 @@ namespace CoordinateSystems
         {
             double[,] pvh = new double[2,3];
             double[,] pvb = new double[2, 3];
-            UnmanagedCoordinates.iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
+            IAUSOFA.iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
             Vector result = new Vector(pvh[0, 0], pvh[0, 1], pvh[0, 2]);
             result *= DAU;
             return result;
@@ -255,28 +193,6 @@ namespace CoordinateSystems
             return GetGCStoICSmatrix(julianDate) * point;
         }
 
-        /*public static Vector ConvertGCStoTCS(Vector vector, Vector point)
-        {
-            return ConvertTo(GetGCStoTCSmatrix(vector), vector, point);
-        }
-
-        public static Vector ConvertGCStoTCS(double latitude, double longitude, Vector point)
-        {
-            Vector vector = GetGCStoTCSvector(latitude, longitude);
-            return ConvertTo(GetGCStoTCSmatrix(vector), vector, point);
-        }
-
-        public static Vector ConvertTCStoGCS(Vector vector, Vector point)
-        {
-            return ConvertTo(GetTCStoGCSmatrix(vector), vector, point);
-        }
-
-        public static Vector ConvertTCStoGCS(double latitude, double longitude, Vector point)
-        {
-            Vector vector = GetTCStoGCSvector(latitude, longitude);
-            return ConvertTo(GetTCStoGCSmatrix(vector), vector, point);
-        }
-        */
         public static Vector ConvertICStoHICS(double julianDate, Vector point)
         {
             return GetICStoHICSmatrix(julianDate) * (point - GetICStoHICSvector(julianDate));

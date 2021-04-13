@@ -138,7 +138,7 @@ namespace CoordinateSystems
         }
 
         // вектор от Солнца до этой СК
-        protected Vector VectorFromSun
+        public Vector VectorFromSun
         {
             get { return GetVectorFromSun(); }
         }
