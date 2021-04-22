@@ -6,229 +6,326 @@ using static System.Numerics.Complex;
 
 namespace CelestialMechanics
 {
-    public struct NotParabolicKeplerianElements
+    public abstract class Keplerian
     {
-        public double JulianDate;
-        public double Eccentricity;
-        public double SemimajorAxis;
-        public double Inclination;
-        public double AscendingNodeLongitude;
-        public double PeriapsisArgument;
-        public double TrueAnomaly;
-        public Body CentralBody;
+        #region consts
+        protected const int ITERATION_CONSTANT = 100;
+        protected const double G = 6.6743e-11;
+        #endregion
 
-        public NotParabolicKeplerianElements(double julianDate, double eccentricity, double semimajorAxis,
+        #region data
+        public double julianDate;
+        public double eccentricity;
+        public double perifocusDistance;
+        public double inclination;
+        public double ascendingNodeLongitude;
+        public double periapsisArgument;
+        public double trueAnomaly;
+        public Body centralBody;
+        #endregion
+
+        #region constructors
+        public Keplerian(double julianDate, double eccentricity, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Body centralBody)
         {
-            JulianDate = julianDate;
-            Eccentricity = eccentricity;
-            SemimajorAxis = semimajorAxis;
-            Inclination = inclination;
-            AscendingNodeLongitude = ascendingNodeLongitude;
-            PeriapsisArgument = periapsisArgument;
-            TrueAnomaly = trueAnomaly;
-            CentralBody = centralBody;
+            this.julianDate = julianDate;
+            this.eccentricity = eccentricity;
+            this.perifocusDistance = perifocusDistance;
+            this.inclination = inclination;
+            this.ascendingNodeLongitude = ascendingNodeLongitude;
+            this.periapsisArgument = periapsisArgument;
+            this.trueAnomaly = trueAnomaly;
+            this.centralBody = centralBody;
         }
 
-        public NotParabolicKeplerianElements(NotParabolicKeplerianElements elements)
+        public Keplerian(Keplerian keplerian) : this(keplerian.julianDate, keplerian.eccentricity,
+            keplerian.perifocusDistance, keplerian.inclination, keplerian.ascendingNodeLongitude,
+            keplerian.periapsisArgument, keplerian.trueAnomaly, keplerian.centralBody)
         {
-            this.JulianDate = elements.JulianDate;
-            this.Eccentricity = elements.Eccentricity;
-            this.SemimajorAxis = elements.SemimajorAxis;
-            this.Inclination = elements.Inclination;
-            this.AscendingNodeLongitude = elements.AscendingNodeLongitude;
-            this.PeriapsisArgument = elements.PeriapsisArgument;
-            this.TrueAnomaly = elements.TrueAnomaly;
-            this.CentralBody = elements.CentralBody;
-        }
 
-        public NotParabolicKeplerianElements(ParabolicKeplerianElements elements, double eccentricity = 0.0)
+        }
+        #endregion
+
+        #region properties
+        public abstract Vector Vector { get; }
+        protected abstract double MeanAngularVelocity { get; }
+        public abstract double Eccentricity { get; set; }
+        public abstract double TrueAnomaly { get; set; }
+
+        public double JulianDate 
         {
-            this.JulianDate = elements.JulianDate;
-            this.Eccentricity = eccentricity;
-            this.SemimajorAxis = elements.PerifocusDistance / Abs(1.0 - eccentricity);
-            this.Inclination = elements.Inclination;
-            this.AscendingNodeLongitude = elements.AscendingNodeLongitude;
-            this.PeriapsisArgument = elements.PeriapsisArgument;
-            this.TrueAnomaly = elements.TrueAnomaly;
-            this.CentralBody = elements.CentralBody;
-        }
-    }
-    public struct ParabolicKeplerianElements
-    {
-        public double JulianDate;
-        public double PerifocusDistance;
-        public double Inclination;
-        public double AscendingNodeLongitude;
-        public double PeriapsisArgument;
-        public double TrueAnomaly;
-        public Body CentralBody;
+            get 
+            {
+                return julianDate;
+            }
 
-        public ParabolicKeplerianElements(double julianDate, double perifocusDistance, double inclination,
-            double ascendingNodeLongitude, double periapsisArgument, double trueAnomaly, Body centralBody)
+            set
+            {
+                julianDate = value;
+            }
+        }
+
+        public Body CentralBody
         {
-            JulianDate = julianDate;
-            PerifocusDistance = perifocusDistance;
-            Inclination = inclination;
-            AscendingNodeLongitude = ascendingNodeLongitude;
-            PeriapsisArgument = periapsisArgument;
-            TrueAnomaly = trueAnomaly;
-            CentralBody = centralBody;
+            get
+            {
+                return centralBody;
+            }
+
+            set
+            {
+                centralBody = value;
+            }
         }
 
-        public ParabolicKeplerianElements(ParabolicKeplerianElements elements)
+        public double PerifocusDistance 
         {
-            JulianDate = elements.JulianDate;
-            PerifocusDistance = elements.PerifocusDistance;
-            Inclination = elements.Inclination;
-            AscendingNodeLongitude = elements.AscendingNodeLongitude;
-            PeriapsisArgument = elements.PeriapsisArgument;
-            TrueAnomaly = elements.TrueAnomaly;
-            CentralBody = elements.CentralBody;
+            get
+            {
+                return perifocusDistance;
+            }
+
+            set
+            {
+                if(value < 0.0)
+                {
+                    throw new Exception("PerifocusDistance must be > 0");
+                }
+
+                perifocusDistance = value;
+            }
         }
 
-        public ParabolicKeplerianElements(NotParabolicKeplerianElements elements)
+        public double Inclination
         {
-            JulianDate = elements.JulianDate;
-            PerifocusDistance = elements.SemimajorAxis * Abs(1.0 - elements.Eccentricity);
-            Inclination = elements.Inclination;
-            AscendingNodeLongitude = elements.AscendingNodeLongitude;
-            PeriapsisArgument = elements.PeriapsisArgument;
-            TrueAnomaly = elements.TrueAnomaly;
-            CentralBody = elements.CentralBody;
+            get
+            {
+                return inclination;
+            }
+
+            set
+            {
+                if(value < 0.0 || value > PI)
+                {
+                    throw new Exception("Inclination must be <= PI and >= 0");
+                }
+
+                inclination = value;
+            }
         }
-    }
 
+        public double AscendingNodeLongitude
+        {
+            get
+            {
+                return ascendingNodeLongitude;
+            }
 
-    public abstract class Keplerian
-    {
-        protected const int ITERATION_CONSTANT = 100;
-        protected const double G = 6.6743e-11;
+            set
+            {
+                if (value < 0.0 || value > 2.0 * PI)
+                {
+                    throw new Exception("AscendingNodeLongitude must be <= 2PI and >= 0");
+                }
 
-        protected object elements;
+                ascendingNodeLongitude = value;
+            }
+        }
 
+        public double PeriapsisArgument
+        {
+            get
+            {
+                return periapsisArgument;
+            }
+
+            set
+            {
+                if (value < 0.0 || value > 2.0 * PI)
+                {
+                    throw new Exception("PeriapsisArgument must be <= 2PI and >= 0");
+                }
+
+                periapsisArgument = value;
+            }
+        }
+        #endregion
+
+        #region methods
         public abstract double GetTrueAnomaly(double julianDate);
+
         public abstract double GetJD(double trueAnomaly);
+
+        public abstract Vector GetVector(double julianDate);
+        #endregion
     }
 
     public abstract class NotParabolicKeplerian : Keplerian
     {
+        #region constructors
         public NotParabolicKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody)
-        {
-            elements = new NotParabolicKeplerianElements(julianDate, eccentricity, semimajorAxis,
-                inclination, ascendingNodeLongitude, periapsisArgument, trueAnomaly, centralBody);
-        }
-
-        public NotParabolicKeplerian(NotParabolicKeplerianElements ke)
-        {
-            elements = new NotParabolicKeplerianElements(ke);
-        }
-
-        public NotParabolicKeplerian(ParabolicKeplerianElements ke)
-        {
-            elements = new NotParabolicKeplerianElements(ke);
-        }
-
-        public NotParabolicKeplerian(NotParabolicKeplerian k) : this(k.Elements)
+            double trueAnomaly, Body centralBody) : base(julianDate, eccentricity,
+                semimajorAxis * (1.0 - eccentricity), inclination, ascendingNodeLongitude,
+                periapsisArgument, trueAnomaly, centralBody)
         {
 
         }
 
-        public NotParabolicKeplerian(ParabolicKeplerian k) : this(k.Elements)
+        public NotParabolicKeplerian(NotParabolicKeplerian keplerian) : base(keplerian)
         {
 
         }
+        #endregion
 
-        protected abstract Complex GetEccentricAnomaly(double trueAnomaly);
-        protected abstract Complex GetMeanAnomaly(double trueAnomaly);
-        protected abstract double GetTrueAnomaly(Complex meanAnomaly);
-
-        protected abstract Complex MeanAngularVelocity { get; }
-
-        public NotParabolicKeplerianElements Elements
+        #region properties
+        public double SemimajorAxis
         {
-            get { return (NotParabolicKeplerianElements)elements; }
+            get
+            {
+                return perifocusDistance / (1.0 - eccentricity);
+            }
+
+            set
+            {
+                if (value * (1.0 - eccentricity) <= 0.0)
+                {
+                    throw new Exception("SemimajorAxis must be > 0 for ellipse and < 0 for hyperbola");
+                }
+
+                perifocusDistance = value * (1.0 - eccentricity);
+            }
         }
+
+        public override Vector Vector
+        {
+            get
+            {
+                return GetVector(julianDate);
+            }
+        }
+        #endregion
+
+        #region methods
+        protected abstract double GetEccentricAnomaly(double trueAnomaly);
+        protected abstract double GetMeanAnomaly(double trueAnomaly);
+        protected abstract double GetTrueAnomaly2(double meanAnomaly);
+
+        public override Vector GetVector(double julianDate)
+        {
+            double trueAnomaly = GetTrueAnomaly(julianDate);
+            Vector result = new Vector(PI / 2.0, -trueAnomaly);
+            result.Length = Abs(SemimajorAxis * (1.0 - eccentricity * eccentricity) /
+                (1.0 + eccentricity * Cos(trueAnomaly)));
+
+            result.TurnZ(-periapsisArgument);
+            result.TurnX(-inclination);
+            result.TurnZ(ascendingNodeLongitude);
+
+            return result;
+        }
+        #endregion
+
     }
 
     public class ParabolicKeplerian : Keplerian
     {
+        #region constructors
         public ParabolicKeplerian(double julianDate, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody)
-        {
-            elements = new ParabolicKeplerianElements(julianDate, perifocusDistance,
-                inclination, ascendingNodeLongitude, periapsisArgument, trueAnomaly, centralBody);
-        }
-
-        public ParabolicKeplerian(ParabolicKeplerianElements ke)
-        {
-            elements = new ParabolicKeplerianElements(ke);
-        }
-
-        public ParabolicKeplerian(NotParabolicKeplerianElements ke)
-        {
-            elements = new ParabolicKeplerianElements(ke);
-        }
-
-        public ParabolicKeplerian(ParabolicKeplerian keplerian) : this(keplerian.Elements)
+            double trueAnomaly, Body centralBody) : base(julianDate, 1.0,
+                perifocusDistance, inclination, ascendingNodeLongitude,
+                periapsisArgument, trueAnomaly, centralBody)
         {
 
         }
 
-        public ParabolicKeplerian(NotParabolicKeplerian keplerian) : this(keplerian.Elements)
+        public ParabolicKeplerian(ParabolicKeplerian keplerian) : base(keplerian)
         {
 
         }
+        #endregion
 
-
-
-        protected double MeanAngularVelocity
+        #region properties
+        public override Vector Vector
         {
             get
             {
-                return Sqrt(G * Elements.CentralBody.Mass / 2.0 / Elements.PerifocusDistance /
-                    Elements.PerifocusDistance / Elements.PerifocusDistance);
+                return GetVector(julianDate);
             }
         }
 
-        protected double GetTrueAnomaly2(double meanAnomaly)
+        protected override double MeanAngularVelocity
         {
-            double m = meanAnomaly;
-            double x = Pow(12.0 * m + 4.0 * Sqrt(9.0 * m * m + 4.0), 1 / 3.0) / 2.0;
-            return 2.0 * Atan(x - 1.0 / x);
+            get
+            {
+                return Sqrt(centralBody.Mass * G / 2.0 / perifocusDistance / perifocusDistance / perifocusDistance);
+            }
         }
 
+        public override double Eccentricity
+        {
+            get
+            {
+                return 1.0;
+            }
+            set => throw new NotImplementedException();
+        }
+
+        public override double TrueAnomaly
+        {
+            get
+            {
+                return trueAnomaly;
+            }
+
+            set
+            {
+                if (value >= PI || value <= -PI)
+                {
+                    throw new Exception("TrueAnomaly must be < PI and > -PI");
+                }
+            }
+        }
+        #endregion
+
+        #region functions
         public override double GetJD(double trueAnomaly)
         {
             double tan1 = Tan(trueAnomaly / 2.0);
-            double tan0 = Tan(Elements.TrueAnomaly / 2.0);
-
-            return (tan1 - tan0 + tan1 * tan1 * tan1 * 3.0 - tan0 * tan0 * tan0 / 3.0) / MeanAngularVelocity /
-                Date.JDtoSecond + Elements.JulianDate;
+            double tan0 = Tan(this.trueAnomaly / 2.0);
+            return (tan1 - tan0 + tan1 * tan1 * tan1 / 3.0 - tan0 * tan0 * tan0 / 3.0) /
+                MeanAngularVelocity / Date.JDtoSecond + julianDate;
         }
 
         public override double GetTrueAnomaly(double julianDate)
         {
-            double jd0 = GetJD(PI);
-            double m = MeanAngularVelocity * (Elements.JulianDate - jd0) * Date.JDtoSecond; // mean anomaly
+            double jd0 = GetJD(0.0);
+            double m = MeanAngularVelocity * (julianDate - jd0) * Date.JDtoSecond; // mean anomaly
             double x = 0.5 * Pow(12.0 * m + 4.0 * Sqrt(9.0 * m * m + 4.0), 1 / 3.0);
             return 2.0 * Atan(x - 1.0 / x);
         }
 
-        public ParabolicKeplerianElements Elements
+        public override Vector GetVector(double julianDate)
         {
-            get { return (ParabolicKeplerianElements)elements; }
+            double trueAnomaly = GetTrueAnomaly(julianDate);
+            Vector result = new Vector(PI / 2.0, -trueAnomaly);
+            result.Length = perifocusDistance * 2.0 / (1.0 + Cos(trueAnomaly));
+
+            result.TurnZ(-periapsisArgument);
+            result.TurnX(-inclination);
+            result.TurnZ(ascendingNodeLongitude);
+
+            return result;
         }
+        #endregion
     }
-
-
 
     public class EllipticKeplerian : NotParabolicKeplerian
     {
+        #region constructors
+
         public EllipticKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Body centralBody) :
@@ -238,48 +335,79 @@ namespace CelestialMechanics
 
         }
 
-        public EllipticKeplerian(NotParabolicKeplerianElements elements) : base(elements)
-        {
-
-        }
-
-        public EllipticKeplerian(ParabolicKeplerianElements elements) : base(elements)
-        {
-
-        }
-
         public EllipticKeplerian(NotParabolicKeplerian ke) : base(ke)
         {
 
         }
 
-        public EllipticKeplerian(ParabolicKeplerian ke) : base(ke)
-        {
+        #endregion
 
-        }
-
-
-
-        protected override Complex MeanAngularVelocity
+        #region properties
+        protected override double MeanAngularVelocity
         {
             get
             {
-                return Sqrt(G * Elements.CentralBody.Mass / Elements.SemimajorAxis /
-                    Elements.SemimajorAxis / Elements.SemimajorAxis);
+                return Sqrt(G * centralBody.Mass / SemimajorAxis / SemimajorAxis / SemimajorAxis);
             }
         }
 
-        protected override Complex GetEccentricAnomaly(double trueAnomaly)
+        protected double OrbitalPeriod
         {
-            if (Elements.Eccentricity == 0.0)
+            get
             {
-                return Elements.TrueAnomaly;
+                return 2 * PI / MeanAngularVelocity;
+            }
+        }
+
+        public override double Eccentricity
+        {
+            get
+            {
+                return eccentricity;
             }
 
-            double eccentricAnomaly = 2.0 * Atan(Tan(Elements.TrueAnomaly / 2.0) *
-                Sqrt((1.0 - Elements.Eccentricity) / (1.0 + Elements.Eccentricity)));
+            set
+            {
+                if (value < 0.0 || value >= 1.0)
+                {
+                    throw new Exception("Eccentricity must be >=0 and < 1");
+                }
 
-            if (Sin(Elements.TrueAnomaly) < 0)
+                eccentricity = value;
+            }
+        }
+
+        public override double TrueAnomaly
+        {
+            get
+            {
+                return trueAnomaly;
+            }
+
+            set
+            {
+                if (value < -PI || value > PI)
+                {
+                    throw new Exception("TrueAnomaly must be <= PI and >= -PI");
+                }
+
+                trueAnomaly = value;
+            }
+        }
+        #endregion
+
+        #region functions
+        protected override double GetEccentricAnomaly(double trueAnomaly)
+        {
+            if (eccentricity == 0.0)
+            {
+                return trueAnomaly;
+            }
+
+            double eccentricAnomaly = 2.0 * Atan(Tan(trueAnomaly / 2.0) *
+                Sqrt((1.0 - eccentricity) / (1.0 + eccentricity)));
+
+            if (Sin(trueAnomaly) < 0)
             {
                 eccentricAnomaly = -eccentricAnomaly;
             }
@@ -287,25 +415,24 @@ namespace CelestialMechanics
             return eccentricAnomaly;
         }
 
-        protected override Complex GetMeanAnomaly(double trueAnomaly)
+        protected override double GetMeanAnomaly(double trueAnomaly)
         {
-            double eccentricAnomaly = GetEccentricAnomaly(trueAnomaly).Real;
-            return eccentricAnomaly - Elements.Eccentricity * Sin(eccentricAnomaly);
+            double eccentricAnomaly = GetEccentricAnomaly(trueAnomaly);
+            return eccentricAnomaly - eccentricity * Sin(eccentricAnomaly);
         }
 
-        protected override double GetTrueAnomaly(Complex meanAnomaly)
+        protected override double GetTrueAnomaly2(double meanAnomaly)
         {
-            double eccentricAnomaly = meanAnomaly.Real;
-
+            double eccentricAnomaly = meanAnomaly;
             for (int i = 0; i < ITERATION_CONSTANT; i++)
             {
-                eccentricAnomaly = Elements.Eccentricity * Sin(eccentricAnomaly) + meanAnomaly.Real;
+                eccentricAnomaly = eccentricity * Sin(eccentricAnomaly) + meanAnomaly;
             }
 
-            double trueAnomaly = Acos((Cos(eccentricAnomaly) - Elements.Eccentricity) /
-                (1 - Elements.Eccentricity * Cos(eccentricAnomaly)));
+            double trueAnomaly = Acos((Cos(eccentricAnomaly) - eccentricity) /
+                (1 - eccentricity * Cos(eccentricAnomaly)));
 
-            if (eccentricAnomaly < 0)
+            if (Sin(eccentricAnomaly) < 0)
             {
                 trueAnomaly = -trueAnomaly;
             }
@@ -315,35 +442,29 @@ namespace CelestialMechanics
 
         public override double GetTrueAnomaly(double julianDate)
         {
-            double meanAnomaly = GetMeanAnomaly(Elements.TrueAnomaly).Real +
-                MeanAngularVelocity.Real * (julianDate - Elements.JulianDate) * Date.JDtoSecond;
-            return GetTrueAnomaly(new Complex(meanAnomaly, 0.0));
+            double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) +
+                MeanAngularVelocity * (julianDate - this.julianDate) * Date.JDtoSecond;
+            return GetTrueAnomaly2(meanAnomaly);
         }
 
         public override double GetJD(double trueAnomaly)
         {
-            double timeInterval = (GetMeanAnomaly(trueAnomaly).Real -
-                GetMeanAnomaly(Elements.TrueAnomaly).Real) / MeanAngularVelocity.Real;
+            double timeInterval = (GetMeanAnomaly(trueAnomaly) -
+                GetMeanAnomaly(this.trueAnomaly)) / MeanAngularVelocity;
 
             if (timeInterval < 0)
             {
                 timeInterval += OrbitalPeriod;
             }
 
-            return timeInterval / Date.JDtoSecond + Elements.JulianDate;
+            return timeInterval / Date.JDtoSecond + this.julianDate;
         }
-
-        protected double OrbitalPeriod
-        {
-            get
-            {
-                return 2 * PI / MeanAngularVelocity.Real;
-            }
-        }
+        #endregion
     }
 
     public class HyperbolicKeplerian : NotParabolicKeplerian
     {
+        #region constructors
         public HyperbolicKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Body centralBody) :
@@ -353,97 +474,109 @@ namespace CelestialMechanics
 
         }
 
-        public HyperbolicKeplerian(NotParabolicKeplerianElements ke) : base(ke)
-        {
-
-        }
-
-        public HyperbolicKeplerian(ParabolicKeplerianElements ke) : base(ke)
-        {
-
-        }
-
-        public HyperbolicKeplerian(ParabolicKeplerian keplerian) : base(keplerian)
-        {
-
-        }
-
         public HyperbolicKeplerian(NotParabolicKeplerian keplerian) : base(keplerian)
         {
 
         }
+        #endregion
 
-
-
-        protected override Complex MeanAngularVelocity
+        #region properties
+        protected override double MeanAngularVelocity
         {
             get
             {
-                return Sqrt(-G * Elements.CentralBody.Mass / Elements.SemimajorAxis /
-                    Elements.SemimajorAxis / Elements.SemimajorAxis);
+                return Sqrt(-G * centralBody.Mass / SemimajorAxis / SemimajorAxis / SemimajorAxis);
             }
         }
 
-        protected override Complex GetEccentricAnomaly(double trueAnomaly)
+        public override double Eccentricity
         {
-            Complex Arth(Complex z)
+            get
+            {
+                return eccentricity;
+            }
+
+            set
+            {
+                if (value <= 1.0)
+                {
+                    throw new Exception("Eccentricity must be > 1.0");
+                }
+
+                eccentricity = value;
+            }
+        }
+
+        public override double TrueAnomaly
+        {
+            get
+            {
+                return trueAnomaly;
+            }
+
+            set
+            {
+                if (eccentricity * Cos(value) <= -1.0)
+                {
+                    throw new Exception("TrueAnomaly isn't correct");
+                }
+
+                trueAnomaly = value;
+            }
+        }
+        #endregion
+
+        #region functions
+        protected override double GetEccentricAnomaly(double trueAnomaly)
+        {
+            double Arth(double z)
             {
                 return Log((1 + z) / (1 - z)) / 2.0;
             }
 
-            Complex eccentricAnomaly = 2.0 * Arth(Tan(Elements.TrueAnomaly / 2.0) *
-                Sqrt((Elements.Eccentricity + 1.0) / (Elements.Eccentricity - 1.0)));
-
-            if (Sin(Elements.TrueAnomaly) < 0)
-            {
-                eccentricAnomaly = -eccentricAnomaly;
-            }
+            double eccentricAnomaly = 2.0 * Arth(Tan(trueAnomaly / 2.0) *
+                Sqrt((eccentricity - 1.0) / (eccentricity + 1.0)));
 
             return eccentricAnomaly;
         }
 
-        protected override Complex GetMeanAnomaly(double trueAnomaly)
+        protected override double GetMeanAnomaly(double trueAnomaly)
         {
-            Complex eccentricAnomaly = GetEccentricAnomaly(trueAnomaly);
-            return Elements.Eccentricity * Sinh(eccentricAnomaly) - eccentricAnomaly;
+            double eccentricAnomaly = GetEccentricAnomaly(trueAnomaly);
+            return eccentricity * Sinh(eccentricAnomaly) - eccentricAnomaly;
         }
 
-        protected override double GetTrueAnomaly(Complex meanAnomaly)
+        protected override double GetTrueAnomaly2(double meanAnomaly)
         {
-            Complex eccentricAnomaly = meanAnomaly;
+            double Arsh(double n)
+            {
+                return Log(n + Sqrt(n * n + 1.0));
+            }
+
+            double eccentricAnomaly = meanAnomaly;
 
             for (int i = 0; i < ITERATION_CONSTANT; i++)
             {
-                eccentricAnomaly = Elements.Eccentricity * Sinh(eccentricAnomaly) - meanAnomaly;
+                eccentricAnomaly = Arsh((eccentricAnomaly + meanAnomaly) / eccentricity);
             }
 
-            double trueAnomaly = 2.0 * Atan(Tanh(eccentricAnomaly / 2.0) *
-                Sqrt((Elements.Eccentricity + 1.0)/(Elements.Eccentricity - 1.0))).Real;
-
-            if (eccentricAnomaly.Real < 0.0)
-            {
-                trueAnomaly = -trueAnomaly;
-            }
-
-            return trueAnomaly;
+            return 2.0 * Atan(Tanh(eccentricAnomaly / 2.0) *
+                Sqrt((eccentricity + 1.0) / (eccentricity - 1.0)));
         }
 
         public override double GetTrueAnomaly(double julianDate)
         {
-            Complex meanAnomaly = GetMeanAnomaly(Elements.TrueAnomaly) + MeanAngularVelocity *
-                (julianDate - Elements.JulianDate) * Date.JDtoSecond;
-            return GetTrueAnomaly(meanAnomaly);
+            double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) + MeanAngularVelocity *
+                    (julianDate - this.julianDate) * Date.JDtoSecond;
+
+            return GetTrueAnomaly2(meanAnomaly);
         }
 
         public override double GetJD(double trueAnomaly)
         {
-            if(Cos(trueAnomaly) * Elements.Eccentricity > 1.0)
-            {
-                throw new Exception("True anomaly isn't correct");
-            }
-
-            return ((GetMeanAnomaly(trueAnomaly) - GetMeanAnomaly(Elements.TrueAnomaly)) /
-                MeanAngularVelocity).Real / Date.JDtoSecond + Elements.JulianDate;
+            return ((GetMeanAnomaly(trueAnomaly) - GetMeanAnomaly(this.trueAnomaly)) /
+                MeanAngularVelocity / Date.JDtoSecond) + this.julianDate;
         }
+        #endregion
     }
 }
