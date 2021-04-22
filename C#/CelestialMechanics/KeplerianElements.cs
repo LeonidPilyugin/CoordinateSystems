@@ -1,8 +1,6 @@
 ﻿using System;
 using CoordinateSystems;
 using static System.Math;
-using System.Numerics;
-using static System.Numerics.Complex;
 
 namespace CelestialMechanics
 {
@@ -153,10 +151,13 @@ namespace CelestialMechanics
         #endregion
 
         #region methods
+        // возвращает истинную аномалию в данный Юлианский день
         public abstract double GetTrueAnomaly(double julianDate);
 
+        // возвращает Юлианский день, в который истинная аномалия равна данной
         public abstract double GetJD(double trueAnomaly);
 
+        // возвращает вектор в ICS в данный Юлианский день
         public abstract Vector GetVector(double julianDate);
         #endregion
     }
@@ -212,6 +213,7 @@ namespace CelestialMechanics
         protected abstract double GetMeanAnomaly(double trueAnomaly);
         protected abstract double GetTrueAnomaly2(double meanAnomaly);
 
+        // возвращает вектор в ICS в данный Юлианский день
         public override Vector GetVector(double julianDate)
         {
             double trueAnomaly = GetTrueAnomaly(julianDate);
@@ -299,6 +301,7 @@ namespace CelestialMechanics
                 MeanAngularVelocity / Date.JDtoSecond + julianDate;
         }
 
+        // возвращает истинную аномалию в данный Юлианский день
         public override double GetTrueAnomaly(double julianDate)
         {
             double jd0 = GetJD(0.0);
@@ -307,6 +310,7 @@ namespace CelestialMechanics
             return 2.0 * Atan(x - 1.0 / x);
         }
 
+        // возвращает Юлианский день, в который истинная аномалия равна данной
         public override Vector GetVector(double julianDate)
         {
             double trueAnomaly = GetTrueAnomaly(julianDate);
@@ -440,6 +444,7 @@ namespace CelestialMechanics
             return trueAnomaly;
         }
 
+        // возвращает истинную аномалию в данный Юлианский день
         public override double GetTrueAnomaly(double julianDate)
         {
             double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) +
@@ -447,6 +452,7 @@ namespace CelestialMechanics
             return GetTrueAnomaly2(meanAnomaly);
         }
 
+        // возвращает Юлианский день, в который истинная аномалия равна данной
         public override double GetJD(double trueAnomaly)
         {
             double timeInterval = (GetMeanAnomaly(trueAnomaly) -
@@ -536,7 +542,6 @@ namespace CelestialMechanics
 
             double eccentricAnomaly = 2.0 * Arth(Tan(trueAnomaly / 2.0) *
                 Sqrt((eccentricity - 1.0) / (eccentricity + 1.0)));
-
             return eccentricAnomaly;
         }
 
@@ -564,6 +569,7 @@ namespace CelestialMechanics
                 Sqrt((eccentricity + 1.0) / (eccentricity - 1.0)));
         }
 
+        // возвращает истинную аномалию в данный Юлианский день
         public override double GetTrueAnomaly(double julianDate)
         {
             double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) + MeanAngularVelocity *
@@ -572,8 +578,14 @@ namespace CelestialMechanics
             return GetTrueAnomaly2(meanAnomaly);
         }
 
+        // возвращает Юлианский день, в который истинная аномалия равна данной
         public override double GetJD(double trueAnomaly)
         {
+            if (eccentricity * Cos(trueAnomaly) <= -1.0)
+            {
+                throw new Exception("TrueAnomaly isn't correct");
+            }
+
             return ((GetMeanAnomaly(trueAnomaly) - GetMeanAnomaly(this.trueAnomaly)) /
                 MeanAngularVelocity / Date.JDtoSecond) + this.julianDate;
         }
