@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 using CoordinateSystems;
 using System.Threading;
 using Connection;
+using SunSystem;
 
 namespace Agents
 {
     public class GroundStation : Body
     {
-        protected GroundStationConnector connector;
-        public GroundStation(GroundStationConnector connector, CoordinateSystem coordinateSystem) :
-            base(connector.ID, coordinateSystem)
-        {
-            this.connector = new GroundStationConnector(connector);
-        }
-
+        #region data
         public GroundStationConnector Connector
         {
-            get { return connector; }
-            set { connector = new GroundStationConnector(value); }
+            get; set;
         }
+        #endregion
+
+        #region constructors
+        public GroundStation(GroundStationConnector connector) :
+            base(connector.ID, SunSystem.Planets.FixedEarth)
+        {
+            Connector = new GroundStationConnector(connector);
+        }
+        #endregion
     }
 }

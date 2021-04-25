@@ -10,10 +10,11 @@ namespace CoordinateSystems
     // класс пердставляет матрицу
     public class Matrix
     {
+        #region data
         protected List<List<double>> matrix;
+        #endregion
 
-
-
+        #region constructors
         public Matrix(int m, int n)
         {
             matrix = new List<List<double>>();
@@ -73,25 +74,168 @@ namespace CoordinateSystems
         {
 
         }
+        #endregion
 
-
-
+        #region properties
         public int M
         {
-            get { return matrix.Count; }
+            get
+            {
+                return matrix.Count;
+            }
         }
 
         public int N
         {
-            get { return matrix[0].Count; }
+            get
+            {
+                return matrix[0].Count;
+            }
         }
 
+        public double Determinant
+        {
+            get
+            {
+                if (M != N)
+                    throw new Exception("Can't get determinant");
+                int l;
+                double result;
+                double sum11 = 1, sum12 = 0, sum21 = 1, sum22 = 0;
+                int size = matrix.Count;
+
+                for (int i = 0; i < size; i++)
+                {
+                    sum11 = 1; l = 2 * size - 1 - i; sum21 = 1;
+                    for (int j = 0; j < size; j++)
+                    {
+                        sum21 *= matrix[j][l % size];
+                        l--;
+                        sum11 *= matrix[j][(j + i) % (size)];
+                    }
+                    sum22 += sum21;
+                    sum12 += sum11;
+                }
+                result = sum12 - sum22;
+
+                return result;
+            }
+        }
+
+        public Matrix Transposed
+        {
+            get
+            {
+                Matrix result = new Matrix(N, M);
+                for (int i = 0; i < result.M; i++)
+                {
+                    for (int j = 0; j < result.N; j++)
+                    {
+                        result.matrix[i][j] = this.matrix[j][i];
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        public Matrix Inversed
+        {
+            get
+            {
+                if (Determinant == 0.0)
+                {
+                    throw new Exception("can't inverse matrix");
+                }
+
+                int size = M;
+                Matrix result = new Matrix(M);
+                for (int i = 0; i < size; i++)
+                    result[i, i] = 1;
+
+                var bigMatrix = new Matrix(size, size * 2);
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        bigMatrix[i, j] = matrix[i][j];
+                        bigMatrix[i, j + size] = result[i, j];
+                    }
+                }
+
+                double K;
+
+                for (int k = 0; k < size; k++)
+                {
+                    for (int i = 0; i < 2 * size; i++)
+                    {
+                        bigMatrix[k, i] = bigMatrix[k, i] / matrix[k][k];
+                    }
+
+                    for (int i = k + 1; i < size; i++)
+                    {
+                        K = bigMatrix[i, k] / bigMatrix[k, k];
+                        for (int j = 0; j < 2 * size; j++)
+                        {
+                            bigMatrix[i, j] = bigMatrix[i, j] - bigMatrix[k, j] * K;
+                        }
+                    }
+
+                    for (int i = 0; i < size; i++)
+                    {
+                        for (int j = 0; j < size; j++)
+                        {
+                            matrix[i][j] = bigMatrix[i, j];
+                        }
+                    }
+                }
 
 
+
+                for (int k = size - 1; k > -1; k--)
+                {
+                    for (int i = 2 * size - 1; i > -1; i--)
+                    {
+                        bigMatrix[k, i] = bigMatrix[k, i] / matrix[k][k];
+                    }
+
+                    for (int i = k - 1; i > -1; i--)
+                    {
+                        K = bigMatrix[i, k] / bigMatrix[k, k];
+                        for (int j = 2 * size - 1; j > -1; j--)
+                        {
+                            bigMatrix[i, j] = bigMatrix[i, j] - bigMatrix[k, j] * K;
+                        }
+                    }
+                }
+
+
+
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        result[i, j] = bigMatrix[i, j + size];
+                    }
+                }
+
+                return result;
+            }
+        }
+        #endregion
+
+        #region operators
         public double this[int i, int j]
         {
-            get { return matrix[i][j]; }
-            set { matrix[i][j] = value; }
+            get
+            {
+                return matrix[i][j];
+            }
+
+            set
+            {
+                matrix[i][j] = value;
+            }
         }
 
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
@@ -227,139 +371,9 @@ namespace CoordinateSystems
 
             return result;
         }
+        #endregion
 
-        public double Determinant
-        {
-            get
-            {
-                if (M != N)
-                    throw new Exception("Can't get determinant");
-                int l;
-                double result;
-                double sum11 = 1, sum12 = 0, sum21 = 1, sum22 = 0;
-                int size = matrix.Count;
-
-                for (int i = 0; i < size; i++)
-                {
-                    sum11 = 1; l = 2 * size - 1 - i; sum21 = 1;
-                    for (int j = 0; j < size; j++)
-                    {
-                        sum21 *= matrix[j][l % size];
-                        l--;
-                        sum11 *= matrix[j][(j + i) % (size)];
-                    }
-                    sum22 += sum21;
-                    sum12 += sum11;
-                }
-                result = sum12 - sum22;
-
-                return result;
-            }
-        }
-
-        public Matrix Transposed
-        {
-            get
-            {
-                Matrix result = new Matrix(N, M);
-                for (int i = 0; i < result.M; i++)
-                {
-                    for (int j = 0; j < result.N; j++)
-                    {
-                        result.matrix[i][j] = this.matrix[j][i];
-                    }
-                }
-
-                return result;
-            }
-        }
-
-        public Matrix Inversed
-        {
-            get
-            {
-                if (Determinant == 0.0)
-                {
-                    throw new Exception("can't inverse matrix");
-                }
-
-                int size = M;
-                Matrix result = new Matrix(M);
-                for (int i = 0; i < size; i++)
-                    result[i, i] = 1;
-
-                var bigMatrix = new Matrix(size, size * 2);
-                for (int i = 0; i < size; i++)
-                {
-                    for (int j = 0; j < size; j++)
-                    {
-                        bigMatrix[i, j] = matrix[i][j];
-                        bigMatrix[i, j + size] = result[i, j];
-                    }
-                }
-
-                double K;
-
-                for (int k = 0; k < size; k++)
-                {
-                    for (int i = 0; i < 2 * size; i++)
-                    {
-                        bigMatrix[k, i] = bigMatrix[k, i] / matrix[k][k];
-                    }
-
-                    for (int i = k + 1; i < size; i++)
-                    {
-                        K = bigMatrix[i, k] / bigMatrix[k, k];
-                        for (int j = 0; j < 2 * size; j++)
-                        {
-                            bigMatrix[i, j] = bigMatrix[i, j] - bigMatrix[k, j] * K;
-                        }
-                    }
-
-                    for (int i = 0; i < size; i++)
-                    {
-                        for (int j = 0; j < size; j++)
-                        {
-                            matrix[i][j] = bigMatrix[i, j];
-                        }
-                    }
-                }
-
-
-
-                for (int k = size - 1; k > -1; k--)
-                {
-                    for (int i = 2 * size - 1; i > -1; i--)
-                    {
-                        bigMatrix[k, i] = bigMatrix[k, i] / matrix[k][k];
-                    }
-
-                    for (int i = k - 1; i > -1; i--)
-                    {
-                        K = bigMatrix[i, k] / bigMatrix[k, k];
-                        for (int j = 2 * size - 1; j > -1; j--)
-                        {
-                            bigMatrix[i, j] = bigMatrix[i, j] - bigMatrix[k, j] * K;
-                        }
-                    }
-                }
-
-
-
-                for (int i = 0; i < size; i++)
-                {
-                    for (int j = 0; j < size; j++)
-                    {
-                        result[i, j] = bigMatrix[i, j + size];
-                    }
-                }
-
-                return result;
-            }
-        }
-
-
-
+        #region functions
         public void Transpose()
         {
             Copy(Transposed);
@@ -471,5 +485,6 @@ namespace CoordinateSystems
 
             return result;
         }
+        #endregion
     }
 }

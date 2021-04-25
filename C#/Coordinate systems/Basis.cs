@@ -9,12 +9,7 @@ namespace CoordinateSystems
     // класс представляет базис (3 единичных вектора)
     public class Basis
     {
-        public UnitVector I { get; set; }
-        public UnitVector J { get; set; }
-        public UnitVector K { get; set; }
-
-
-
+        #region constructors
         public Basis()
         {
             I = new UnitVector(1.0, 0.0, 0.0);
@@ -36,9 +31,9 @@ namespace CoordinateSystems
                 this[i] = new UnitVector(matrix[i, 0], matrix[i, 1], matrix[i, 2]);
             }
         }
+        #endregion
 
-
-
+        #region operators
         public UnitVector this[int i]
         {
             get
@@ -71,9 +66,16 @@ namespace CoordinateSystems
 
             return new Basis(basisMatrix);
         }
+        #endregion
 
+        #region properties
+        public UnitVector I { get; set; }
+        public UnitVector J { get; set; }
+        public UnitVector K { get; set; }
+        #endregion
 
-
+        #region functions
+        #region turn
         public void TurnX(double angle)
         {
             I.TurnX(angle);
@@ -126,5 +128,7 @@ namespace CoordinateSystems
             J.TurnEuler(precession, nutation, rotation);
             K.TurnEuler(precession, nutation, rotation);
         }
+        #endregion
+        #endregion
     }
 }

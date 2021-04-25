@@ -6,24 +6,74 @@ using System.Threading.Tasks;
 
 namespace CoordinateSystems
 {
+    public struct Velocity
+    {
+        #region data
+        public double X;
+        public double Y;
+        public double Z;
+        #endregion
+
+        #region constructors
+        public Velocity(double x, double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        public Velocity(Velocity velocity) : this(velocity.X, velocity.Y, velocity.Z)
+        {
+
+        }
+        #endregion
+
+        #region operators
+        public static Velocity operator *(Velocity velocity, double m)
+        {
+            return new Velocity(velocity.X * m, velocity.Y * m, velocity.Z * m);
+        }
+
+        public static Velocity operator /(Velocity velocity, double m)
+        {
+            return new Velocity(velocity.X / m, velocity.Y / m, velocity.Z / m);
+        }
+
+        public static Velocity operator +(Velocity velocity1, Velocity velocity2)
+        {
+            return new Velocity(velocity1.X + velocity2.X, velocity1.Y + velocity2.Y, velocity1.Z + velocity2.Z);
+        }
+
+        public static Velocity operator -(Velocity velocity1, Velocity velocity2)
+        {
+            return new Velocity(velocity1.X - velocity2.X, velocity1.Y - velocity2.Y, velocity1.Z - velocity2.Z);
+        }
+        #endregion
+    }
+
     // класс нужен для создания системы координат (СК)
     public class CoordinateSystem
     {
+        #region data
         // вектор от базовой СК
         protected Vector vector;
 
         // базис относительно базовой СК
         protected Basis basis;
 
+        // скорость относительно базовой СК
+        protected Velocity velocity;
+
         // базовая СК, если она null, то базовая СК — гелиоцентрическая
         protected CoordinateSystem referenceSystem;
+        #endregion
 
-
-
-        public CoordinateSystem(Vector vector, Basis basis, CoordinateSystem referenceSystem = null)
+        #region constructors
+        public CoordinateSystem(Vector vector, Basis basis, Velocity velocity, CoordinateSystem referenceSystem = null)
         {
             this.vector = vector;
             this.basis = basis;
+            this.velocity = velocity;
             this.referenceSystem = referenceSystem;
         }
 
@@ -40,12 +90,16 @@ namespace CoordinateSystems
             this.basis = coordinateSystem.basis;
             this.referenceSystem = coordinateSystem.referenceSystem;
         }
+        #endregion
 
-
-
+        #region properties
         public Vector Vector
         {
-            get { return vector; }
+            get
+            {
+                return vector;
+            }
+
             set
             {
                 if (value == null)
@@ -56,7 +110,11 @@ namespace CoordinateSystems
 
         public Basis Basis
         {
-            get { return basis; }
+            get
+            {
+                return basis;
+            }
+
             set
             {
                 if (value == null)
@@ -67,14 +125,32 @@ namespace CoordinateSystems
 
         public CoordinateSystem ReferenceSystem
         {
-            get { return referenceSystem; }
-            set { referenceSystem = value; }
+            get
+            {
+                return referenceSystem;
+            }
+
+            set
+            {
+                referenceSystem = value;
+            }
+        }
+
+        public Velocity Velocity
+        {
+            get
+            {
+                return velocity;
+            }
         }
 
         // матрица переноса относительно базовой СК
         protected Matrix TransitionMatrix
         {
-            get { return new Matrix(basis).Transposed; }
+            get
+            {
+                return new Matrix(basis).Transposed;
+            }
         }
 
         // матрица переноса относительно гелиоцентрической СК
@@ -142,9 +218,9 @@ namespace CoordinateSystems
         {
             get { return GetVectorFromSun(); }
         }
+        #endregion
 
-
-
+        #region functions
         // переводит вектор point из этой СК в СК system
         public Vector ConvertTo(CoordinateSystem system, Vector point = null)
         {
@@ -204,5 +280,6 @@ namespace CoordinateSystems
 
             return result + vector;
         }
+        #endregion
     }
 }

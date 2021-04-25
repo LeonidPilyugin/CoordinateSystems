@@ -9,6 +9,7 @@ namespace Connection
 {
     public class MainSpacecraftConnector : Connector
     {
+        #region constructors
         public MainSpacecraftConnector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier) :
             base(ID, coordinateSystem, maxDistance, carrier)
         {
@@ -24,6 +25,7 @@ namespace Connection
         {
 
         }
+        #endregion
 
         /*public void Send(MessageType messageType, GroundStationConnector station)
         {
@@ -55,6 +57,7 @@ namespace Connection
             }
         }*/
 
+        #region functions
         protected override void Analize(Message message)
         {
             isAnalizing = true;
@@ -85,5 +88,6 @@ namespace Connection
                 base.TurnTo(point);
             }
         }
+        #endregion
     }
 }

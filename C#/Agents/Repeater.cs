@@ -11,17 +11,19 @@ namespace Agents
 {
     public class Repeater : Body
     {
-        protected RepeaterConnector connector;
+        #region data
+        public RepeaterConnector Connector
+        {
+            get; set;
+        }
+        #endregion
+
+        #region constructor
         public Repeater(RepeaterConnector connector, CoordinateSystem coordinateSystem) :
             base(connector.ID, coordinateSystem)
         {
-            this.connector = new RepeaterConnector(connector);
+            Connector = new RepeaterConnector(connector);
         }
-
-        public RepeaterConnector Connector
-        {
-            get { return connector; }
-            set { connector = new RepeaterConnector(value); }
-        }
+        #endregion
     }
 }

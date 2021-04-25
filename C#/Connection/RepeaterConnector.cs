@@ -9,6 +9,7 @@ namespace Connection
 {
     public class RepeaterConnector : Connector
     {
+        #region constructors
         public RepeaterConnector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier) :
             base(ID, coordinateSystem, maxDistance, carrier)
         {
@@ -24,7 +25,9 @@ namespace Connection
         {
 
         }
+        #endregion
 
+        #region functions
         protected override void Analize(Message message)
         {
             isAnalizing = true;
@@ -90,6 +93,7 @@ namespace Connection
 
             Send(message);
         }
+        #endregion
 
         /*protected void SendAnotherWay(Message message)
         {

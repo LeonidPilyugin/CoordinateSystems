@@ -11,17 +11,19 @@ namespace Agents
 {
     public class MainSpacecraft : Body
     {
-        protected MainSpacecraftConnector connector;
+        #region data
+        public MainSpacecraftConnector Connector
+        {
+            get; set;
+        }
+        #endregion
+
+        #region constructors
         public MainSpacecraft(MainSpacecraftConnector connector, CoordinateSystem coordinateSystem) :
             base(connector.ID, coordinateSystem)
         {
-            this.connector = new MainSpacecraftConnector(connector);
+            Connector = new MainSpacecraftConnector(connector);
         }
-
-        public MainSpacecraftConnector Connector
-        {
-            get { return connector; }
-            set { connector = new MainSpacecraftConnector(value); }
-        }
+        #endregion
     }
 }

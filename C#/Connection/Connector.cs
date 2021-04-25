@@ -17,6 +17,7 @@ namespace Connection
         //public enum SendingResult { Successfully, ReceiverDontAnswer, ReceiverDontWork, CantSend };
         //public delegate void AnalizingFunction(Message message);
 
+        #region data
         //protected List<Repeater> repeaters;
         //protected List<Connector> workingConnectors;
         //protected Dictionary<Message, CancellationTokenSource> sentMessages;
@@ -26,6 +27,13 @@ namespace Connection
         protected bool isAnalizing;
         protected Body carrier;
         //protected static List<Connector> connectors;
+
+        //public bool IsWorking { get; set; }
+        public double MaxDistance { get; set; }
+        public static List<Connector> WorkingConnectors { get; set; }
+        #endregion
+
+        #region constructors
         public Connector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier)
             : base(ID, coordinateSystem)
         {
@@ -55,16 +63,15 @@ namespace Connection
         {
             WorkingConnectors = new List<Connector>();
         }
+        #endregion
 
-        //public bool IsWorking { get; set; }
-        public double MaxDistance { get; set; }
-        public static List<Connector> WorkingConnectors { get; set; }
-
+        #region functions
         protected virtual void TurnTo(Body point)
         {
             base.TurnTo(point.ConvertTo(this));
             Thread.Sleep(1000);
         }
+
         protected LinkedList<Connector> GetPath(Connector stop)
         {
             // get graph
@@ -149,7 +156,7 @@ namespace Connection
         {
             return (!Message.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < MaxDistance);
         }
-
+        #endregion
 
 
 

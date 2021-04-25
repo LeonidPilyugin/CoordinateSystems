@@ -10,12 +10,13 @@ namespace CoordinateSystems
     // класс представляет вектор
     public class Vector
     {
+        #region data
         protected double x;
         protected double y;
         protected double z;
+        #endregion
 
-
-
+        #region constructors
         public Vector()
         {
             x = y = z = Sqrt(1.0 / 3.0);
@@ -54,9 +55,9 @@ namespace CoordinateSystems
             this.y = unitVector.y;
             this.z = unitVector.z;
         }
+        #endregion
 
-
-
+        #region properties
         public double X 
         {
             get { return x; }
@@ -77,7 +78,11 @@ namespace CoordinateSystems
 
         public double Length
         {
-            get { return Sqrt(x * x + y * y + z * z); }
+            get
+            {
+                return Sqrt(x * x + y * y + z * z);
+            }
+
             set
             {
                 if (value <= 0)
@@ -92,7 +97,11 @@ namespace CoordinateSystems
 
         public double Theta
         {
-            get { return Acos(z / Length); }
+            get
+            {
+                return Acos(z / Length);
+            }
+
             set
             {
                 double length = Length;
@@ -152,6 +161,7 @@ namespace CoordinateSystems
                     }
                 }
             }
+
             set
             {
                 double length = Length;
@@ -161,8 +171,6 @@ namespace CoordinateSystems
                 z = length * Cos(theta);
             }
         }
-
-
 
         public UnitVector UnitVector
         {
@@ -197,9 +205,9 @@ namespace CoordinateSystems
                 return new Vector(0.0, y, z);
             }
         }
+        #endregion
 
-
-
+        #region functions
         public void TurnX(double angle)
         {
             Vector result = Matrix.GetRx(angle) * this;
@@ -239,8 +247,18 @@ namespace CoordinateSystems
             TurnZ(rotation);
         }
 
+        public static double MultiplyScalar(Vector vector1, Vector vector2)
+        {
+            return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
+        }
 
+        public static double GetAngle(Vector vector1, Vector vector2)
+        {
+            return Acos(MultiplyScalar(vector1, vector2) / vector1.Length / vector2.Length);
+        }
+        #endregion
 
+        #region operators
         public static Vector operator +(Vector vector1, Vector vector2)
         {
             Vector result = new Vector();
@@ -333,17 +351,6 @@ namespace CoordinateSystems
         {
             return !(vector1 == vector2);
         }
-
-
-
-        public static double MultiplyScalar(Vector vector1, Vector vector2)
-        {
-            return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
-        }
-
-        public static double GetAngle(Vector vector1, Vector vector2)
-        {
-            return Acos(MultiplyScalar(vector1, vector2) / vector1.Length / vector2.Length);
-        }
+        #endregion
     }
 }

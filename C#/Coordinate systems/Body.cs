@@ -9,12 +9,16 @@ namespace CoordinateSystems
 {
     // класс представляет тело
     // физику надо считать для этого класса
-    public abstract class Body : CoordinateSystem
+    public class Body : CoordinateSystem
     {
+        #region data
         // остальные тела
         protected static List<Body> bodies;
-        public Body(string ID, Vector vector, Basis basis, CoordinateSystem referenceSystem = null)
-            : base(vector, basis, referenceSystem)
+        #endregion
+
+        #region constructors
+        public Body(string ID, Vector vector, Basis basis, Velocity velocity, CoordinateSystem referenceSystem = null)
+            : base(vector, basis, velocity, referenceSystem)
         {
             this.ID = ID;
         }
@@ -24,13 +28,14 @@ namespace CoordinateSystems
             this.ID = "New body";
         }
 
-        public Body(Body body) : base(body.vector, body.basis, body.referenceSystem)
+        public Body(Body body) : base(body.vector, body.basis, body.velocity, body.referenceSystem)
         {
             this.ID = body.ID;
         }
 
         public Body(string ID, CoordinateSystem coordinateSystem) :
-            this(ID, coordinateSystem.Vector, coordinateSystem.Basis, coordinateSystem.ReferenceSystem)
+            this(ID, coordinateSystem.Vector, coordinateSystem.Basis,
+                coordinateSystem.Velocity, coordinateSystem.ReferenceSystem)
         {
 
         }
@@ -39,15 +44,21 @@ namespace CoordinateSystems
         {
             bodies = new List<Body>();
         }
+        #endregion
 
-
-
-        public static List<Body> Bodies { get { return bodies; } }
+        #region properties
+        public static List<Body> Bodies
+        {
+            get
+            {
+                return bodies;
+            }
+        }
 
         public string ID { get; set; }
+        #endregion
 
-
-
+        #region functions
         public virtual bool IsInside(Vector point)
         {
             return false;
@@ -59,5 +70,6 @@ namespace CoordinateSystems
         {
             return false;
         }
+        #endregion
     }
 }

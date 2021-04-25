@@ -14,6 +14,7 @@ namespace CoordinateSystems
     // HICS — гелиоцентрическая иннерциальная
     public static class Coordinates
     {
+        #region consts
         public const double EARTH_POLAR_COMPRESSION = 1 / 298.3;
         public const double DD2R = 1.745329251994329576923691e-2;
         public const double EARTH_MEAN_RADIUS = 6371000.0;
@@ -21,12 +22,9 @@ namespace CoordinateSystems
         public const double EARTH_MIN_RADIUS = EARTH_MAX_RADIUS * (1 - EARTH_POLAR_COMPRESSION);
         public const double DAU = 149597870.7e3;
         public const double DAS2R = 4.848136811095359935899141e-6;
+        #endregion
 
-        public static Vector ConvertTo(Matrix matrix, Vector vector, Vector point)
-        {
-            return vector + matrix * point;
-        }
-
+        #region matrices
         public static Matrix GetPrecessionMatrix(double julianDate)
         {
             double[,] matrix = new double[3, 3];
@@ -151,7 +149,9 @@ namespace CoordinateSystems
         {
             return GetICStoHICSmatrix(julianDate).Inversed;
         }
+        #endregion
 
+        #region vectors
         public static Vector GetGCStoTCSvector(double latitude, double longitude)
         {
             latitude *= DD2R;
@@ -182,6 +182,13 @@ namespace CoordinateSystems
         {
             return GetHICStoICSmatrix(julianDate) * -GetHICStoICSvector(julianDate);
         }
+        #endregion
+
+        #region converting functions
+        public static Vector ConvertTo(Matrix matrix, Vector vector, Vector point)
+        {
+            return vector + matrix * point;
+        }
 
         public static Vector ConvertICStoGCS(double julianDate, Vector point)
         {
@@ -202,6 +209,7 @@ namespace CoordinateSystems
         {
             return GetHICStoICSmatrix(julianDate) * (point - GetHICStoICSvector(julianDate));
         }
+        #endregion
     }
 
 }

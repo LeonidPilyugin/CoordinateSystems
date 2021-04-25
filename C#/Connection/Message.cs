@@ -10,11 +10,16 @@ namespace Connection
     public enum MessageType { M1, M2, M3, Got, Fail };
     public class Message
     {
+        #region consts
         public const double LightSpeed = 299792458.0;
+        #endregion
 
+        #region data
         protected MessageType data;
         protected LinkedList<Connector> path;
+        #endregion
 
+        #region constructors
         public Message(MessageType data, LinkedList<Connector> path)
         {
             this.data = data;
@@ -36,12 +41,45 @@ namespace Connection
             data = message.data;
             path = new LinkedList<Connector>(message.path);
         }
+        #endregion
 
-        public MessageType Data { get { return data; } }
-        public LinkedList<Connector> Path { get { return path; } }
-        public Connector Last { get { return Path.Last.Value; } }
-        public Connector First { get { return Path.First.Value; } }
+        #region properties
+        public MessageType Data
+        {
+            get
+            {
+                return data;
+            }
+        }
 
+        public LinkedList<Connector> Path
+        {
+            get
+            {
+                return path;
+            }
+        }
+
+        public Connector Last
+        {
+            get
+            {
+                return
+                    Path.Last.Value;
+            }
+        }
+
+        public Connector First
+        {
+            get
+            {
+                return
+                    Path.First.Value;
+            }
+        }
+        #endregion
+
+        #region functions
         static public int Time(Connector r1, Connector r2)
         {
             return (int)(Distance(r1, r2) / LightSpeed * 1000.0);
@@ -87,5 +125,6 @@ namespace Connection
 
             return result;
         }
+        #endregion
     }
 }

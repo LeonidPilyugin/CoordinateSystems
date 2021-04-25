@@ -1,6 +1,7 @@
 ﻿using System;
 using CoordinateSystems;
 using static System.Math;
+using SunSystem;
 
 namespace CelestialMechanics
 {
@@ -19,13 +20,13 @@ namespace CelestialMechanics
         public double ascendingNodeLongitude;
         public double periapsisArgument;
         public double trueAnomaly;
-        public Body centralBody;
+        public Planet centralBody;
         #endregion
 
         #region constructors
         public Keplerian(double julianDate, double eccentricity, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody)
+            double trueAnomaly, Planet centralBody)
         {
             this.julianDate = julianDate;
             this.eccentricity = eccentricity;
@@ -64,7 +65,7 @@ namespace CelestialMechanics
             }
         }
 
-        public Body CentralBody
+        public Planet CentralBody
         {
             get
             {
@@ -167,7 +168,7 @@ namespace CelestialMechanics
         #region constructors
         public NotParabolicKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody) : base(julianDate, eccentricity,
+            double trueAnomaly, Planet centralBody) : base(julianDate, eccentricity,
                 semimajorAxis * (1.0 - eccentricity), inclination, ascendingNodeLongitude,
                 periapsisArgument, trueAnomaly, centralBody)
         {
@@ -236,7 +237,7 @@ namespace CelestialMechanics
         #region constructors
         public ParabolicKeplerian(double julianDate, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody) : base(julianDate, 1.0,
+            double trueAnomaly, Planet centralBody) : base(julianDate, 1.0,
                 perifocusDistance, inclination, ascendingNodeLongitude,
                 periapsisArgument, trueAnomaly, centralBody)
         {
@@ -332,7 +333,7 @@ namespace CelestialMechanics
 
         public EllipticKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody) :
+            double trueAnomaly, Planet centralBody) :
             base(julianDate, eccentricity, semimajorAxis, inclination, ascendingNodeLongitude, periapsisArgument,
             trueAnomaly, centralBody)
         {
@@ -473,7 +474,7 @@ namespace CelestialMechanics
         #region constructors
         public HyperbolicKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
-            double trueAnomaly, Body centralBody) :
+            double trueAnomaly, Planet centralBody) :
             base(julianDate, eccentricity, semimajorAxis, inclination, ascendingNodeLongitude, periapsisArgument,
             trueAnomaly, centralBody)
         {

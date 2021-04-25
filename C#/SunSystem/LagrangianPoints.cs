@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using CoordinateSystems;
+using static SunSystem.Planets;
 
 namespace SunSystem
 {
     public static class LagrangianPoints
     {
-        // на месте Earth, Sun и Moon должны стоять объекты этих класов (если они не статические,
-        // иначе оставь, как есть)
-        // на месте Mass должна стоять масса. Это должно быть поле класса
-
+        #region auxiliary functions
         private static double GetEps0(double julianDate)
         {
             double eps0 = 0, deps = 0;
@@ -38,7 +36,9 @@ namespace SunSystem
         {
             get { return Moon.Mass / (Moon.Mass + Earth.Mass); }
         }
+        #endregion
 
+        #region Earth-Sun
         public static Vector SunEarth1
         {
             get { return Earth.Vector * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0)); }
@@ -56,16 +56,20 @@ namespace SunSystem
 
         public static Vector GetSunEarth4(double julianDate)
         {
-            return new Vector(Earth.Vector).TurnAxis(GetEarthRotationAxis(julianDate), Math.PI / 3.0);
+            var result = new Vector(Earth.Vector);
+            result.TurnAxis(GetEarthRotationAxis(julianDate), Math.PI / 3.0);
+            return result;
         }
 
         public static Vector GetSunEarth5(double julianDate)
         {
-            return new Vector(Earth.Vector).TurnAxis(GetEarthRotationAxis(julianDate), -Math.PI / 3.0);
+            var result = new Vector(Earth.Vector);
+            result.TurnAxis(GetEarthRotationAxis(julianDate), -Math.PI / 3.0);
+            return result;
         }
+        #endregion
 
-
-
+        #region Earth-Moon
         public static Vector EarthMoon1
         {
             get { return Moon.Vector * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0)); }
@@ -83,12 +87,17 @@ namespace SunSystem
 
         public static Vector GetEarthMoon4(double julianDate)
         {
-            return new Vector(Moon.Vector).TurnAxis(GetMoonRotationAxis(julianDate), Math.PI / 3.0);
+            var result = new Vector(Moon.Vector);
+            result.TurnAxis(GetMoonRotationAxis(julianDate), Math.PI / 3.0);
+            return result;
         }
 
         public static Vector GetEarthMoon5(double julianDate)
         {
-            return new Vector(Moon.Vector).TurnAxis(GetMoonRotationAxis(julianDate), -Math.PI / 3.0);
+            var result = new Vector(Moon.Vector);
+            result.TurnAxis(GetMoonRotationAxis(julianDate), -Math.PI / 3.0);
+            return result;
         }
+        #endregion
     }
 }

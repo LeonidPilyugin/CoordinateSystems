@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoordinateSystems;
+using SunSystem;
 
 namespace Connection
 {
     public class GroundStationConnector : Connector
     {
+        #region constructors
         public GroundStationConnector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier) :
             base(ID, coordinateSystem, maxDistance, carrier)
         {
@@ -24,7 +26,9 @@ namespace Connection
         {
 
         }
+        #endregion
 
+        #region functions
         protected override void Analize(Message message)
         {
             isAnalizing = true;
@@ -37,7 +41,7 @@ namespace Connection
             }*/
             isAnalizing = false;
         }
-
+        #endregion
 
 
         /*public void Send(MessageType messageType, MainSpacecraftConnector spacecraft)

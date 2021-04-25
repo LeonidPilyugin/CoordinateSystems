@@ -11,19 +11,26 @@ namespace CoordinateSystems
     {
         public struct Calendar
         {
+            #region data
             public int Year;
             public int Month;
             public int Day;
             public int Hour;
             public int Minute;
             public double Second;
+            #endregion
         }
 
-        private double julianDate;
+        #region consts
         public const double J2000 = 2451545.0;
+        public const double JDtoSecond = 86400.0;
+        #endregion
 
+        #region data
+        private double julianDate;
+        #endregion
 
-
+        #region constructors
         public Date()
         {
             julianDate = J2000;
@@ -50,9 +57,9 @@ namespace CoordinateSystems
         {
             this.julianDate = julianDate;
         }
+        #endregion
 
-
-        
+        #region properties
         public Calendar GrigorianCalendar
         {
             get { return GetGrigorianCalendar(julianDate); }
@@ -159,16 +166,17 @@ namespace CoordinateSystems
                 GrigorianCalendar = calendar;
             }
         }
+        #endregion
 
-
-
+        #region functions
         private double GetJulianDate(Calendar calendar)
         {
             int a = (14 - calendar.Month) / 12;
             int y = calendar.Year + 4800 - a;
             int m = calendar.Month + 12 * a - 3;
-            return calendar.Day + (int)((153 * m + 2) / 5) + 365 * y +
-                (int)(y / 4) - (int)(y / 100) + (int)(y / 400) - 32045;
+            double s = ((calendar.Hour * 60.0) + calendar.Minute * 60.0) + calendar.Second;
+            return calendar.Day + (int)((153.0 * m + 2.0) / 5) + 365 * y +
+                (int)(y / 4.0) - (int)(y / 100.0) + (int)(y / 400.0) - 32045 + s / JDtoSecond;
         }
 
         private Calendar GetGrigorianCalendar(double julianDate)
@@ -227,9 +235,9 @@ namespace CoordinateSystems
                 return false;
             return year % 4 == 0;
         }
+        #endregion
 
-
-
+        #region operators
         public static Date operator +(Date date1, Date date2)
         {
             return new Date(date1.julianDate + date2.julianDate);
@@ -263,5 +271,6 @@ namespace CoordinateSystems
         {
             return date - number;
         }
+        #endregion
     }
 }

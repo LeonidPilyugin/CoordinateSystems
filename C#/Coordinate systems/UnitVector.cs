@@ -9,6 +9,7 @@ namespace CoordinateSystems
     // класс представляет единичный вектор
     public class UnitVector : Vector
     {
+        #region constructors
         public UnitVector() : base()
         {
 
@@ -33,19 +34,67 @@ namespace CoordinateSystems
         {
 
         }
+        #endregion
 
+        #region properties
+        new public double Length
+        {
+            get
+            {
+                return 1.0;
+            }
+        }
 
+        new public double X
+        {
+            get
+            {
+                return x;
+            }
+        }
 
-        new public double Length { get { return 1.0; } }
+        new public double Y
+        {
+            get
+            {
+                return y;
+            }
+        }
 
-        new public double X { get { return x; } }
+        new public double Z
+        {
+            get
+            {
+                return z;
+            }
+        }
 
-        new public double Y { get { return y; } }
+        public static UnitVector UnitVectorX
+        {
+            get
+            {
+                return new UnitVector(1.0, 0.0, 0.0);
+            }
+        }
 
-        new public double Z { get { return z; } }
+        public static UnitVector UnitVectorY
+        {
+            get
+            {
+                return new UnitVector(0.0, 1.0, 0.0);
+            }
+        }
 
+        public static UnitVector UnitVectorZ
+        {
+            get
+            {
+                return new UnitVector(0.0, 0.0, 1.0);
+            }
+        }
+        #endregion
 
-
+        #region operators
         public static UnitVector operator +(UnitVector unitVector1, UnitVector unitVector2)
         {
             var result = new UnitVector();
@@ -114,22 +163,6 @@ namespace CoordinateSystems
                 }
             }
         }
-
-
-
-        public static UnitVector UnitVectorX
-        {
-            get { return new UnitVector(1.0, 0.0, 0.0); }
-        }
-
-        public static UnitVector UnitVectorY
-        {
-            get { return new UnitVector(0.0, 1.0, 0.0); }
-        }
-
-        public static UnitVector UnitVectorZ
-        {
-            get { return new UnitVector(0.0, 0.0, 1.0); }
-        }
+        #endregion
     }
 }
