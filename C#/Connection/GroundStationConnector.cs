@@ -11,8 +11,8 @@ namespace Connection
     public class GroundStationConnector : Connector
     {
         #region constructors
-        public GroundStationConnector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier) :
-            base(ID, coordinateSystem, maxDistance, carrier)
+        public GroundStationConnector(string ID, CoordinateSystem coordinateSystem, View view, Body carrier) :
+            base(ID, coordinateSystem, view, carrier)
         {
 
         }

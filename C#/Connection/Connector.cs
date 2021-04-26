@@ -29,16 +29,17 @@ namespace Connection
         //protected static List<Connector> connectors;
 
         //public bool IsWorking { get; set; }
-        public double MaxDistance { get; set; }
+
+        protected View view;
         public static List<Connector> WorkingConnectors { get; set; }
         #endregion
 
         #region constructors
-        public Connector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier)
+        public Connector(string ID, CoordinateSystem coordinateSystem, View view, Body carrier)
             : base(ID, coordinateSystem)
         {
             //this.IsWorking = isWorking;
-            this.MaxDistance = maxDistance;
+            this.view = view;
             //this.WorkingConnectors = (workingConnectors == null) ? null : new List<Connector>(workingConnectors);
             //analisysQueue = new Queue<Message>();
             //sendingQueue = new Queue<Message>();
@@ -47,14 +48,14 @@ namespace Connection
             this.carrier = carrier;
         }
 
-        public Connector(Connector connector) : this(connector.ID, connector, connector.MaxDistance, connector.carrier)
+        public Connector(Connector connector) : this(connector.ID, connector, connector.view, connector.carrier)
         {
 
         }
 
         public Connector() : base()
         {
-            MaxDistance = double.MaxValue;
+            view = new ConicView(PI / 6.0, double.MaxValue);
             isAnalizing = false;
             carrier = null;
         }
@@ -62,6 +63,25 @@ namespace Connection
         static Connector()
         {
             WorkingConnectors = new List<Connector>();
+        }
+        #endregion
+
+        #region properties
+        public View View
+        {
+            get
+            {
+                return view;
+            }
+
+            set
+            {
+                if(value == null)
+                {
+                    throw new Exception("View mustn't be null");
+                }
+                view = value;
+            }
         }
         #endregion
 
@@ -154,7 +174,7 @@ namespace Connection
 
         protected virtual bool CanAccess(Body receiver)
         {
-            return (!Message.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < MaxDistance);
+            return (!Message.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < view.Length);
         }
         #endregion
 

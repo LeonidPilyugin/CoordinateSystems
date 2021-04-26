@@ -10,8 +10,8 @@ namespace Connection
     public class MainSpacecraftConnector : Connector
     {
         #region constructors
-        public MainSpacecraftConnector(string ID, CoordinateSystem coordinateSystem, double maxDistance, Body carrier) :
-            base(ID, coordinateSystem, maxDistance, carrier)
+        public MainSpacecraftConnector(string ID, CoordinateSystem coordinateSystem, View view, Body carrier) :
+            base(ID, coordinateSystem, view, carrier)
         {
 
         }
@@ -73,7 +73,7 @@ namespace Connection
 
         protected override bool CanAccess(Body receiver)
         {
-            return base.CanAccess(receiver) || (!Message.IsCrossing(carrier, receiver) && receiver.ConvertTo(this).Length < MaxDistance);
+            return base.CanAccess(receiver) || (!Message.IsCrossing(carrier, receiver) && receiver.ConvertTo(this).Length < view.Length);
         }
 
         protected override void TurnTo(Body point)
