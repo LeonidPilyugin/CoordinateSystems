@@ -1,21 +1,91 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CoordinateSystems;
+using Date;
+using IAUSOFA;
+
+// Файл содержии класс Planet.
 
 namespace SunSystem
 {
+    /// <summary>
+    /// Класс Planet описывает крупное небесное тело, имеющее форму эллипсоида вращения. Наследник класса <see cref="Body"/>.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// Типы:<br/>
+    /// 1) <see cref="GetParams"/><br/>
+    /// <br/>
+    /// Поля:<br/>
+    /// 1) <see cref="CoordinateSystem.vector"/><br/>
+    /// 2) <see cref="CoordinateSystem.velocity"/><br/>
+    /// 3) <see cref="CoordinateSystem.referenceSystem"/><br/>
+    /// 4) <see cref="CoordinateSystem.basis"/><br/>
+    /// 5) <see cref="CoordinateSystem.vector"/><br/>
+    /// 6) <see cref="Body.id"/><br/>
+    /// 7) <see cref="Body.bodies"/><br/>
+    /// 8) <see cref="mass"/><br/>
+    /// 9) <see cref="maxRadius"/><br/>
+    /// 10) <see cref="minRadius"/><br/>
+    /// 11) <see cref="GetParamsMethod"/><br/>
+    /// <br/>
+    /// Конструкторы:<br/>
+    /// 1) <see cref="Planet(double, double, double, string, Vector, Basis, Vector, CoordinateSystem)"/><br/>
+    /// <br/>
+    /// Свойства:<br/>
+    /// 1) <see cref="Mass"/><br/>
+    /// <br/>
+    /// Методы:<br/>
+    /// 1) <see cref="IsInside(Vector)"/><br/>
+    /// 1) <see cref="IsCrossing(Vector, Vector)"/><br/>
+    /// 1) <see cref="GetDirectionVector(Vector, Vector)"/><br/>
+    /// 1) <see cref="GetProjection(Vector, Vector, Vector)"/><br/>
+    /// 1) <see cref="UpdateParams(double)"/><br/>
+    /// </remarks>
     public class Planet : Body
     {
+        /// <summary>
+        /// Делегат описывает метод для получения положения и скорости тела.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Положение и скорость тела.
+        /// </returns>
+        public delegate (Vector Vector, Vector Velocity, Basis Basis) GetParams(double julianDate);
+
         #region data
+        /// <summary>
+        /// Масса. Должна быть положительна.
+        /// </summary>
         protected double mass;
+
+        /// <summary>
+        /// Полярный радиус. Должен быть положителен.
+        /// </summary>
         protected double minRadius;
+
+        /// <summary>
+        /// Экваториальный радиус. Должен быть положителен.
+        /// </summary>
         protected double maxRadius;
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Конструктор присваивает полям значения, переданные в аргументах.
+        /// </summary>
+        /// 
+        /// <param name="mass"> Масса. Должна быть положительна.</param>
+        /// <param name="minRadius"> Полярный радиус. Должен быть положителен.</param>
+        /// <param name="maxRadius"> Экваториальный радиус. Должен быть положителен.</param>
+        /// <param name="id"> Идентификатор. Не должен быть null.</param>
+        /// <param name="vector"> Вектор в базовой системе координат, направленный в барицентр планеты. Не должен быть null.</param>
+        /// <param name="basis"> Базис относительно базовой системы координат. Не должен быть null.</param>
+        /// <param name="velocity"> Скорость относительно базовой системы координат. Не должна быть null.</param>
+        /// <param name="referenceSystem"> Базовая система координат.</param>
         public Planet(double mass, double minRadius, double maxRadius,
-            string id, Vector vector, Basis basis, Velocity velocity, CoordinateSystem referenceSystem) :
+            string id, Vector vector, Basis basis, Vector velocity, CoordinateSystem referenceSystem) :
             base(id, vector, basis, velocity, referenceSystem)
         {
             this.mass = mass;
@@ -24,18 +94,39 @@ namespace SunSystem
         }
         #endregion
 
-        #region methods
-        public delegate (Vector Vector, Velocity Velocity, Basis basis) GetParams(double julianDate);
+        #region properties
+        /// <summary>
+        /// Масса.
+        /// </summary>
+        public double Mass
+        {
+            get
+            {
+                return mass;
+            }
+        }
+        #endregion
 
+        #region methods
+        /// <summary>
+        /// Функция, получающая положение и скорость тела.
+        /// </summary>
         public GetParams GetParamsMethod;
 
+        /// <inheritdoc/>
         public override bool IsInside(Vector point)
         {
+            if(point == null)
+            {
+                throw new ArgumentNullException("point mustn,t be null");
+            }
+
             return point.X * point.X / maxRadius / maxRadius +
             point.Y * point.Y / maxRadius / maxRadius +
             point.Z * point.Z / minRadius / minRadius < 1.0;
         }
 
+        /// <inheritdoc/>
         public override bool IsCrossing(Vector vector1, Vector vector2)
         {
             Vector projection = GetProjection(vector1, vector2, new Vector(0.0, 0.0, 0.0));
@@ -54,13 +145,40 @@ namespace SunSystem
                 (projection.Z < vector2.Z && projection.Z > vector1.Z);
         }
 
-        protected Vector GetDirectionVector(Vector point1, Vector point2)
+        /// <summary>
+        /// Единичный вектор, сонаправленный с вектором point2 - point1.
+        /// </summary>
+        /// 
+        /// <param name="point1"> Конец отрезка. Не должен быть null.</param>
+        /// <param name="point2"> Конец отрезка. Не должен быть null.</param>
+        /// 
+        /// <returns>
+        /// Единичный вектор, сонаправленный с вектором point2 - point1.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если хотя бы один параметр равен null.
+        /// </exception>
+        protected UnitVector GetDirectionVector(Vector point1, Vector point2)
         {
-            Vector result = point2 - point1;
-            result /= result.Length;
-            return result;
+            return new UnitVector(point2 - point1);
         }
 
+        /// <summary>
+        /// Получает проекцию точки на прямую.
+        /// </summary>
+        /// 
+        /// <param name="vector1"> Точка на прямой. Не должна быть null.</param>
+        /// <param name="vector2"> Точка на прямой. Не должна быть null.</param>
+        /// <param name="point"> Проецируемая точка. Не должна быть null.</param>
+        /// 
+        /// <returns>
+        /// Проекция точки point на прямую vector1 vector2.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если хотя бы один параметр равен null.
+        /// </exception>
         protected Vector GetProjection(Vector vector1, Vector vector2, Vector point)
         {
             Vector direction = GetDirectionVector(vector1, vector2);
@@ -68,294 +186,14 @@ namespace SunSystem
                 / direction.Length / direction.Length;
         }
 
+        /// <summary>
+        /// Обновляет поля vector, velocity и basis значениями для указанной юлианской даты.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
         public void UpdateParams(double julianDate)
         {
             (vector, velocity, basis) = GetParamsMethod(julianDate);
-        }
-        #endregion
-
-        #region properties
-        public double Mass
-        {
-            get
-            {
-                return mass;
-            }
-        }
-        #endregion
-    }
-
-    public static class Planets
-    {
-        #region data
-        private static Planet sun;
-        private static Planet mercury;
-        private static Planet venus;
-        private static Planet earth;
-        private static Planet fixedEarth;
-        private static Planet moon;
-        private static Planet mars;
-        private static Planet jupiter;
-        private static Planet saturn;
-        private static Planet uranus;
-        private static Planet neptune;
-        #endregion
-
-        #region constructor
-        static Planets()
-        {
-            sun = new Planet(1.9885e30, 6.9551e8, 6.955e8, "Sun",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), null);
-            sun.GetParamsMethod += SunParams;
-
-            mercury = new Planet(3.33022e23, 2.4397e6, 2.4397e6, "Mercury",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            mercury.GetParamsMethod += MercuryParams;
-
-            venus = new Planet(4.8675e24, 6.0518e6, 6.0518e6, "Venus",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            venus.GetParamsMethod += VenusParams;
-
-            earth = new Planet(5.9722e24, 6.3781e6, 6.3568e6, "Earth",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            earth.GetParamsMethod += EarthParams;
-
-            fixedEarth = new Planet(0.0, 6.3781e6, 6.3568e6, "Fixed Earth",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), earth);
-            fixedEarth.GetParamsMethod += FixedEarthParams;
-
-            moon = new Planet(7.342e22, 1.73814e6, 1.7371e6, "Moon",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), earth);
-            moon.GetParamsMethod += MoonParams;
-
-            mars = new Planet(6.4171e23, 3.3962e6, 3.3762e6, "Mars",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            mars.GetParamsMethod += MarsParams;
-
-            jupiter = new Planet(1.8986e27, 71.492e6, 66.854e6, "Jupiter",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            jupiter.GetParamsMethod += JupiterParams;
-
-            saturn = new Planet(5.6846e26, 60.268e6, 54.364e6, "Saturn", 
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            saturn.GetParamsMethod += SaturnParams;
-
-            uranus = new Planet(8.6813e25, 25.559e6, 24.973e6, "Uranus",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            uranus.GetParamsMethod += UranusParams;
-
-            neptune = new Planet(1.0243e26, 24.764e6, 24.341e6, "Neptune",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Velocity(0.0, 0.0, 0.0), sun);
-            neptune.GetParamsMethod += NeptuneParams;
-        }
-        #endregion
-
-        #region params functions
-        private static (Vector Vector, Velocity Velocity, Basis Basis) SunParams(double julianDate)
-        {
-            return (new Vector(0.0, 0.0, 0.0), new Velocity(0.0, 0.0, 0.0), new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) MercuryParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 1, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) VenusParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 2, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) EarthParams(double julianDate)
-        {
-            var pvh = new double[2, 3];
-            var pvb = new double[2, 3];
-            IAUSOFA.iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
-            var vector = new Vector(pvh[0, 0], pvh[0, 1], pvh[0, 2]);
-            var velocity = new Velocity(pvh[1, 0], pvh[1, 1], pvh[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) FixedEarthParams(double julianDate)
-        {
-            var basis = new Basis();
-            var matrix = Coordinates.GetICStoGCSmatrix(julianDate);
-            basis.I = matrix * basis.I;
-            basis.J = matrix * basis.J;
-            basis.K = matrix * basis.K;
-            return (new Vector(0.0, 0.0, 0.0), new Velocity(0.0, 0.0, 0.0), basis);
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) MoonParams(double julianDate)
-        {
-            (Vector EarthVector, Velocity EarthVelocity, Basis basis) = EarthParams(julianDate);
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 3, pv);
-            Vector EMBVector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]) * Coordinates.DAU;
-            Velocity EMBVelocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]) * Coordinates.DAU / Date.JDtoSecond;
-
-            return (new Vector((EMBVector * (earth.Mass + moon.Mass) - EarthVector * earth.Mass) / moon.Mass),
-                new Velocity((EMBVelocity * (earth.Mass + moon.Mass) - EarthVelocity * earth.Mass) / moon.Mass),
-                basis);
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) MarsParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 4, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) JupiterParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 5, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) SaturnParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 6, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) UranusParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 7, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-
-        private static (Vector Vector, Velocity Velocity, Basis basis) NeptuneParams(double julianDate)
-        {
-            var pv = new double[2, 3];
-            IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 8, pv);
-            var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
-            var velocity = new Velocity(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * Coordinates.DAU, velocity * Coordinates.DAU / Date.JDtoSecond, new Basis());
-        }
-        #endregion
-
-        #region properties
-        public static Planet Sun
-        {
-            get
-            {
-                return sun;
-            }
-        }
-
-        public static Planet Mercury
-        {
-            get
-            {
-                return mercury;
-            }
-        }
-
-        public static Planet Venus
-        {
-            get
-            {
-                return venus;
-            }
-        }
-
-        public static Planet Earth
-        {
-            get
-            {
-                return earth;
-            }
-        }
-
-        public static Planet FixedEarth
-        {
-            get
-            {
-                return fixedEarth;
-            }
-        }
-
-        public static Planet Moon
-        {
-            get
-            {
-                return moon;
-            }
-        }
-
-        public static Planet Mars
-        {
-            get
-            {
-                return mars;
-            }
-        }
-
-        public static Planet Jupiter
-        {
-            get
-            {
-                return jupiter;
-            }
-        }
-
-        public static Planet Saturn
-        {
-            get
-            {
-                return saturn;
-            }
-        }
-
-        public static Planet Uranus
-        {
-            get
-            {
-                return uranus;
-            }
-        }
-
-        public static Planet Neptune
-        {
-            get
-            {
-                return neptune;
-            }
-        }
-        #endregion
-
-        #region functions
-        public static void UpdateParams(double julianDate)
-        {
-            sun.UpdateParams(julianDate);
-            mercury.UpdateParams(julianDate);
-            venus.UpdateParams(julianDate);
-            earth.UpdateParams(julianDate);
-            fixedEarth.UpdateParams(julianDate);
-            mars.UpdateParams(julianDate);
-            jupiter.UpdateParams(julianDate);
-            saturn.UpdateParams(julianDate);
-            uranus.UpdateParams(julianDate);
-            neptune.UpdateParams(julianDate);
         }
         #endregion
     }

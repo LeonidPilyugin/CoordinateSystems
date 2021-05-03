@@ -24,6 +24,7 @@ namespace Date
     /// 2) <see cref="Date(Calendar)"/><br/>
     /// 3) <see cref="Date(int, int, int, int, int, double)"/><br/>
     /// 4) <see cref="Date(double)"/><br/>
+    /// 5) <see cref="Date(Date)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="GrigorianCalendar"/><br/>
@@ -188,6 +189,16 @@ namespace Date
         public Date(double julianDate)
         {
             this.julianDate = julianDate;
+        }
+
+        /// <summary>
+        /// Конструктор копирования. Копируемая дата не должна быть null.
+        /// </summary>
+        /// 
+        /// <param name="date"> Копируемая дата не должна быть null.</param>
+        public Date(Date date)
+        {
+            this.julianDate = date.julianDate;
         }
         #endregion
 

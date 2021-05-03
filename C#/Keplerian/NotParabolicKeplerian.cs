@@ -1,5 +1,6 @@
 ﻿using System;
 using CoordinateSystems;
+using IAUSOFA;
 using SunSystem;
 using static System.Math;
 
@@ -114,7 +115,7 @@ namespace Keplerian
 
         #region properties
         /// <summary>
-        /// Юольшая полуось.<br/>
+        /// Большая полуось.<br/>
         /// Измеряется в метрах.<br/>
         /// Для гиперболы отрицательна, для эллипса положительна.
         /// </summary>
@@ -168,9 +169,7 @@ namespace Keplerian
         /// Измеряется в радианах.<br/>
         /// </summary>
         /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия в радианах.
-        /// </param>
+        /// <param name="trueAnomaly"> Истинная аномалия в радианах.</param>
         /// 
         /// <returns>
         /// Эксцентрическая аномалия, соответствующая переданной истинной аномалии.<br/>
@@ -183,9 +182,7 @@ namespace Keplerian
         /// Измеряется в радианах.<br/>
         /// </summary>
         /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия в радианах.
-        /// </param>
+        /// <param name="trueAnomaly"> Истинная аномалия в радианах.</param>
         /// 
         /// <returns>
         /// Средняя аномалия, соответствующая переданной истинной аномалии.<br/>
@@ -198,30 +195,15 @@ namespace Keplerian
         /// Измеряется в радианах.<br/>
         /// </summary>
         /// 
-        /// <param name="meanAnomaly">
-        /// Средняя аномалия в радианах.
-        /// </param>
+        /// <param name="meanAnomaly"> Средняя аномалия в радианах.</param>
         /// 
         /// <returns>
-        /// Истинная аномалия, соответствующая переданной истинной аномалии.<br/>
+        /// Истинная аномалия, соответствующая переданной средней аномалии.<br/>
         /// Измеряется в радианах.
         /// </returns>
         protected abstract double GetTrueAnomaly2(double meanAnomaly);
 
-        /// <summary>
-        /// Возвращает координаты в иннерциальной системе отсчета центра гравитации в данный Юлианский день.<br/>
-        /// См. также: <see cref="Keplerian.GetVector(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
-        /// 
-        /// <returns>
-        /// Вектор, направленный от центра гравитации к телу в
-        /// иннерциальной системе координат центра гравитации.<br/>
-        /// Координаты вектора измеряются в метрах.
-        /// </returns>
+        /// <inheritdoc/>
         public override Vector GetVector(double julianDate)
         {
             // Получение вектора
@@ -238,19 +220,7 @@ namespace Keplerian
             return result;
         }
 
-        /// <summary>
-        /// Возвращает скорость в иннерциальной системе отсчета центра гравитации в данную Юлианскую дату.<br/>
-        /// См. также: <see cref="Keplerian.GetVelocity(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
-        /// 
-        /// <returns>
-        /// Модуль скорости относительно центра гравитации.<br/>
-        /// Измеряется в метрах в секунду.
-        /// </returns>
+        /// <inheritdoc/>
         public override double GetVelocity(double julianDate)
         {
             return Sqrt(G * CentralBody.Mass * (2.0 / GetVector(julianDate).Length - 1.0 / SemimajorAxis));

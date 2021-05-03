@@ -1,45 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Math;
+
+// Файл содержит класс Body.
 
 namespace CoordinateSystems
 {
-    // класс представляет тело
-    // физику надо считать для этого класса
+    /// <summary>
+    /// Класс Body описывает тело. Наследник класса <see cref="CoordinateSystem"/>.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// Поля:<br/>
+    /// 1) <see cref="bodies"/><br/>
+    /// 2) <see cref="id"/><br/>
+    /// 3) <see cref="CoordinateSystem.vector"/><br/>
+    /// 4) <see cref="CoordinateSystem.velocity"/><br/>
+    /// 5) <see cref="CoordinateSystem.basis"/><br/>
+    /// 6) <see cref="CoordinateSystem.referenceSystem"/><br/>
+    /// <br/>
+    /// Конструкторы:<br/>
+    /// 1) <see cref="Body()"/><br/>
+    /// 2) <see cref="Body(Body)"/><br/>
+    /// 3) <see cref="Body(string, CoordinateSystem)"/><br/>
+    /// 4) <see cref="Body(string, Vector, Basis, Vector, CoordinateSystem)"/><br/>
+    /// <br/>
+    /// Свойства:<br/>
+    /// 1) <see cref="Bodies"/><br/>
+    /// 1) <see cref="ID"/><br/>
+    /// </remarks>
     public class Body : CoordinateSystem
     {
         #region data
-        // остальные тела
+        /// <summary>
+        /// Остальные тела.
+        /// </summary>
         protected static List<Body> bodies;
+
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        protected string id;
         #endregion
 
         #region constructors
-        public Body(string ID, Vector vector, Basis basis, Velocity velocity, CoordinateSystem referenceSystem = null)
+        /// <summary>
+        /// Конструктор. Задает поля значениями, переданными в аргументах. Они не должны быть null.
+        /// </summary>
+        /// 
+        /// <param name="ID"> Идентификатор.</param>
+        /// <param name="vector"> Вектор относительно базовой системы координат.</param>
+        /// <param name="basis"> Базис относительно базовой системы координат.</param>
+        /// <param name="velocity"> Скорость относительно базовой системы координат.</param>
+        /// <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+        public Body(string ID, Vector vector, Basis basis, Vector velocity, CoordinateSystem referenceSystem = null)
             : base(vector, basis, velocity, referenceSystem)
         {
-            this.ID = ID;
+            id = ID;
         }
 
+        /// <summary>
+        /// Задает парметры конструкторами по умолчанию, referenceSystem = null, id = "New Body".
+        /// </summary>
         public Body() : base()
         {
-            this.ID = "New body";
+            id = "New body";
         }
 
+        /// <summary>
+        /// Конструктор копирования.
+        /// </summary>
+        /// 
+        /// <param name="body"> Копируемое тело.</param>
         public Body(Body body) : base(body.vector, body.basis, body.velocity, body.referenceSystem)
         {
-            this.ID = body.ID;
+            id = body.id;
         }
 
+        /// <summary>
+        /// Конструктор коприует параметры системы координат и ID.
+        /// </summary>
+        /// 
+        /// <param name="ID"> Идентификатор. Не должен быть null.</param>
+        /// <param name="coordinateSystem"> Система координат. Не должна быть null.</param>
         public Body(string ID, CoordinateSystem coordinateSystem) :
             this(ID, coordinateSystem.Vector, coordinateSystem.Basis,
-                coordinateSystem.Velocity, coordinateSystem.ReferenceSystem)
+                coordinateSystem.Vector, coordinateSystem.ReferenceSystem)
         {
 
         }
 
+        /// <summary>
+        /// Статический конструктор создает список bodies.
+        /// </summary>
         static Body()
         {
             bodies = new List<Body>();
@@ -47,6 +99,9 @@ namespace CoordinateSystems
         #endregion
 
         #region properties
+        /// <summary>
+        /// Остальные тела.
+        /// </summary>
         public static List<Body> Bodies
         {
             get
@@ -55,17 +110,67 @@ namespace CoordinateSystems
             }
         }
 
-        public string ID { get; set; }
+        /// <summary>
+        /// Идентификатор. Не должен быть null.
+        /// </summary>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public string ID
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                if(value == null)
+                {
+                    throw new ArgumentNullException("ID mustn't be null");
+                }
+
+                id = value;
+            }
+        }
         #endregion
 
         #region functions
+        /// <summary>
+        /// Проверяет, находится ли точка внутри тела.
+        /// </summary>
+        /// 
+        /// <param name="point"> Точка в системе координат этого тела.</param>
+        /// 
+        /// <returns>
+        /// true, если точка внутри тела.
+        /// false, если снаружи.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если точка равна null.
+        /// </exception>
         public virtual bool IsInside(Vector point)
         {
+            if(point == null)
+            {
+                throw new ArgumentNullException("point mustn't be null");
+            }
+
             return false;
         }
 
-        // возвращает true, если отрезок, соединяющий vector1 и vector2,
-        // заданные в СК этого тела пересекает это тело
+        /// <summary>
+        /// Проверяет, пересекает ли отрезок с переданными концами это тело.
+        /// </summary>
+        /// 
+        /// <param name="vector1"> Конец отрезка, заданный в системе координат этого тела.</param>
+        /// <param name="vector2"> Конец отрезка, заданный в системе координат этого тела.</param>
+        /// 
+        /// <returns>
+        /// true, если пересекает, false — если нет.
+        /// </returns>
         public virtual bool IsCrossing(Vector vector1, Vector vector2)
         {
             return false;

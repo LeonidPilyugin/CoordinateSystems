@@ -1,5 +1,6 @@
 ﻿using System;
 using CoordinateSystems;
+using IAUSOFA;
 using SunSystem;
 using static System.Math;
 
@@ -353,12 +354,10 @@ namespace Keplerian
 
         #region methods
         /// <summary>
-        /// Возвращает истинную аномалию в данную Юлианскую дату.
+        /// Возвращает истинную аномалию в данную юлианскую дату.
         /// </summary>
         /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
+        /// <param name="julianDate"> Юлианская дата.</param>
         /// 
         /// <returns>
         /// Истинная аномалия в указанную Юлианскую дату.<br/>
@@ -367,12 +366,10 @@ namespace Keplerian
         public abstract double GetTrueAnomaly(double julianDate);
 
         /// <summary>
-        /// Возвращает Юлианскую дату, в который истинная аномалия равна данной.
+        /// Возвращает юлианскую дату, в который истинная аномалия равна данной.
         /// </summary>
         /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия
-        /// </param>
+        /// <param name="trueAnomaly"> Истинная аномалия.</param>
         /// 
         /// <returns>
         /// Юлианская дата, в которую достигается указанная истинная аномалия.
@@ -387,9 +384,7 @@ namespace Keplerian
         /// Возвращает координаты в иннерциальной системе отсчета центра гравитации в данный Юлианский день.
         /// </summary>
         /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
+        /// <param name="julianDate"> Юлианская дата.</param>
         /// 
         /// <returns>
         /// Вектор, направленный от центра гравитации к телу в
@@ -402,9 +397,7 @@ namespace Keplerian
         /// Возвращает скорость в иннерциальной системе отсчета центра гравитации в данную Юлианскую дату.
         /// </summary>
         /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
+        /// <param name="julianDate"> Юлианская дата.</param>
         /// 
         /// <returns>
         /// Модуль скорости относительно центра гравитации.<br/>
@@ -428,9 +421,7 @@ namespace Keplerian
         /// Преобразует в строку.
         /// </summary>
         /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
+        /// <param name="julianDate"> Юлианская дата.</param>
         /// 
         /// <returns>
         /// Строка: "[дата] [координаты] [скорость]" с данными, соответствующими указанной Юлианской дате.

@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CoordinateSystems;
+using IAUSOFA;
+using Date;
 using static SunSystem.Planets;
 
 namespace SunSystem
 {
+    using IAUSOFA;
+    using Date;
     public static class LagrangianPoints
     {
         #region auxiliary functions
@@ -14,7 +16,7 @@ namespace SunSystem
             double eps0 = 0, deps = 0;
             IAUSOFA.iauNut06a(Date.J2000, julianDate - Date.J2000, ref eps0, ref deps);
             // from iauP06e
-            return 84381.406 * Coordinates.DAS2R + deps;
+            return 84381.406 * IAUSOFA.DAS2R + deps;
         }
 
         private static Vector GetEarthRotationAxis(double julianDate)

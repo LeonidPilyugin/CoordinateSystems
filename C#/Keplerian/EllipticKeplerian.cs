@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SunSystem;
 using CoordinateSystems;
+using IAUSOFA;
 using static System.Math;
 
 // Файл содержит класс EllipticKeplerian
 
 namespace Keplerian
 {
+    using Date;
+
     /// <summary>
     /// Абстрактный класс EllipticKeplerian описывает
     /// положение и движение тела по эллиптической орбите
@@ -114,10 +115,7 @@ namespace Keplerian
         #endregion
 
         #region properties
-        /// <summary>
-        /// Среднее движение.<br/>
-        /// Измеряется в радинах в секунду.
-        /// </summary>
+        /// <inheritdoc/>
         protected override double MeanAngularVelocity
         {
             get
@@ -194,20 +192,7 @@ namespace Keplerian
         #endregion
 
         #region functions
-        /// <summary>
-        /// Возвращает значение эксцентрической аномалии, соответствующее переданной истинной аномалии.<br/>
-        /// Измеряется в радианах.<br/>
-        /// См. также: <see cref="NotParabolicKeplerian.GetEccentricAnomaly(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия в радианах.
-        /// </param>
-        /// 
-        /// <returns>
-        /// Эксцентрическая аномалия, соответствующая переданной истинной аномалии.<br/>
-        /// Измеряется в радианах.
-        /// </returns>
+        /// <inheritdoc/>
         protected override double GetEccentricAnomaly(double trueAnomaly)
         {
             // Без этой проверки значение считается некорректно
@@ -227,40 +212,14 @@ namespace Keplerian
             return eccentricAnomaly;
         }
 
-        /// <summary>
-        /// Возвращает значение средней аномалии, соответствующее переданной истинной аномалии.<br/>
-        /// Измеряется в радианах.<br/>
-        /// См. также: <see cref="NotParabolicKeplerian.GetMeanAnomaly(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия в радианах.
-        /// </param>
-        /// 
-        /// <returns>
-        /// Средняя аномалия, соответствующая переданной истинной аномалии.<br/>
-        /// Измеряется в радианах.
-        /// </returns>
+        /// <inheritdoc/>
         protected override double GetMeanAnomaly(double trueAnomaly)
         {
             double eccentricAnomaly = GetEccentricAnomaly(trueAnomaly);
             return eccentricAnomaly - eccentricity * Sin(eccentricAnomaly);
         }
 
-        /// <summary>
-        /// Возвращает значение истинной аномалии, соответствующее переданной средней аномалии.<br/>
-        /// Измеряется в радианах.<br/>
-        /// См. также: <see cref="NotParabolicKeplerian.GetTrueAnomaly2(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="meanAnomaly">
-        /// Средняя аномалия в радианах.
-        /// </param>
-        /// 
-        /// <returns>
-        /// Истинная аномалия, соответствующая переданной истинной аномалии.<br/>
-        /// Измеряется в радианах.
-        /// </returns>
+        /// <inheritdoc/>
         protected override double GetTrueAnomaly2(double meanAnomaly)
         {
             // решение уравнения Кеплера методом итераций
@@ -281,19 +240,7 @@ namespace Keplerian
             return trueAnomaly;
         }
 
-        /// <summary>
-        /// Возвращает истинную аномалию в данную Юлианскую дату.<br/>
-        /// См. также: <see cref="Keplerian.GetTrueAnomaly(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
-        /// 
-        /// <returns>
-        /// Истинная аномалия в указанную Юлианскую дату.<br/>
-        /// Измеряется в радианах.
-        /// </returns>
+        /// <inheritdoc/>
         public override double GetTrueAnomaly(double julianDate)
         {
             double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) +
@@ -301,22 +248,7 @@ namespace Keplerian
             return GetTrueAnomaly2(meanAnomaly);
         }
 
-        /// <summary>
-        /// Возвращает Юлианскую дату, в который истинная аномалия равна данной.<br/>
-        /// См. также <see cref="Keplerian.GetJulianDate(double)"/>
-        /// </summary>
-        /// 
-        /// <param name="trueAnomaly">
-        /// Истинная аномалия
-        /// </param>
-        /// 
-        /// <returns>
-        /// Юлианская дата, в которую достигается указанная истинная аномалия.
-        /// </returns>
-        /// 
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Вызывается, если такая истинная аномалия не достигается никогда.
-        /// </exception>
+        /// <inheritdoc/>
         public override double GetJulianDate(double trueAnomaly)
         {
             if (trueAnomaly < -PI || trueAnomaly > PI)

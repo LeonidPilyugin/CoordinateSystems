@@ -1,47 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Math;
+using static IAUSOFA.IAUSOFA;
+
+// Фвйл содержит статический класс Coordinates.
 
 namespace CoordinateSystems
 {
-    // набор методов для преобразования координат
-    // ICS — иннерциальная система координат (вторая экваториальная)
-    // GCS — неиннерциальная система координат (первая экваториальная)
-    // TCS — топоцентрическая система координат (горизонтальная)
-    // HICS — гелиоцентрическая иннерциальная
+    using Date;
+
+    /// <summary>
+    /// Класс содержит методы и константы для перехода между системами координат.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// Сокращения систем координат:<br/>
+    /// ICS — иннерциальная система координат (вторая экваториальная)<br/>
+    /// GCS — неиннерциальная система координат (первая экваториальная)<br/>
+    /// TCS — топоцентрическая система координат (горизонтальная)<br/>
+    /// HICS — гелиоцентрическая иннерциальная (вторая экваториальная с центром в Солнце)<br/>
+    /// 
+    /// Константы:<br/>
+    /// 1) <see cref="EARTH_POLAR_COMPRESSION"/><br/>
+    /// 2) <see cref="EARTH_MEAN_RADIUS"/><br/>
+    /// 3) <see cref="EARTH_MAX_RADIUS"/><br/>
+    /// 4) <see cref="EARTH_MIN_RADIUS"/><br/>
+    /// <br/>
+    /// Методы:<br/>
+    /// 1) <see cref="GetPrecessionMatrix(double)"/><br/>
+    /// 2) <see cref="GetNutationMatrix(double)"/><br/>
+    /// 3) <see cref="GetPolarMotionMatrix(double)"/><br/>
+    /// 4) <see cref="GetEarthRotationMatrix(double)"/><br/>
+    /// 5) <see cref="GetICStoGCSmatrix(double)"/><br/>
+    /// 6) <see cref="GetGCStoICSmatrix(double)"/><br/>
+    /// 7) <see cref="GetGCStoTCSmatrix(Vector)"/><br/>
+    /// 8) <see cref="GetTCStoGCSmatrix(Vector)"/><br/>
+    /// 9) <see cref="GetICStoHICSmatrix(double)"/><br/>
+    /// 10) <see cref="GetHICStoICSmatrix(double)"/><br/>
+    /// 11) <see cref="GetHICStoICSvector(double)"/><br/>
+    /// 12) <see cref="GetICStoHICSvector(double)"/><br/>
+    /// 13) <see cref="GetGCStoTCSvector(double, double)"/><br/>
+    /// 14) <see cref="GetTCStoGCSvector(double, double)"/><br/>
+    /// 15) <see cref="ConvertTo(Matrix, Vector, Vector)"/><br/>
+    /// 16) <see cref="ConvertICStoGCS(double, Vector)"/><br/>
+    /// 17) <see cref="ConvertGCStoICS(double, Vector)"/><br/>
+    /// 18) <see cref="ConvertICStoHICS(double, Vector)"/><br/>
+    /// 19) <see cref="ConvertHICStoICS(double, Vector)"/><br/>
+    /// </remarks>
     public static class Coordinates
     {
         #region consts
+        /// <summary>
+        /// Полярное сжатие Земли.
+        /// </summary>
         public const double EARTH_POLAR_COMPRESSION = 1 / 298.3;
-        public const double DD2R = 1.745329251994329576923691e-2;
+
+        /// <summary>
+        /// Средний радиус Земли.
+        /// </summary>
         public const double EARTH_MEAN_RADIUS = 6371000.0;
+
+        /// <summary>
+        /// Экваториальный радиус Земли.
+        /// </summary>
         public const double EARTH_MAX_RADIUS = 6378245.0;
+
+        /// <summary>
+        /// Полярный радиус Земли.
+        /// </summary>
         public const double EARTH_MIN_RADIUS = EARTH_MAX_RADIUS * (1 - EARTH_POLAR_COMPRESSION);
-        public const double DAU = 149597870.7e3;
-        public const double DAS2R = 4.848136811095359935899141e-6;
         #endregion
 
         #region matrices
+        /// <summary>
+        /// Матрица земной прецессии в указанную юлианскую дату.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица земной прецессии в указанную юлианскую дату.
+        /// </returns>
         public static Matrix GetPrecessionMatrix(double julianDate)
         {
             double[,] matrix = new double[3, 3];
-            IAUSOFA.iauPmat06(Date.J2000, julianDate - Date.J2000, matrix);
+            iauPmat06(Date.J2000, julianDate - Date.J2000, matrix);
             return new Matrix(matrix);
         }
 
+        /// <summary>
+        /// Матрица земной нутации в указанную юлианскую дату.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица земной нутации в указанную юлианскую дату.
+        /// </returns>
         public static Matrix GetNutationMatrix(double julianDate)
         {
             double epsa, dpsi = 0, deps = 0;
             double[,] matrix = new double[3, 3];
-            epsa = IAUSOFA.iauObl06(Date.J2000, julianDate - Date.J2000);
-            IAUSOFA.iauNut06a(Date.J2000, julianDate - Date.J2000, ref dpsi, ref deps);
-            IAUSOFA.iauNumat(epsa, dpsi, deps, matrix);
+            epsa = iauObl06(Date.J2000, julianDate - Date.J2000);
+            iauNut06a(Date.J2000, julianDate - Date.J2000, ref dpsi, ref deps);
+            iauNumat(epsa, dpsi, deps, matrix);
             return new Matrix(matrix);
         }
 
+        /// <summary>
+        /// Матрица полярного движения Земли в указанную юлианскую дату.<br/>
+        /// Не найдены функции, описывающие это движение, но с высокой точностью можно считать,
+        /// что этого движения не существует.
+        /// /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица полярного движения Земли в указанную юлианскую дату.
+        /// </returns>
         public static Matrix GetPolarMotionMatrix(double julianDate)
         {
             double xp = 0; // here should be function xp(julianDate)
@@ -64,9 +139,18 @@ namespace CoordinateSystems
             return result;
         }
 
-        public static Matrix GetEarthMatrix(double julianDate)
+        /// <summary>
+        /// Матрица земного вращения в указанную юлианскую дату.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица земного вращения в указанную юлианскую дату.
+        /// </returns>
+        public static Matrix GetEarthRotationMatrix(double julianDate)
         {
-            double sa = IAUSOFA.iauGst06a(Date.J2000,
+            double sa = iauGst06a(Date.J2000,
                 julianDate - Date.J2000, Date.J2000, julianDate - Date.J2000);
 
             double[,] matrix = new double[3, 3];
@@ -83,17 +167,44 @@ namespace CoordinateSystems
             return new Matrix(matrix);
         }
 
+        /// <summary>
+        /// Матрица перехода из второй экваториальной системы координат в первую.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из второй экваториальной системы координат в первую.
+        /// </returns>
         public static Matrix GetICStoGCSmatrix(double julianDate)
         {
-            return GetPolarMotionMatrix(julianDate) * GetEarthMatrix(julianDate) *
+            return GetPolarMotionMatrix(julianDate) * GetEarthRotationMatrix(julianDate) *
             GetNutationMatrix(julianDate) * GetPrecessionMatrix(julianDate);
         }
 
+        /// <summary>
+        /// Матрица перехода из первой экваториальной системы координат во вторую.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из второй экваториальной системы координат в первую.
+        /// </returns>
         public static Matrix GetGCStoICSmatrix(double julianDate)
         {
             return GetICStoGCSmatrix(julianDate).Inversed;
         }
 
+        /// <summary>
+        /// Матрица перехода из первой экваториальной системы координат в топоцентрическую.
+        /// </summary>
+        /// 
+        /// <param name="vector"> Вектор в первой экваториальной системе координат, направленный на точку на поверхности.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из первой экваториальной системы координат в топоцентрическую.
+        /// </returns>
         public static Matrix GetGCStoTCSmatrix(Vector vector)
         {
             double xst = vector.X;
@@ -131,11 +242,29 @@ namespace CoordinateSystems
             return result;
         }
 
+        /// <summary>
+        /// Матрица перехода из топоцентрической системы координат в первую экваториальную.
+        /// </summary>
+        /// 
+        /// <param name="vector"> Вектор в первой экваториальной системе координат, направленный на точку на поверхности.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из топоцентрической системы координат в первую экваториальную.
+        /// </returns>
         public static Matrix GetTCStoGCSmatrix(Vector vector)
         {
             return GetGCStoTCSmatrix(vector).Inversed;
         }
 
+        /// <summary>
+        /// Матрица перехода из второй экваториальной системы координат в гелиоцентрическую (вторая экваториальная с центром в Солнце).
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из второй экваториальной системы координат в гелиоцентрическую (вторая экваториальная с центром в Солнце).
+        /// </returns>
         public static Matrix GetICStoHICSmatrix(double julianDate)
         {
             /*double eps0 = 0, deps = 0;
@@ -145,6 +274,15 @@ namespace CoordinateSystems
             return new Matrix();
         }
 
+        /// <summary>
+        /// Матрица перехода из гелиоцентрической (вторая экваториальная с центром в Солнце) системы координат во вторую экваториальную.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Матрица перехода из гелиоцентрической (вторая экваториальная с центром в Солнце) системы координат во вторую экваториальную.
+        /// </returns>
         public static Matrix GetHICStoICSmatrix(double julianDate)
         {
             return GetICStoHICSmatrix(julianDate).Inversed;
@@ -152,6 +290,16 @@ namespace CoordinateSystems
         #endregion
 
         #region vectors
+        /// <summary>
+        /// Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
+        /// </summary>
+        /// 
+        /// <param name="latitude"> Широта.</param>
+        /// <param name="longitude"> Долгота.</param>
+        /// 
+        /// <returns>
+        /// Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
+        /// </returns>
         public static Vector GetGCStoTCSvector(double latitude, double longitude)
         {
             latitude *= DD2R;
@@ -163,21 +311,49 @@ namespace CoordinateSystems
             return result;
         }
 
+        /// <summary>
+        /// Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
+        /// </summary>
+        /// 
+        /// <param name="latitude"> Широта.</param>
+        /// <param name="longitude"> Долгота.</param>
+        /// 
+        /// <returns>
+        /// Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
+        /// </returns>
         public static Vector GetTCStoGCSvector(double latitude, double longitude)
         {
             return -GetGCStoTCSvector(latitude, longitude);
         }
 
+        /// <summary>
+        /// Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный на Землю.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный на Землю.
+        /// </returns>
         public static Vector GetHICStoICSvector(double julianDate)
         {
             double[,] pvh = new double[2,3];
             double[,] pvb = new double[2, 3];
-            IAUSOFA.iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
+            iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
             Vector result = new Vector(pvh[0, 0], pvh[0, 1], pvh[0, 2]);
             result *= DAU;
             return result;
         }
 
+        /// <summary>
+        /// Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный от Земли в начало координат.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// 
+        /// <returns>
+        /// Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный от Земли в начало координат.
+        /// </returns>
         public static Vector GetICStoHICSvector(double julianDate)
         {
             return GetHICStoICSmatrix(julianDate) * -GetHICStoICSvector(julianDate);
@@ -185,26 +361,77 @@ namespace CoordinateSystems
         #endregion
 
         #region converting functions
+        /// <summary>
+        /// Переводит вектор в новую систему координат.
+        /// </summary>
+        /// 
+        /// <param name="matrix"> Матрица перехода.</param>
+        /// <param name="vector"> Векториз старой системы координат в новую.</param>
+        /// <param name="point"> Переводимый вектор.</param>
+        /// 
+        /// <returns>
+        /// Вектор в новой системе координат.
+        /// </returns>
         public static Vector ConvertTo(Matrix matrix, Vector vector, Vector point)
         {
             return vector + matrix * point;
         }
 
+        /// <summary>
+        /// Переводит вектор из первой экваториальной системы координат во вторую.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// <param name="point"> Переводимый вектор.</param>
+        /// 
+        /// <returns>
+        /// Переведенный вектор.
+        /// </returns>
         public static Vector ConvertICStoGCS(double julianDate, Vector point)
         {
             return GetICStoGCSmatrix(julianDate) * point;
         }
 
+        /// <summary>
+        /// Переводит вектор из второй экваториальной системы координат в первую.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// <param name="point"> Переводимый вектор.</param>
+        /// 
+        /// <returns>
+        /// Переведенный вектор.
+        /// </returns>
         public static Vector ConvertGCStoICS(double julianDate, Vector point)
         {
             return GetGCStoICSmatrix(julianDate) * point;
         }
 
+        /// <summary>
+        /// Переводит вектор из второй экваториальной системы координат в гелиоцентрическую (вторую экваториальную с центром в Солнце).
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// <param name="point"> Переводимый вектор.</param>
+        /// 
+        /// <returns>
+        /// Переведенный вектор.
+        /// </returns>
         public static Vector ConvertICStoHICS(double julianDate, Vector point)
         {
             return GetICStoHICSmatrix(julianDate) * (point - GetICStoHICSvector(julianDate));
         }
 
+        /// <summary>
+        /// Переводит вектор из гелиоцентрической (второй экваториальной с центром в Солнце) системы координат во вторую экваториальную.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        /// <param name="point"> Переводимый вектор.</param>
+        /// 
+        /// <returns>
+        /// Переведенный вектор.
+        /// </returns>
         public static Vector ConvertHICStoICS(double julianDate, Vector point)
         {
             return GetHICStoICSmatrix(julianDate) * (point - GetHICStoICSvector(julianDate));

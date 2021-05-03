@@ -1,12 +1,15 @@
 ﻿using System;
 using SunSystem;
 using CoordinateSystems;
+using IAUSOFA;
 using static System.Math;
 
 // Файл содержит класс ParabolicKeplerian.
 
 namespace Keplerian
 {
+    using Date;
+
     /// <summary>
     /// Класс ParabolicKeplerian описывает
     /// положение и движение тела по параболической орбите
