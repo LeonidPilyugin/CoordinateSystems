@@ -138,7 +138,7 @@ namespace SunSystem
             fixedEarth.GetParamsMethod += FixedEarthParams;
 
             moon = new Planet(7.342e22, 1.73814e6, 1.7371e6, "Moon",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Vector(0.0, 0.0, 0.0), earth);
+                new Vector(0.0, 0.0, 0.0), new Basis(), new Vector(0.0, 0.0, 0.0), sun);
             moon.GetParamsMethod += MoonParams;
 
             mars = new Planet(6.4171e23, 3.3962e6, 3.3762e6, "Mars",
