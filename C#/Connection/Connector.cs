@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using QuickGraph;
@@ -9,9 +8,66 @@ using QuickGraph.Algorithms;
 using CoordinateSystems;
 using static System.Math;
 
+// Файл содержит абстрактный класс Connector.
+
 namespace Connection
 {
-    //public enum CoordSystemType { ICS, GCS, HICS, Spacecraft };
+    /// <summary>
+    /// Класс Connector описывает средство связи. Наследник класса <see cref="Body"/>.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// Поля:<br/>
+    /// 1) <see cref="isAnalizing"/><br/>
+    /// 2) <see cref="carrier"/><br/>
+    /// 3) <see cref="view"/><br/>
+    /// 4) <see cref="workingConnectors"/><br/>
+    /// 5) <see cref="Body.id"/><br/>
+    /// 6) <see cref="Body.bodies"/><br/>
+    /// 7) <see cref="CoordinateSystem.vector"/><br/>
+    /// 8) <see cref="CoordinateSystem.velocity"/><br/>
+    /// 9) <see cref="CoordinateSystem.basis"/><br/>
+    /// 10) <see cref="CoordinateSystem.referenceSystem"/><br/>
+    /// <br/>
+    /// Конструкторы:<br/>
+    /// 1) <see cref="Connector()"/><br/>
+    /// 2) <see cref="Connector(Connector)"/><br/>
+    /// 3) <see cref="Connector(string, CoordinateSystem, View, Body)"/><br/>
+    /// <br/>
+    /// Свойства:<br/>
+    /// 1) <see cref="View"/><br/>
+    /// 2) <see cref="WorkingConnectors"/><br/>
+    /// 3) <see cref="Body.Bodies"/><br/>
+    /// 4) <see cref="Body.ID"/><br/>
+    /// 5) <see cref="Vector"/><br/>
+    /// 6) <see cref="Basis"/><br/>
+    /// 7) <see cref="CoordinateSystem.ReferenceSystem"/><br/>
+    /// 8) <see cref="CoordinateSystem.Velocity"/><br/>
+    /// 9) <see cref="CoordinateSystem.TransitionMatrix"/><br/>
+    /// 10) <see cref="CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+    /// 11) <see cref="CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+    /// 12) <see cref="CoordinateSystem.BasisRelativelyRoot"/><br/>
+    /// 13) <see cref="CoordinateSystem.RootBasis"/><br/>
+    /// 14) <see cref="CoordinateSystem.ReferenceSystemBasis"/><br/>
+    /// 15) <see cref="CoordinateSystem.VectorFromRoot"/><br/>
+    /// 16) <see cref="CoordinateSystem.VelocityFromRoot"/><br/>
+    /// <br/>
+    /// Методы:<br/>
+    /// 1) <see cref="TurnTo(Body)"/><br/>
+    /// 2) <see cref="GetPath(Connector)"/><br/>
+    /// 3) <see cref="Send(Message)"/><br/>
+    /// 4) <see cref="Send(MessageType, Connector)"/><br/>
+    /// 5) <see cref="Analize(Message)"/><br/>
+    /// 6) <see cref="GetMessage(Message)"/><br/>
+    /// 7) <see cref="CanAccess(Body)"/><br/>
+    /// 8) <see cref="Body.IsInside(Vector)"/><br/>
+    /// 9) <see cref="Body.IsCrossing(Vector, Vector)"/><br/>
+    /// 10) <see cref="CoordinateSystem.ConvertTo(CoordinateSystem, Vector)"/><br/>
+    /// 11) <see cref="CoordinateSystem.GetVectorFromRoot(Vector)"/><br/>
+    /// 12) <see cref="CoordinateSystem.GetVectorRelativelyReferenceSystem(Vector)"/><br/>
+    /// 13) <see cref="CoordinateSystem.GetVelocityFromRoot(Vector)"/><br/>
+    /// 14) <see cref="CoordinateSystem.GetVelocityRelativelyReferenceSystem(Vector)"/><br/>
+    /// </remarks>
     public abstract class Connector : Body
     {
         //public enum SendingResult { Successfully, ReceiverDontAnswer, ReceiverDontWork, CantSend };
@@ -23,50 +79,110 @@ namespace Connection
         //protected Dictionary<Message, CancellationTokenSource> sentMessages;
         //protected Queue<Message> analisysQueue;
         //protected Queue<Message> sendingQueue;
-        //protected bool isSending;
-        protected bool isAnalizing;
-        protected Body carrier;
         //protected static List<Connector> connectors;
-
         //public bool IsWorking { get; set; }
+        //protected bool isSending;
 
+        /// <summary>
+        /// true, если спутник занят, false, если нет.
+        /// </summary>
+        protected bool isAnalizing;
+
+        /// <summary>
+        /// Носитель.
+        /// </summary>
+        protected Body carrier;
+
+        /// <summary>
+        /// Область видимости.
+        /// </summary>
         protected View view;
-        public static List<Connector> WorkingConnectors { get; set; }
+
+        /// <summary>
+        /// Все работающие средства связи.
+        /// </summary>
+        protected static List<Connector> workingConnectors;
         #endregion
 
         #region constructors
-        public Connector(string ID, CoordinateSystem coordinateSystem, View view, Body carrier)
-            : base(ID, coordinateSystem)
+        /// <summary>
+        /// Задает полям переданные значения, но:<br/>
+        /// velocity = new Vector(0.0, 0.0, 0.0)<br/>
+        /// referenceSystem = carrier<br/>
+        /// isAnalizing = false<br/>
+        /// </summary>
+        /// 
+        /// <param name="ID"> Идентификатор</param>
+        /// <param name="vector"> Вектор относительно базовой системы координат.</param>
+        /// <param name="basis"> Базис относительно базовой системы координат.</param>
+        /// <param name="view"> Область видимости.</param>
+        /// <param name="carrier"> Носитель.</param>
+        public Connector(string ID, Vector vector, Basis basis, View view, Body carrier)
         {
             //this.IsWorking = isWorking;
-            this.view = view;
             //this.WorkingConnectors = (workingConnectors == null) ? null : new List<Connector>(workingConnectors);
             //analisysQueue = new Queue<Message>();
             //sendingQueue = new Queue<Message>();
             //isSending = false;
-            isAnalizing = false;
+
+            this.id = ID;
+            this.vector = vector;
+            this.basis = basis;
+            this.velocity = new Vector(0.0, 0.0, 0.0);
+            this.referenceSystem = carrier;
+            this.view = view;
+            this.isAnalizing = false;
             this.carrier = carrier;
         }
 
-        public Connector(Connector connector) : this(connector.ID, connector, connector.view, connector.carrier)
+        /// <summary>
+        /// Конструктор копирования.
+        /// </summary>
+        /// 
+        /// <param name="connector"> Копируемое средство связи.</param>
+        public Connector(Connector connector) :
+            this(connector.ID, connector.vector, connector.basis, connector.view, connector.carrier)
         {
 
         }
 
-        public Connector() : base()
+        /// <summary>
+        /// Конструктор по умолчанию.<br/>
+        /// view = new ConicView(PI / 6.0, double.MaxValue)<br/>
+        /// isAnalizing = false<br/>
+        /// carrier = null<br/>
+        /// id = "New connector"<br/>
+        /// vector = new Vector(0.0, 0.0, 0.0)<br/>
+        /// basis = new Basis()<br/>
+        /// velocity = new Vector(0.0, 0.0, 0.0)<br/>
+        /// referenceSystem = carrier<br/>
+        /// </summary>
+        public Connector()
         {
             view = new ConicView(PI / 6.0, double.MaxValue);
             isAnalizing = false;
             carrier = null;
+            id = "New connector";
+            vector = new Vector(0.0, 0.0, 0.0);
+            basis = new Basis();
+            velocity = new Vector(0.0, 0.0, 0.0);
+            referenceSystem = carrier;
         }
 
         static Connector()
         {
-            WorkingConnectors = new List<Connector>();
+            workingConnectors = new List<Connector>();
         }
         #endregion
 
         #region properties
+        /// <summary>
+        /// Область видимости. Не должна быть null.
+        /// </summary>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public View View
         {
             get
@@ -78,20 +194,65 @@ namespace Connection
             {
                 if(value == null)
                 {
-                    throw new Exception("View mustn't be null");
+                    throw new ArgumentNullException("View mustn't be null");
                 }
                 view = value;
             }
         }
+
+        /// <summary>
+        /// Все работающие средства связи.
+        /// </summary>
+        public List<Connector> WorkingConnectors
+        {
+            get
+            {
+                return workingConnectors;
+            }
+        }
         #endregion
 
-        #region functions
+        #region methods
+        /// <summary>
+        /// Метод <see cref="CoordinateSystem.TurnTo(Vector, List{Vector})"/> не наследуется и вызывает исключение.
+        /// </summary>
+        /// 
+        /// <param name="target"></param>
+        /// <param name="points"></param>
+        /// 
+        /// <exception cref="NotImplementedException">
+        /// Вызывается при вызове метода.
+        /// </exception>
+        new public void TurnTo(Vector target, List<Vector> points = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Поворачивает средство связи осью X к телу.
+        /// </summary>
+        /// 
+        /// <param name="point"> Тело, к которому поворачивается средство связи.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если передается null.
+        /// </exception>
         protected virtual void TurnTo(Body point)
         {
             base.TurnTo(point.ConvertTo(this));
             Thread.Sleep(1000);
         }
 
+        /// <summary>
+        /// Получает кратчайший путь через к указанному средству связи.
+        /// </summary>
+        /// 
+        /// <param name="stop"> Средство связи, к которому ищется путь.</param>
+        /// 
+        /// <returns>
+        /// Кратчайший путь в виде связного списка:
+        /// [это средство связи], [следующее], ..., [получатель]
+        /// </returns>
         protected LinkedList<Connector> GetPath(Connector stop)
         {
             // get graph
@@ -142,6 +303,11 @@ namespace Connection
             return result;
         }
 
+        /// <summary>
+        /// Отправляет сообщение следующему в списке.
+        /// </summary>
+        /// 
+        /// <param name="message"> отправляемое сообщение.</param>
         protected void Send(Message message)
         {
             Console.WriteLine(DateTime.Now + ": " + ID + " send " + message.Data + " to " + message.FindNext(this).ID);
@@ -152,18 +318,48 @@ namespace Connection
             Console.WriteLine(DateTime.Now + ": " + ID + " sent " + message.Data + " to " + message.FindNext(this).ID);
         }
 
-        public void Send(MessageType messageType, Connector receiver)
+        /// <summary>
+        /// Отправляет сообщение указанного типа указанному средству связи.
+        /// </summary>
+        /// 
+        /// <param name="messageType"> Тип сообщения.</param>
+        /// <param name="receiver"> Получатель.</param>
+        /// 
+        /// <returns>
+        /// true, если сообщение можно передать.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если хотя бы один аргумент null.
+        /// </exception>
+        public bool Send(MessageType messageType, Connector receiver)
         {
             var path = GetPath(receiver);
 
             if(path != null)
             {
                 Send(new Message(messageType, path));
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
+        /// <summary>
+        /// Функция, анализирующая сообщение.
+        /// </summary>
+        /// 
+        /// <param name="message"> Анализируемое сообщение.</param>
         protected abstract void Analize(Message message);
 
+        /// <summary>
+        /// Функция, принимающая сообщение (сообщение вызывает эту функцию при достижении этого средства связи).
+        /// </summary>
+        /// 
+        /// <param name="message"> Вызывающее сообщение.</param>
         public virtual void GetMessage(Message message)
         {
             if (!isAnalizing)
@@ -172,6 +368,15 @@ namespace Connection
             }
         }
 
+        /// <summary>
+        /// Проверяет, дойдет ли сообщение до получателя, если его отправить.
+        /// </summary>
+        /// 
+        /// <param name="receiver"> Получатель.</param>
+        /// 
+        /// <returns>
+        /// true, если дойдет, false, если нет.
+        /// </returns>
         protected virtual bool CanAccess(Body receiver)
         {
             return (!Message.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < view.Length);
@@ -304,6 +509,7 @@ namespace Connection
             Message newMessage = new Message(message.Data, path);
             // Send new message
             Send(newMessage);
-        }*/
+        }
+        */
     }
 }
