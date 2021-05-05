@@ -165,6 +165,7 @@
             3) <see cref="M:SunSystem.Planet.GetDirectionVector(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
             4) <see cref="M:SunSystem.Planet.GetProjection(CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
             5) <see cref="M:SunSystem.Planet.UpdateParams(System.Double)"/><br/>
+            6) <see cref="M:SunSystem.Planet.ToString"/><br/>
             </remarks>
         </member>
         <member name="T:SunSystem.Planet.GetParams">
@@ -262,6 +263,15 @@
             </summary>
             
             <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.Planet.ToString">
+            <summary>
+            Возвращает строку: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+            </summary>
+            
+            <returns>
+            Строка: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+            </returns>
         </member>
         <member name="T:SunSystem.Planets">
             <summary>

@@ -281,11 +281,6 @@
             Свойства:<br/>
             1) <see cref="P:CoordinateSystems.Body.Bodies"/><br/>
             1) <see cref="P:CoordinateSystems.Body.ID"/><br/>
-            <br/>
-            Методы:<br/>
-            1) <see cref="M:CoordinateSystems.Body.IsInside(CoordinateSystems.Vector)"/><br/>
-            2) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
-            3) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Body,CoordinateSystems.Body)"/><br/>
             </remarks>
         </member>
         <member name="F:CoordinateSystems.Body.bodies">
@@ -375,23 +370,6 @@
             <returns>
             true, если пересекает, false — если нет.
             </returns>
-        </member>
-        <member name="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Body,CoordinateSystems.Body)">
-            <summary>
-            Проверяет, пересекают ли другие тела отрезок, соединяющий переданные тела.
-            </summary>
-            
-            <param name="body1"> Тело. Не должно быть null.</param>
-            <param name="body2"> Тело. Не должно быть null.</param>
-            
-            <returns>
-            true, если другие тела отрезок, соединяющий переданные тела.
-            false, если нет.
-            </returns>
-            
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается при передаче хотя бы одному параметру null.
-            </exception>
         </member>
         <member name="T:CoordinateSystems.Coordinates">
             <summary>
@@ -570,24 +548,34 @@
             Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
             </summary>
             
-            <param name="latitude"> Широта.</param>
-            <param name="longitude"> Долгота.</param>
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
             
             <returns>
             Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
             </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
         </member>
         <member name="M:CoordinateSystems.Coordinates.GetTCStoGCSvector(System.Double,System.Double)">
             <summary>
             Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
             </summary>
             
-            <param name="latitude"> Широта.</param>
-            <param name="longitude"> Долгота.</param>
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
             
             <returns>
             Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
             </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
         </member>
         <member name="M:CoordinateSystems.Coordinates.GetHICStoICSvector(System.Double)">
             <summary>
@@ -703,7 +691,7 @@
             11) <see cref="P:CoordinateSystems.CoordinateSystem.VectorFromRoot"/><br/>
             12) <see cref="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot"/><br/>
             <br/>
-            Методы:<br/>
+            Функции:<br/>
             1) <see cref="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)"/><br/>
             2) <see cref="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})"/><br/>
             3) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)"/><br/>
