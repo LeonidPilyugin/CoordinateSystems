@@ -207,11 +207,41 @@
             <param name="basis"> Базис относительно базовой системы координат. Не должен быть null.</param>
             <param name="velocity"> Скорость относительно базовой системы координат. Не должна быть null.</param>
             <param name="referenceSystem"> Базовая система координат.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректного значения.
+            </exception>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче bull.
+            </exception>
         </member>
         <member name="P:SunSystem.Planet.Mass">
             <summary>
-            Масса.
+            Масса. Должны быть положительной.
             </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="P:SunSystem.Planet.MinRadius">
+            <summary>
+            Полярный радиус. Должен быть положителен.
+            </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="P:SunSystem.Planet.MaxRadius">
+            <summary>
+            Экваториальный радиус. Должен быть положителен.
+            </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
         </member>
         <member name="F:SunSystem.Planet.GetParamsMethod">
             <summary>

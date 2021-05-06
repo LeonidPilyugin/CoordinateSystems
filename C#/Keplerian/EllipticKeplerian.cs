@@ -18,6 +18,20 @@ namespace Keplerian
     /// </summary>
     /// 
     /// <remarks>
+    /// Константы:<br/>
+    /// 1) <see cref="Keplerian.G"/><br/>
+    /// 2) <see cref="NotParabolicKeplerian.ITERATION_CONSTANT"/><br/>
+    /// <br/>
+    /// Поля:<br/>
+    /// 1) <see cref="Keplerian.julianDate"/><br/>
+    /// 2) <see cref="Keplerian.eccentricity"/><br/>
+    /// 3) <see cref="Keplerian.perifocusDistance"/><br/>
+    /// 4) <see cref="Keplerian.inclination"/><br/>
+    /// 5) <see cref="Keplerian.ascendingNodeLongitude"/><br/>
+    /// 6) <see cref="Keplerian.periapsisArgument"/><br/>
+    /// 7) <see cref="Keplerian.trueAnomaly"/><br/>
+    /// 8) <see cref="Keplerian.centralBody"/><br/>
+    /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="EllipticKeplerian(double, double, double, double, double, double, double, Planet)"/><br/>
     /// 2) <see cref="EllipticKeplerian(EllipticKeplerian)"/><br/>
@@ -48,20 +62,6 @@ namespace Keplerian
     /// 7) <see cref="GetEccentricAnomaly(double)"/><br/>
     /// 8) <see cref="GetMeanAnomaly(double)"/><br/>
     /// 9) <see cref="GetTrueAnomaly2(double)"/><br/>
-    /// <br/>
-    /// Константы:<br/>
-    /// 1) <see cref="Keplerian.G"/><br/>
-    /// 2) <see cref="NotParabolicKeplerian.ITERATION_CONSTANT"/><br/>
-    /// <br/>
-    /// Поля:<br/>
-    /// 1) <see cref="Keplerian.julianDate"/><br/>
-    /// 2) <see cref="Keplerian.eccentricity"/><br/>
-    /// 3) <see cref="Keplerian.perifocusDistance"/><br/>
-    /// 4) <see cref="Keplerian.inclination"/><br/>
-    /// 5) <see cref="Keplerian.ascendingNodeLongitude"/><br/>
-    /// 6) <see cref="Keplerian.periapsisArgument"/><br/>
-    /// 7) <see cref="Keplerian.trueAnomaly"/><br/>
-    /// 8) <see cref="Keplerian.centralBody"/><br/>
     /// </remarks>
     public class EllipticKeplerian : NotParabolicKeplerian
     {
@@ -90,6 +90,13 @@ namespace Keplerian
         /// <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="Math.PI"/></param>
         /// <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
         /// <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null в centralBody.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректных значений.
+        /// </exception>
         public EllipticKeplerian(double julianDate, double eccentricity, double semimajorAxis,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Planet centralBody) :
@@ -107,6 +114,10 @@ namespace Keplerian
         /// </summary>
         /// 
         /// <param name="keplerian"> Копируемый EllipticKeplerian не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public EllipticKeplerian(EllipticKeplerian keplerian) : base(keplerian)
         {
 
@@ -191,7 +202,7 @@ namespace Keplerian
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <inheritdoc/>
         protected override double GetEccentricAnomaly(double trueAnomaly)
         {

@@ -51,7 +51,7 @@ namespace Connection
         public const double LIGHT_SPEED = 299792458.0;
         #endregion
 
-        #region type
+        #region data
         /// <summary>
         /// Тип сообщения.
         /// </summary>
@@ -71,6 +71,10 @@ namespace Connection
         /// 
         /// <param name="type"> Тип сообщения.</param>
         /// <param name="path"> Путь, который должно пройти сообщение. Не должен быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Message(MessageType type, LinkedList<Connector> path)
         {
             this.type = type;
@@ -82,12 +86,20 @@ namespace Connection
         /// </summary>
         /// <param name="message"> Тип сообщения.</param>
         /// <param name="connectors"> Средств связи, через которые должно пройти сообщение.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Message(MessageType message, params Connector[] connectors)
         {
             type = message;
             path = new LinkedList<Connector>();
             foreach(Connector connector in connectors)
             {
+                if(connector == null)
+                {
+                    throw new ArgumentNullException("connector mustn't be null");
+                }
                 path.AddLast(connector);
             }
         }
@@ -97,8 +109,17 @@ namespace Connection
         /// </summary>
         /// 
         /// <param name="message"> Копируемое сообщение. Не должно быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Message(Message message)
         {
+            if(message == null)
+            {
+                throw new ArgumentNullException("message mustn't be null");
+            }
+
             type = message.type;
             path = new LinkedList<Connector>(message.path);
         }

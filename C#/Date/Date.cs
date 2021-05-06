@@ -36,11 +36,12 @@ namespace Date
     /// 7) <see cref="Month"/><br/>
     /// 8) <see cref="Year"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="GetJulianDate(Calendar)"/><br/>
     /// 2) <see cref="GetGrigorianCalendar(double)"/><br/>
     /// 3) <see cref="IsDateCorrect(int, int, int)"/><br/>
     /// 4) <see cref="IsYearLeap(int)"/><br/>
+    /// 5) <see cref="IsCalendarCorrect(Date.Calendar)"/><br/>
     /// <br/>
     /// Операторы:<br/>
     /// 1) <see cref="operator +(Date, Date)"/><br/>
@@ -152,6 +153,10 @@ namespace Date
         /// </summary>
         /// 
         /// <param name="calendar"> Григорианский календарь. Дата должна быть позднее 23 ноября -4713 года.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректной даты.
+        /// </exception>
         public Date(Calendar calendar)
         {
             julianDate = GetJulianDate(calendar);
@@ -168,6 +173,10 @@ namespace Date
         /// <param name="hour"> час</param>
         /// <param name="minute"> минута</param>
         /// <param name="second"> секунда</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректной даты.
+        /// </exception>
         public Date(int year, int month, int day, int hour, int minute, double second)
         {
             Calendar calendar;
@@ -186,8 +195,16 @@ namespace Date
         /// </summary>
         /// 
         /// <param name="julianDate"> Юлианская дата. должна быть положительна.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче отрицательной юлианской даты.
+        /// </exception>
         public Date(double julianDate)
         {
+            if(julianDate <= 0.0)
+            {
+                throw new ArgumentException("julianDate isn't correct");
+            }
             this.julianDate = julianDate;
         }
 
@@ -431,7 +448,7 @@ namespace Date
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <summary>
         /// Функция возвращает Юлианский день, соответствующий переданной дате Григорианского календаря.
         /// </summary>
@@ -441,8 +458,17 @@ namespace Date
         /// <returns>
         /// Юлианский день, соответствующий переданной дате Григорианского календаря.
         /// </returns>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректной даты.
+        /// </exception>
         public static double GetJulianDate(Calendar calendar)
         {
+            if(IsCalendarCorrect(calendar))
+            {
+                throw new ArgumentException("calendar isn't correct");
+            }
+
             int a = (14 - calendar.Month) / 12;
             int y = calendar.Year + 4800 - a;
             int m = calendar.Month + 12 * a - 3;
@@ -479,6 +505,24 @@ namespace Date
             calendar.Minute = (int)(time);
             calendar.Second = (time - calendar.Minute) * 60;
             return calendar;
+        }
+
+        /// <summary>
+        /// Проверяет, существует ли переданная дата в Григорианском календаре.
+        /// </summary>
+        /// 
+        /// <param name="calendar"> Дата Григорианского календаря.</param>
+        /// 
+        /// <returns>
+        /// true, если дата существует.<br/>
+        /// false, если нет.
+        /// </returns>
+        public static bool IsCalendarCorrect(Calendar calendar)
+        {
+            return IsDateCorrect(calendar.Year, calendar.Month, calendar.Day) &&
+                calendar.Hour < 24 && calendar.Hour >= 0 &&
+                calendar.Minute < 60 && calendar.Minute >= 0 &&
+                calendar.Second < 60 && calendar.Second >= 0;
         }
 
         /// <summary>

@@ -20,7 +20,6 @@ namespace CoordinateSystems
     /// 2) <see cref="UnitVector(double, double, double)"/><br/>
     /// 3) <see cref="UnitVector(double, double)"/><br/>
     /// 4) <see cref="UnitVector(Vector)"/><br/>
-    /// 5) <see cref="UnitVector(UnitVector)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="X"/><br/>
@@ -36,7 +35,7 @@ namespace CoordinateSystems
     /// 11) <see cref="UnitVectorY"/><br/>
     /// 12) <see cref="UnitVectorZ"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="Vector.TurnX(double)"/><br/>
     /// 2) <see cref="Vector.TurnY(double)"/><br/>
     /// 3) <see cref="Vector.TurnZ(double)"/><br/>
@@ -90,17 +89,11 @@ namespace CoordinateSystems
         /// 
         /// <param name="theta"> Зенитный угол. Измеряется в радианах. 0 &lt;= Theta &lt;= <see cref="Math.PI"/></param>
         /// <param name="phi"> Азимутальный угол. Измеряется в радианах. -PI &lt;= Phi &lt;= <see cref="Math.PI"/></param>
-        public UnitVector(double theta, double phi) : base(theta, phi)
-        {
-
-        }
-
-        /// <summary>
-        /// Конструктор копирования.
-        /// </summary>
         /// 
-        /// <param name="unitVector"> Копируемый единичный вектор. Не должен быть null.</param>
-        public UnitVector(UnitVector unitVector) : base(unitVector.Theta, unitVector.Phi)
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если theta или phi не соответствуют возможным.
+        /// </exception>
+        public UnitVector(double theta, double phi) : base(theta, phi)
         {
 
         }
@@ -110,9 +103,13 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="vector"> Копируемый вектор. Не должен быть null.</param>
-        public UnitVector(Vector vector) : base(vector.Theta, vector.Phi)
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public UnitVector(Vector vector) : base(vector)
         {
-
+            base.Length = 1.0;
         }
         #endregion
 

@@ -66,9 +66,13 @@ namespace SunSystem
         /// </returns>
         private static Vector GetEarthRotationAxis(double julianDate)
         {
-            return new Vector(GetEps0(julianDate), -Math.PI / 2.0);
-        }
+            // Вариант через угол неклона к экватору
+            //return new Vector(GetEps0(julianDate), -Math.PI / 2.0);
 
+            // Вариант через мгновенную ось вращения
+            // (перемножаю два вектора координат, найденных через малый промежуток времени).
+            return Earth.GetParamsMethod(julianDate).Vector * Earth.GetParamsMethod(julianDate + 1e-6).Vector;
+        }
 
         /// <summary>
         /// Ось вращения Луны вокруг Земли в геоцентрической системе координат.
@@ -81,7 +85,12 @@ namespace SunSystem
         /// </returns>
         private static Vector GetMoonRotationAxis(double julianDate)
         {
-            return new Vector(GetEps0(julianDate) + 5.15 / 180.0 * Math.PI, -Math.PI / 2.0);
+            // Вариант через угол неклона к экватору
+            //return new Vector(GetEps0(julianDate) + 5.15 / 180.0 * Math.PI, -Math.PI / 2.0);
+
+            // Вариант через мгновенную ось вращения
+            // (перемножаю два вектора координат, найденных через малый промежуток времени).
+            return Moon.GetParamsMethod(julianDate).Vector * Moon.GetParamsMethod(julianDate + 1e-6).Vector;
         }
 
         /// <summary>

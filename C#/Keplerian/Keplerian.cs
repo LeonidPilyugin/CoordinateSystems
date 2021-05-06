@@ -15,6 +15,19 @@ namespace Keplerian
     /// </summary>
     /// 
     /// <remarks>
+    /// Константы:<br/>
+    /// 1) <see cref="G"/><br/>
+    /// <br/>
+    /// Поля:<br/>
+    /// 1) <see cref="julianDate"/><br/>
+    /// 2) <see cref="eccentricity"/><br/>
+    /// 3) <see cref="perifocusDistance"/><br/>
+    /// 4) <see cref="inclination"/><br/>
+    /// 5) <see cref="ascendingNodeLongitude"/><br/>
+    /// 6) <see cref="periapsisArgument"/><br/>
+    /// 7) <see cref="trueAnomaly"/><br/>
+    /// 8) <see cref="centralBody"/><br/>
+    /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="Keplerian(double, double, double, double, double, double, double, Planet)"/><br/>
     /// 2) <see cref="Keplerian(Keplerian)"/><br/>
@@ -39,19 +52,6 @@ namespace Keplerian
     /// 4) <see cref="GetVelocity(double)"/><br/>
     /// 5) <see cref="ToString()"/><br/>
     /// 6) <see cref="ToString(double)"/><br/>
-    /// <br/>
-    /// Константы:<br/>
-    /// 1) <see cref="G"/><br/>
-    /// <br/>
-    /// Поля:<br/>
-    /// 1) <see cref="julianDate"/><br/>
-    /// 2) <see cref="eccentricity"/><br/>
-    /// 3) <see cref="perifocusDistance"/><br/>
-    /// 4) <see cref="inclination"/><br/>
-    /// 5) <see cref="ascendingNodeLongitude"/><br/>
-    /// 6) <see cref="periapsisArgument"/><br/>
-    /// 7) <see cref="trueAnomaly"/><br/>
-    /// 8) <see cref="centralBody"/><br/>
     /// </remarks>
     public abstract class Keplerian
     {
@@ -137,18 +137,25 @@ namespace Keplerian
         /// <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="Math.PI"/></param>
         /// <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
         /// <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null в <see cref="centralBody"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректных значений.
+        /// </exception>
         public Keplerian(double julianDate, double eccentricity, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Planet centralBody)
         {
-            this.julianDate = julianDate;
-            this.eccentricity = eccentricity;
-            this.perifocusDistance = perifocusDistance;
-            this.inclination = inclination;
-            this.ascendingNodeLongitude = ascendingNodeLongitude;
-            this.periapsisArgument = periapsisArgument;
-            this.trueAnomaly = trueAnomaly;
-            this.centralBody = centralBody;
+            JulianDate = julianDate;
+            Eccentricity = eccentricity;
+            PerifocusDistance = perifocusDistance;
+            Inclination = inclination;
+            AscendingNodeLongitude = ascendingNodeLongitude;
+            PeriapsisArgument = periapsisArgument;
+            TrueAnomaly = trueAnomaly;
+            CentralBody = centralBody;
         }
 
         /// <summary>
@@ -156,6 +163,10 @@ namespace Keplerian
         /// </summary>
         /// 
         /// <param name="keplerian"> Копируемый Keplerian не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Keplerian(Keplerian keplerian) : this(keplerian.julianDate, keplerian.eccentricity,
             keplerian.perifocusDistance, keplerian.inclination, keplerian.ascendingNodeLongitude,
             keplerian.periapsisArgument, keplerian.trueAnomaly, keplerian.centralBody)

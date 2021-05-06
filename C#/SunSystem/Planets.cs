@@ -138,7 +138,7 @@ namespace SunSystem
             fixedEarth.GetParamsMethod += FixedEarthParams;
 
             moon = new Planet(7.342e22, 1.73814e6, 1.7371e6, "Moon",
-                new Vector(0.0, 0.0, 0.0), new Basis(), new Vector(0.0, 0.0, 0.0), sun);
+                new Vector(0.0, 0.0, 0.0), new Basis(), new Vector(0.0, 0.0, 0.0), earth);
             moon.GetParamsMethod += MoonParams;
 
             mars = new Planet(6.4171e23, 3.3962e6, 3.3762e6, "Mars",
@@ -269,8 +269,8 @@ namespace SunSystem
             Vector EMBVector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]) * IAUSOFA.DAU;
             Vector EMBVelocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]) * IAUSOFA.DAU / Date.JDtoSecond;
 
-            return (new Vector((EMBVector * (earth.Mass + moon.Mass) - EarthVector * earth.Mass) / moon.Mass),
-                new Vector((EMBVector * (earth.Mass + moon.Mass) - EarthVector * earth.Mass) / moon.Mass),
+            return (new Vector((EMBVector * (earth.Mass + moon.Mass) - EarthVector * earth.Mass) / moon.Mass - EarthVector),
+                new Vector((EMBVelocity * (earth.Mass + moon.Mass) - EarthVelocity * earth.Mass) / moon.Mass - EarthVelocity),
                 basis);
         }
 
@@ -501,6 +501,7 @@ namespace SunSystem
             venus.UpdateParams(julianDate);
             earth.UpdateParams(julianDate);
             fixedEarth.UpdateParams(julianDate);
+            moon.UpdateParams(julianDate);
             mars.UpdateParams(julianDate);
             jupiter.UpdateParams(julianDate);
             saturn.UpdateParams(julianDate);

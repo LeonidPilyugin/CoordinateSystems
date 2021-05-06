@@ -29,7 +29,7 @@ namespace CoordinateSystems
     /// 4) <see cref="Transposed"/><br/>
     /// 5) <see cref="Inversed"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="Transpose()"/><br/>
     /// 2) <see cref="Inverse()"/><br/>
     /// 3) <see cref="Print()"/><br/>
@@ -68,8 +68,21 @@ namespace CoordinateSystems
         /// 
         /// <param name="m"> Число строк. Должно быть положительно.</param>
         /// <param name="n"> Число столбцов. Должно быть положительно.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если хотя бы один параметр неположительный.
+        /// </exception>
         public Matrix(int m, int n)
         {
+            if(m <= 0)
+            {
+                throw new ArgumentException("m must be > 0");
+            }
+            if (n <= 0)
+            {
+                throw new ArgumentException("n must be > 0");
+            }
+
             matrix = new List<List<double>>();
 
             for (int i = 0; i < m; i++)
@@ -87,8 +100,17 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="matrix"> Копируемая матрица. Не должна быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Matrix(Matrix matrix)
         {
+            if(matrix == null)
+            {
+                throw new ArgumentNullException("matrix mustn't be null");
+            }
+
             Copy(matrix);
         }
 
@@ -97,8 +119,17 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="matrix"> Копируемый массив. Не должна быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Matrix(double[,] matrix)
         {
+            if(matrix == null)
+            {
+                throw new ArgumentNullException("matrix mustn't be null");
+            }
+
             this.matrix = new List<List<double>>();
 
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -116,6 +147,10 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="m"> Число строк. должно быть положительно.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если хотя параметр неположительный.
+        /// </exception>
         public Matrix(int m) : this(m, m)
         {
             for(int i = 0; i < m; i++)
@@ -129,8 +164,17 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="basis"> Копируемый базис.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Matrix(Basis basis)
         {
+            if(basis == null)
+            {
+                throw new ArgumentNullException("basis mustn't be null");
+            }
+
             this.matrix = new List<List<double>>(3);
 
             for (int i = 0; i < 3; i++)
@@ -326,7 +370,7 @@ namespace CoordinateSystems
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <summary>
         /// Транспонирует матрицу.
         /// </summary>

@@ -42,6 +42,7 @@
             2) <see cref="M:Date.Date.GetGrigorianCalendar(System.Double)"/><br/>
             3) <see cref="M:Date.Date.IsDateCorrect(System.Int32,System.Int32,System.Int32)"/><br/>
             4) <see cref="M:Date.Date.IsYearLeap(System.Int32)"/><br/>
+            5) <see cref="M:Date.Date.IsCalendarCorrect(Date.Date.Calendar)"/><br/>
             <br/>
             Операторы:<br/>
             1) <see cref="M:Date.Date.op_Addition(Date.Date,Date.Date)"/><br/>
@@ -142,6 +143,10 @@
             </summary>
             
             <param name="calendar"> Григорианский календарь. Дата должна быть позднее 23 ноября -4713 года.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
         </member>
         <member name="M:Date.Date.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double)">
             <summary>
@@ -155,6 +160,10 @@
             <param name="hour"> час</param>
             <param name="minute"> минута</param>
             <param name="second"> секунда</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
         </member>
         <member name="M:Date.Date.#ctor(System.Double)">
             <summary>
@@ -163,6 +172,10 @@
             </summary>
             
             <param name="julianDate"> Юлианская дата. должна быть положительна.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче отрицательной юлианской даты.
+            </exception>
         </member>
         <member name="M:Date.Date.#ctor(Date.Date)">
             <summary>
@@ -253,6 +266,10 @@
             <returns>
             Юлианский день, соответствующий переданной дате Григорианского календаря.
             </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
         </member>
         <member name="M:Date.Date.GetGrigorianCalendar(System.Double)">
             <summary>
@@ -263,6 +280,18 @@
             
             <returns>
             Дата Григорианского календаря, соответствующую переданной Юлианской дате.
+            </returns>
+        </member>
+        <member name="M:Date.Date.IsCalendarCorrect(Date.Date.Calendar)">
+            <summary>
+            Проверяет, существует ли переданная дата в Григорианском календаре.
+            </summary>
+            
+            <param name="calendar"> Дата Григорианского календаря.</param>
+            
+            <returns>
+            true, если дата существует.<br/>
+            false, если нет.
             </returns>
         </member>
         <member name="M:Date.Date.IsDateCorrect(System.Int32,System.Int32,System.Int32)">

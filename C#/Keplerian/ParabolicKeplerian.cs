@@ -18,6 +18,19 @@ namespace Keplerian
     /// </summary>
     /// 
     /// <remarks>
+    /// Константы:<br/>
+    /// 1) <see cref="Keplerian.G"/><br/>
+    /// <br/>
+    /// Поля:<br/>
+    /// 1) <see cref="Keplerian.julianDate"/><br/>
+    /// 2) <see cref="Keplerian.eccentricity"/><br/>
+    /// 3) <see cref="Keplerian.perifocusDistance"/><br/>
+    /// 4) <see cref="Keplerian.inclination"/><br/>
+    /// 5) <see cref="Keplerian.ascendingNodeLongitude"/><br/>
+    /// 6) <see cref="Keplerian.periapsisArgument"/><br/>
+    /// 7) <see cref="Keplerian.trueAnomaly"/><br/>
+    /// 8) <see cref="Keplerian.centralBody"/><br/>
+    /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="ParabolicKeplerian(double, double, double, double, double, double, Planet)"/><br/>
     /// 2) <see cref="ParabolicKeplerian(ParabolicKeplerian)"/><br/>
@@ -42,19 +55,6 @@ namespace Keplerian
     /// 4) <see cref="GetVelocity(double)"/><br/>
     /// 5) <see cref="Keplerian.ToString()"/><br/>
     /// 6) <see cref="Keplerian.ToString(double)"/><br/>
-    /// <br/>
-    /// Константы:<br/>
-    /// 1) <see cref="Keplerian.G"/><br/>
-    /// <br/>
-    /// Поля:<br/>
-    /// 1) <see cref="Keplerian.julianDate"/><br/>
-    /// 2) <see cref="Keplerian.eccentricity"/><br/>
-    /// 3) <see cref="Keplerian.perifocusDistance"/><br/>
-    /// 4) <see cref="Keplerian.inclination"/><br/>
-    /// 5) <see cref="Keplerian.ascendingNodeLongitude"/><br/>
-    /// 6) <see cref="Keplerian.periapsisArgument"/><br/>
-    /// 7) <see cref="Keplerian.trueAnomaly"/><br/>
-    /// 8) <see cref="Keplerian.centralBody"/><br/>
     /// </remarks>
     public class ParabolicKeplerian : Keplerian
     {
@@ -79,6 +79,13 @@ namespace Keplerian
         /// <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="Math.PI"/></param>
         /// <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
         /// <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null в <see cref="centralBody"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректных значений.
+        /// </exception>
         public ParabolicKeplerian(double julianDate, double perifocusDistance,
             double inclination, double ascendingNodeLongitude, double periapsisArgument,
             double trueAnomaly, Planet centralBody) : base(julianDate, 1.0,
@@ -93,6 +100,10 @@ namespace Keplerian
         /// </summary>
         /// 
         /// <param name="keplerian"> Копируемый ParabolicKeplerian не должен быть null</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public ParabolicKeplerian(ParabolicKeplerian keplerian) : base(keplerian)
         {
 

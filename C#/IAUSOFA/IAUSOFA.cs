@@ -10,6 +10,22 @@ namespace IAUSOFA
     /// Библиотека: https://www.iausofa.org/ <br/>
     /// Описания функций и их исходный код можно найти там.
     /// </summary>
+    /// 
+    /// <remarks>
+    /// Константы:<br/>
+    /// 1) <see cref="DD2R"/><br/>
+    /// 2) <see cref="DAU"/><br/>
+    /// 3) <see cref="DAS2R"/><br/>
+    /// <br/>
+    /// Функции:<br/>
+    /// 1) <see cref="iauPmat06"/><br/>
+    /// 2) <see cref="iauGst06a"/><br/>
+    /// 3) <see cref="iauObl06"/><br/>
+    /// 4) <see cref="iauNut06a"/><br/>
+    /// 5) <see cref="iauNumat"/><br/>
+    /// 6) <see cref="iauEpv00"/><br/>
+    /// 7) <see cref="iauPlan94"/><br/>
+    /// </remarks>
     public static class IAUSOFA
     {
         #region consts

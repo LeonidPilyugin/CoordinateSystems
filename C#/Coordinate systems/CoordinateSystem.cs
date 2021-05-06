@@ -35,7 +35,7 @@ namespace CoordinateSystems
     /// 11) <see cref="VectorFromRoot"/><br/>
     /// 12) <see cref="VelocityFromRoot"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="ConvertTo(CoordinateSystem, Vector)"/><br/>
     /// 2) <see cref="TurnTo(Vector, List&lt;Vector&gt;)"/><br/>
     /// 3) <see cref="GetVectorFromRoot(Vector)"/><br/>
@@ -77,8 +77,25 @@ namespace CoordinateSystems
         /// <param name="basis"> Базис относительно базовой системы координат.</param>
         /// <param name="velocity"> Скорость относительно базовой системы координат.</param>
         /// <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если vector, basis или velocity равны null.
+        /// </exception>
         public CoordinateSystem(Vector vector, Basis basis, Vector velocity, CoordinateSystem referenceSystem = null)
         {
+            if(vector == null)
+            {
+                throw new ArgumentNullException("vector mustn't be null");
+            }
+            if (basis == null)
+            {
+                throw new ArgumentNullException("vector mustn't be null");
+            }
+            if (velocity == null)
+            {
+                throw new ArgumentNullException("vector mustn't be null");
+            }
+
             this.vector = vector;
             this.basis = basis;
             this.velocity = velocity;
@@ -101,8 +118,17 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="coordinateSystem"> Копируемая система координат. Не должна быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public CoordinateSystem(CoordinateSystem coordinateSystem)
         {
+            if(coordinateSystem == null)
+            {
+                throw new ArgumentNullException("coordinateSystem mustn't be null");
+            }
+
             this.vector = new Vector(coordinateSystem.vector);
             this.basis = new Basis(coordinateSystem.basis);
             this.referenceSystem = coordinateSystem.referenceSystem;
@@ -204,7 +230,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Матрица перехода от базовой к этой системе координат.
         /// </summary>
-        protected Matrix TransitionMatrix
+        public Matrix TransitionMatrix
         {
             get
             {
@@ -215,7 +241,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Матрица перехода от корня к этой системе координат.
         /// </summary>
-        protected Matrix TransitionMatrixRelativelyRoot
+        public Matrix TransitionMatrixRelativelyRoot
         {
             get
             {
@@ -241,7 +267,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Базис относительно базовой системы координат.
         /// </summary>
-        protected Basis BasisRelativelyReferenceSystem
+        public Basis BasisRelativelyReferenceSystem
         {
             get
             {
@@ -252,7 +278,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Базис относительно корня.
         /// </summary>
-        protected Basis BasisRelativelyRoot
+        public Basis BasisRelativelyRoot
         {
             get
             {
@@ -263,7 +289,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Базис корня в этой системе координат.
         /// </summary>
-        protected Basis RootBasis
+        public Basis RootBasis
         {
             get
             {
@@ -274,7 +300,7 @@ namespace CoordinateSystems
         /// <summary>
         /// Базис базовой системы координат в этой системе координат.
         /// </summary>
-        protected Basis ReferenceSystemBasis
+        public Basis ReferenceSystemBasis
         {
             get
             {
@@ -378,7 +404,7 @@ namespace CoordinateSystems
         /// <returns>
         /// Вектор, переведенный в систему координат корня.
         /// </returns>
-        protected Vector GetVectorFromRoot(Vector point = null)
+        public Vector GetVectorFromRoot(Vector point = null)
         {
             var result = point;
             if(result == null)
@@ -404,7 +430,7 @@ namespace CoordinateSystems
         /// <returns>
         /// Вектор, переведенный в базовую систему координат.
         /// </returns>
-        protected Vector GetVectorRelativelyReferenceSystem(Vector point = null)
+        public Vector GetVectorRelativelyReferenceSystem(Vector point = null)
         {
             var result = new Vector(0.0, 0.0, 0.0);
 
@@ -420,12 +446,12 @@ namespace CoordinateSystems
         /// Возвращает вектор скорости, переданный в параметре относительно корня. 
         /// </summary>
         /// 
-        /// <param name="point"> Переводимый вектор скорости. Если равен null, то принимается за нулевой вектор.</param>
+        /// <param name="velocity"> Переводимый вектор скорости. Если равен null, то принимается за нулевой вектор.</param>
         /// 
         /// <returns>
         /// Вектор скорости, переведенный в систему координат корня.
         /// </returns>
-        protected Vector GetVelocityFromRoot(Vector velocity = null)
+        public Vector GetVelocityFromRoot(Vector velocity = null)
         {
             var result = velocity;
             if (result == null)
@@ -451,7 +477,7 @@ namespace CoordinateSystems
         /// <returns>
         /// Вектор скорости, переведенный в базовую систему координат.
         /// </returns>
-        protected Vector GetVelocityRelativelyReferenceSystem(Vector point = null)
+        public Vector GetVelocityRelativelyReferenceSystem(Vector point = null)
         {
             var result = new Vector(0.0, 0.0, 0.0);
 

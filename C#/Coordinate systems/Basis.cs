@@ -27,7 +27,7 @@ namespace CoordinateSystems
     /// 3) <see cref="K"/><br/>
     /// 4) <see cref="Matrix"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="TurnX(double)"/><br/>
     /// 2) <see cref="TurnY(double)"/><br/>
     /// 3) <see cref="TurnZ(double)"/><br/>
@@ -80,11 +80,18 @@ namespace CoordinateSystems
         /// <param name="i"> Единичный вектор i. Не должен быть равен null.</param>
         /// <param name="j"> Единичный вектор j. Не должен быть равен null.</param>
         /// <param name="k"> Единичный вектор k. Не должен быть равен null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если хотя бы один из параметров null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если передаваемые векторы компланарны.
+        /// </exception>
         public Basis(UnitVector i, UnitVector j, UnitVector k)
         {
-            this.i = new UnitVector(i);
-            this.j = new UnitVector(j);
-            this.k = new UnitVector(k);
+            this.I = new UnitVector(i);
+            this.J = new UnitVector(j);
+            this.K = new UnitVector(k);
         }
 
         /// <summary>
@@ -93,6 +100,10 @@ namespace CoordinateSystems
         /// 
         /// <param name="i"> Единичный вектор i. Не должен быть равен null.</param>
         /// <param name="j"> Единичный вектор j. Не должен быть равен null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если хотя бы один из параметров null.
+        /// </exception>
         public Basis(UnitVector i, UnitVector j) : this(i, j, i * j)
         {
 
@@ -106,8 +117,17 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="matrix"> Копируемая матрица. Должна быть 3 * 3, не должна быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если параметр равен null.
+        /// </exception>
         public Basis(Matrix matrix)
         {
+            if(matrix == null)
+            {
+                throw new ArgumentNullException("matrix mustn't be null");
+            }
+
             for (int i = 0; i < 3; i++)
             {
                 this[i] = new UnitVector(matrix[i, 0], matrix[i, 1], matrix[i, 2]);
@@ -119,11 +139,13 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="basis"> Копируемый базис. Не должен быть null.</param>
-        public Basis(Basis basis)
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если параметр равен null.
+        /// </exception>
+        public Basis(Basis basis) : this(basis.I, basis.J, basis.k)
         {
-            this.i = new UnitVector(basis.i);
-            this.j = new UnitVector(basis.j);
-            this.k = new UnitVector(basis.k);
+
         }
         #endregion
 
@@ -258,7 +280,7 @@ namespace CoordinateSystems
         }
         #endregion
 
-        #region functions
+        #region methods
         #region turn
         /// <summary>
         /// Поворачивает базис вокруг оси X на заданный угол.

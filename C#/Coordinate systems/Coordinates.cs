@@ -294,14 +294,28 @@ namespace CoordinateSystems
         /// Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
         /// </summary>
         /// 
-        /// <param name="latitude"> Широта.</param>
-        /// <param name="longitude"> Долгота.</param>
+        /// <param name="latitude"> Широта. Измеряется в радианах. -<see cref="Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="Math.PI"/> / 2.</param>
+        /// <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="Math.PI"/> &lt;= latitude &lt;= <see cref="Math.PI"/>.</param>
         /// 
         /// <returns>
         /// Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
         /// </returns>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если передается широта, по модулю большая <see cref="Math.PI"/> / 2 или
+        /// долгота, по модулю большая <see cref="Math.PI"/>.
+        /// </exception>
         public static Vector GetGCStoTCSvector(double latitude, double longitude)
         {
+            if(latitude < -PI / 2.0 || latitude > PI / 2.0)
+            {
+                throw new ArgumentException("Latitude must be <= PI / 2 and >= -PI / 2");
+            }
+            if (longitude < -PI || longitude > PI)
+            {
+                throw new ArgumentException("Longitude must be <= PI and >= -PI");
+            }
+
             latitude *= DD2R;
             longitude *= DD2R;
             Vector result = new Vector();
@@ -315,12 +329,17 @@ namespace CoordinateSystems
         /// Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
         /// </summary>
         /// 
-        /// <param name="latitude"> Широта.</param>
-        /// <param name="longitude"> Долгота.</param>
+        /// <param name="latitude"> Широта. Измеряется в радианах. -<see cref="Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="Math.PI"/> / 2.</param>
+        /// <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="Math.PI"/> &lt;= latitude &lt;= <see cref="Math.PI"/>.</param>
         /// 
         /// <returns>
         /// Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
         /// </returns>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если передается широта, по модулю большая <see cref="Math.PI"/> / 2 или
+        /// долгота, по модулю большая <see cref="Math.PI"/>.
+        /// </exception>
         public static Vector GetTCStoGCSvector(double latitude, double longitude)
         {
             return -GetGCStoTCSvector(latitude, longitude);

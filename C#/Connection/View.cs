@@ -39,9 +39,13 @@ namespace Connection
         /// </summary>
         /// 
         /// <param name="length"> Максимальное расстояние. Должно быть положительно.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче неположительного значения.
+        /// </exception>
         public View(double length)
         {
-            this.length = length;
+            Length = length;
         }
         #endregion
 
@@ -135,9 +139,13 @@ namespace Connection
         /// 
         /// <param name="angle"> Угол полураствора. Измеряется в радианах. 0 &lt; angle &lt;= <see cref="Math.PI"/> / 2.</param>
         /// <param name="length"> Максимальное расстояние. Должно быть положительным.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректных значений.
+        /// </exception>
         public ConicView(double length, double angle) : base(length)
         {
-            this.angle = angle;
+            Angle = angle;
         }
 
         /// <summary>
@@ -145,6 +153,10 @@ namespace Connection
         /// </summary>
         /// 
         /// <param name="view"> Копируемый ConicView. Не должен быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public ConicView(ConicView view) : this(view.angle, view.length)
         {
 
@@ -232,10 +244,14 @@ namespace Connection
         /// <param name="angle1"> Угол полураствора, лежащий в плоскости XY. Измеряется в радианах. 0 &lt; angle1 &lt;= <see cref="Math.PI"/> / 2.</param>
         /// <param name="angle2"> Угол полураствора, лежащий в плоскости XZ. Измеряется в радианах. 0 &lt; angle2 &lt;= <see cref="Math.PI"/> / 2.</param>
         /// <param name="length"> Максимальное расстояние. Должно быть положительно.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректных значений.
+        /// </exception>
         public PyramidView(double angle1, double angle2, double length) : base(length)
         {
-            this.angle1 = angle1;
-            this.angle2 = angle2;
+            Angle1 = angle1;
+            Angle2 = angle2;
         }
 
         /// <summary>
@@ -243,6 +259,10 @@ namespace Connection
         /// </summary>
         /// 
         /// <param name="view"> Копируемый PyramidView. Не должен быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public PyramidView(PyramidView view) : this(view.angle1, view.angle2, view.length)
         {
 

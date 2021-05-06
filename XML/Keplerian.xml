@@ -84,6 +84,13 @@
             <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
             <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
         </member>
         <member name="M:Keplerian.EllipticKeplerian.#ctor(Keplerian.EllipticKeplerian)">
             <summary>
@@ -94,6 +101,10 @@
             </summary>
             
             <param name="keplerian"> Копируемый EllipticKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
         </member>
         <member name="P:Keplerian.EllipticKeplerian.MeanAngularVelocity">
             <inheritdoc/>
@@ -220,6 +231,13 @@
             <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
             <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
         </member>
         <member name="M:Keplerian.HyperbolicKeplerian.#ctor(Keplerian.HyperbolicKeplerian)">
             <summary>
@@ -230,6 +248,10 @@
             </summary>
             
             <param name="keplerian"> Копируемый HyperbolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
         </member>
         <member name="P:Keplerian.HyperbolicKeplerian.MeanAngularVelocity">
             <inheritdoc/>
@@ -395,6 +417,13 @@
             <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
             <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в <see cref="F:Keplerian.Keplerian.centralBody"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
         </member>
         <member name="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)">
             <summary>
@@ -402,6 +431,10 @@
             </summary>
             
             <param name="keplerian"> Копируемый Keplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
         </member>
         <member name="P:Keplerian.Keplerian.Vector">
             <summary>
@@ -647,6 +680,13 @@
             <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
             <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
         </member>
         <member name="M:Keplerian.NotParabolicKeplerian.#ctor(Keplerian.NotParabolicKeplerian)">
             <summary>
@@ -655,6 +695,10 @@
             </summary>
             
             <param name="keplerian"> Копируемый NotParabolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
         </member>
         <member name="P:Keplerian.NotParabolicKeplerian.SemimajorAxis">
             <summary>
@@ -789,6 +833,13 @@
             <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
             <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в <see cref="!:centralBody"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
         </member>
         <member name="M:Keplerian.ParabolicKeplerian.#ctor(Keplerian.ParabolicKeplerian)">
             <summary>
@@ -796,6 +847,10 @@
             </summary>
             
             <param name="keplerian"> Копируемый ParabolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
         </member>
         <member name="P:Keplerian.ParabolicKeplerian.Vector">
             <summary>

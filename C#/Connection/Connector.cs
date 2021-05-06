@@ -19,20 +19,18 @@ namespace Connection
     /// <remarks>
     /// Поля:<br/>
     /// 1) <see cref="isAnalizing"/><br/>
-    /// 2) <see cref="carrier"/><br/>
-    /// 3) <see cref="view"/><br/>
-    /// 4) <see cref="workingConnectors"/><br/>
-    /// 5) <see cref="Body.id"/><br/>
-    /// 6) <see cref="Body.bodies"/><br/>
-    /// 7) <see cref="CoordinateSystem.vector"/><br/>
-    /// 8) <see cref="CoordinateSystem.velocity"/><br/>
-    /// 9) <see cref="CoordinateSystem.basis"/><br/>
-    /// 10) <see cref="CoordinateSystem.referenceSystem"/><br/>
+    /// 2) <see cref="view"/><br/>
+    /// 3) <see cref="workingConnectors"/><br/>
+    /// 4) <see cref="Body.id"/><br/>
+    /// 5) <see cref="Body.bodies"/><br/>
+    /// 6) <see cref="CoordinateSystem.vector"/><br/>
+    /// 7) <see cref="CoordinateSystem.velocity"/><br/>
+    /// 8) <see cref="CoordinateSystem.basis"/><br/>
+    /// 9) <see cref="CoordinateSystem.referenceSystem"/><br/>
     /// <br/>
     /// Конструкторы:<br/>
-    /// 1) <see cref="Connector()"/><br/>
-    /// 2) <see cref="Connector(Connector)"/><br/>
-    /// 3) <see cref="Connector(string, CoordinateSystem, View, Body)"/><br/>
+    /// 1) <see cref="Connector(Connector)"/><br/>
+    /// 2) <see cref="Connector(string, Vector, Basis, View)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="View"/><br/>
@@ -91,7 +89,7 @@ namespace Connection
         /// <summary>
         /// Носитель.
         /// </summary>
-        protected Body carrier;
+        //protected Body carrier;
 
         /// <summary>
         /// Область видимости.
@@ -112,12 +110,16 @@ namespace Connection
         /// isAnalizing = false<br/>
         /// </summary>
         /// 
-        /// <param name="ID"> Идентификатор</param>
+        /// <param name="id"> Идентификатор</param>
         /// <param name="vector"> Вектор относительно базовой системы координат.</param>
         /// <param name="basis"> Базис относительно базовой системы координат.</param>
         /// <param name="view"> Область видимости.</param>
         /// <param name="carrier"> Носитель.</param>
-        public Connector(string ID, Vector vector, Basis basis, View view, Body carrier)
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public Connector(string id, Vector vector, Basis basis, View view)
         {
             //this.IsWorking = isWorking;
             //this.WorkingConnectors = (workingConnectors == null) ? null : new List<Connector>(workingConnectors);
@@ -125,14 +127,12 @@ namespace Connection
             //sendingQueue = new Queue<Message>();
             //isSending = false;
 
-            this.id = ID;
-            this.vector = vector;
-            this.basis = basis;
-            this.velocity = new Vector(0.0, 0.0, 0.0);
-            this.referenceSystem = carrier;
-            this.view = view;
-            this.isAnalizing = false;
-            this.carrier = carrier;
+            ID = id;
+            Vector = vector;
+            Basis = basis;
+            Velocity = new Vector(0.0, 0.0, 0.0);
+            View = view;
+            isAnalizing = false;
         }
 
         /// <summary>
@@ -140,33 +140,14 @@ namespace Connection
         /// </summary>
         /// 
         /// <param name="connector"> Копируемое средство связи.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Connector(Connector connector) :
-            this(connector.ID, connector.vector, connector.basis, connector.view, connector.carrier)
+            this(connector.ID, connector.vector, connector.basis, connector.view)
         {
 
-        }
-
-        /// <summary>
-        /// Конструктор по умолчанию.<br/>
-        /// view = new ConicView(PI / 6.0, double.MaxValue)<br/>
-        /// isAnalizing = false<br/>
-        /// carrier = null<br/>
-        /// id = "New connector"<br/>
-        /// vector = new Vector(0.0, 0.0, 0.0)<br/>
-        /// basis = new Basis()<br/>
-        /// velocity = new Vector(0.0, 0.0, 0.0)<br/>
-        /// referenceSystem = carrier<br/>
-        /// </summary>
-        public Connector()
-        {
-            view = new ConicView(PI / 6.0, double.MaxValue);
-            isAnalizing = false;
-            carrier = null;
-            id = "New connector";
-            vector = new Vector(0.0, 0.0, 0.0);
-            basis = new Basis();
-            velocity = new Vector(0.0, 0.0, 0.0);
-            referenceSystem = carrier;
         }
 
         static Connector()
@@ -310,12 +291,12 @@ namespace Connection
         /// <param name="message"> отправляемое сообщение.</param>
         protected void Send(Message message)
         {
-            Console.WriteLine(DateTime.Now + ": " + ID + " send " + message.Data + " to " + message.FindNext(this).ID);
+            Console.WriteLine(DateTime.Now + ": " + ID + " send " + message.Type + " to " + message.FindNext(this).ID);
 
             TurnTo(message.FindNext(this).ConvertTo(this));
             message.Send(this);
 
-            Console.WriteLine(DateTime.Now + ": " + ID + " sent " + message.Data + " to " + message.FindNext(this).ID);
+            Console.WriteLine(DateTime.Now + ": " + ID + " sent " + message.Type + " to " + message.FindNext(this).ID);
         }
 
         /// <summary>
@@ -379,7 +360,7 @@ namespace Connection
         /// </returns>
         protected virtual bool CanAccess(Body receiver)
         {
-            return (!Message.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < view.Length);
+            return (!Body.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < view.Length);
         }
         #endregion
 

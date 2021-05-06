@@ -14,7 +14,6 @@ namespace CoordinateSystems
     /// 3) <see cref="Vector(double, double, double)"/><br/>
     /// 4) <see cref="Vector(double, double)"/><br/>
     /// 5) <see cref="Vector(Vector)"/><br/>
-    /// 6) <see cref="Vector(UnitVector)"/><br/>
     /// </summary>
     /// 
     /// <remarks>
@@ -35,7 +34,7 @@ namespace CoordinateSystems
     /// 9) <see cref="XZprojection"/><br/>
     /// 10) <see cref="YZprojection"/><br/>
     /// <br/>
-    /// Функции:<br/>
+    /// Методы:<br/>
     /// 1) <see cref="TurnX(double)"/><br/>
     /// 2) <see cref="TurnY(double)"/><br/>
     /// 3) <see cref="TurnZ(double)"/><br/>
@@ -115,6 +114,10 @@ namespace CoordinateSystems
         /// 
         /// <param name="theta"> Зенитный угол. Измеряется в радианах. 0 &lt;= Theta &lt;= <see cref="Math.PI"/></param>
         /// <param name="phi"> Азимутальный угол. Измеряется в радианах. -<see cref="Math.PI"/> &lt;= Phi &lt;= <see cref="Math.PI"/></param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если theta или phi не соответствуют возможным.
+        /// </exception>
         public Vector(double theta, double phi)
         {
             this.x = this.y = this.z = 1.0;
@@ -128,23 +131,20 @@ namespace CoordinateSystems
         /// </summary>
         /// 
         /// <param name="vector"> Копируемый вектор. Не должен быть null.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public Vector(Vector vector)
         {
+            if(vector == null)
+            {
+                throw new ArgumentNullException("vector mustn't be null");
+            }
+
             this.x = vector.x;
             this.y = vector.y;
             this.z = vector.z;
-        }
-
-        /// <summary>
-        /// Конструктор копирования единичного вектора.
-        /// </summary>
-        /// 
-        /// <param name="unitVector"> Копируемый единичный вектор. Не должен быть null.</param>
-        public Vector(UnitVector unitVector)
-        {
-            this.x = unitVector.x;
-            this.y = unitVector.y;
-            this.z = unitVector.z;
         }
         #endregion
 
@@ -400,7 +400,7 @@ namespace CoordinateSystems
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <summary>
         /// Поворачивает вектор вокруг оси X на заданный угол.
         /// </summary>

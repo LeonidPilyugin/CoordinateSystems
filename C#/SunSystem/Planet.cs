@@ -36,10 +36,11 @@ namespace SunSystem
     /// <br/>
     /// Методы:<br/>
     /// 1) <see cref="IsInside(Vector)"/><br/>
-    /// 1) <see cref="IsCrossing(Vector, Vector)"/><br/>
-    /// 1) <see cref="GetDirectionVector(Vector, Vector)"/><br/>
-    /// 1) <see cref="GetProjection(Vector, Vector, Vector)"/><br/>
-    /// 1) <see cref="UpdateParams(double)"/><br/>
+    /// 2) <see cref="IsCrossing(Vector, Vector)"/><br/>
+    /// 3) <see cref="GetDirectionVector(Vector, Vector)"/><br/>
+    /// 4) <see cref="GetProjection(Vector, Vector, Vector)"/><br/>
+    /// 5) <see cref="UpdateParams(double)"/><br/>
+    /// 6) <see cref="ToString()"/><br/>
     /// </remarks>
     public class Planet : Body
     {
@@ -84,25 +85,97 @@ namespace SunSystem
         /// <param name="basis"> Базис относительно базовой системы координат. Не должен быть null.</param>
         /// <param name="velocity"> Скорость относительно базовой системы координат. Не должна быть null.</param>
         /// <param name="referenceSystem"> Базовая система координат.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче некорректного значения.
+        /// </exception>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче bull.
+        /// </exception>
         public Planet(double mass, double minRadius, double maxRadius,
             string id, Vector vector, Basis basis, Vector velocity, CoordinateSystem referenceSystem) :
             base(id, vector, basis, velocity, referenceSystem)
         {
-            this.mass = mass;
-            this.minRadius = minRadius;
-            this.maxRadius = maxRadius;
+            Mass = mass;
+            MinRadius = minRadius;
+            MaxRadius = maxRadius;
         }
         #endregion
 
         #region properties
         /// <summary>
-        /// Масса.
+        /// Масса. Должны быть положительной.
         /// </summary>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче неположительного значения.
+        /// </exception>
         public double Mass
         {
             get
             {
                 return mass;
+            }
+
+            set
+            {
+                if(value <= 0.0)
+                {
+                    throw new ArgumentException("Mass must be positive");
+                }
+
+                mass = value;
+            }
+        }
+
+        /// <summary>
+        /// Полярный радиус. Должен быть положителен.
+        /// </summary>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче неположительного значения.
+        /// </exception>
+        public double MinRadius
+        {
+            get
+            {
+                return minRadius;
+            }
+
+            set
+            {
+                if (value <= 0.0)
+                {
+                    throw new ArgumentException("MinRadius must be positive");
+                }
+
+                minRadius = value;
+            }
+        }
+
+        /// <summary>
+        /// Экваториальный радиус. Должен быть положителен.
+        /// </summary>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается при передаче неположительного значения.
+        /// </exception>
+        public double MaxRadius
+        {
+            get
+            {
+                return maxRadius;
+            }
+
+            set
+            {
+                if (value <= 0.0)
+                {
+                    throw new ArgumentException("MaxRadius must be positive");
+                }
+
+                maxRadius = value;
             }
         }
         #endregion
@@ -194,6 +267,18 @@ namespace SunSystem
         public void UpdateParams(double julianDate)
         {
             (vector, velocity, basis) = GetParamsMethod(julianDate);
+        }
+
+        /// <summary>
+        /// Возвращает строку: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+        /// </summary>
+        /// 
+        /// <returns>
+        /// Строка: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+        /// </returns>
+        public override string ToString()
+        {
+            return vector.ToString() + " " + velocity.ToString();
         }
         #endregion
     }
