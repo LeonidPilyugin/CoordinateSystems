@@ -97,7 +97,7 @@ namespace SunSystem
             string id, Vector vector, Basis basis, Vector velocity, CoordinateSystem referenceSystem) :
             base(id, vector, basis, velocity, referenceSystem)
         {
-            Mass = mass;
+            this.mass = mass;
             MinRadius = minRadius;
             MaxRadius = maxRadius;
         }

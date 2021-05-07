@@ -177,7 +177,7 @@ namespace Keplerian
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <summary>
         /// Возвращает Юлианскую дату, в который истинная аномалия равна данной.
         /// </summary>
@@ -233,19 +233,7 @@ namespace Keplerian
             return 2.0 * Atan(x - 1.0 / x);
         }
 
-        /// <summary>
-        /// Возвращает координаты в иннерциальной системе отсчета центра гравитации в данный Юлианский день.
-        /// </summary>
-        /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
-        /// 
-        /// <returns>
-        /// Вектор, направленный от центра гравитации к телу в
-        /// иннерциальной системе координат центра гравитации.<br/>
-        /// Координаты вектора измеряются в метрах.
-        /// </returns>
+        /// <inheritdoc/>
         public override Vector GetVector(double julianDate)
         {
             // Получение вектора
@@ -254,28 +242,31 @@ namespace Keplerian
             result.Length = perifocusDistance * 2.0 / (1.0 + Cos(trueAnomaly));
 
             // Поворот вектора
-            result.TurnZ(-periapsisArgument);
+            result.TurnZ(periapsisArgument);
             result.TurnX(-inclination);
             result.TurnZ(ascendingNodeLongitude);
+            result.Y = -result.Y;
 
             return result;
         }
 
-        /// <summary>
-        /// Возвращает скорость в иннерциальной системе отсчета центра гравитации в данную Юлианскую дату.
-        /// </summary>
-        /// 
-        /// <param name="julianDate">
-        /// Юлианская дата
-        /// </param>
-        /// 
-        /// <returns>
-        /// Модуль скорости относительно центра гравитации.<br/>
-        /// Измеряется в метрах в секунду.
-        /// </returns>
-        public override double GetVelocity(double julianDate)
+        /// <inheritdoc/>
+        public override Vector GetVelocity(double julianDate)
         {
-            return Sqrt(2.0 * G * CentralBody.Mass / GetVector(julianDate).Length);
+            // Получение вектора
+            double trueAnomaly = GetTrueAnomaly(julianDate);
+            Vector velocity = new Vector(PI / 2.0, -trueAnomaly);
+            velocity.Length = Sqrt(2.0 * G * CentralBody.Mass / GetVector(julianDate).Length);
+            double angle = Asin((1 + eccentricity * Cos(trueAnomaly)) /
+                Sqrt(1 + eccentricity * eccentricity + 2 * eccentricity * Cos(trueAnomaly)));
+
+            // Поворот вектора
+            velocity.TurnZ(PI - angle);
+            velocity.TurnZ(-periapsisArgument);
+            velocity.TurnX(-inclination);
+            velocity.TurnZ(ascendingNodeLongitude);
+
+            return velocity;
         }
         #endregion
     }

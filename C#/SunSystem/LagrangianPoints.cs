@@ -30,10 +30,16 @@ namespace SunSystem
     /// 1) <see cref="GetEps0(double)"/>:<br/>
     /// 2) <see cref="GetEarthRotationAxis(double)"/>:<br/>
     /// 3) <see cref="GetMoonRotationAxis(double)"/>:<br/>
-    /// 4) <see cref="GetSunEarth4(double)"/>:<br/>
-    /// 5) <see cref="GetSunEarth5(double)"/>:<br/>
-    /// 6) <see cref="GetEarthMoon4(double)"/>:<br/>
-    /// 7) <see cref="GetEarthMoon5(double)"/>:<br/>
+    /// 4) <see cref="GetSunEarth1(double)"/>:<br/>
+    /// 5) <see cref="GetSunEarth2(double)"/>:<br/>
+    /// 6) <see cref="GetSunEarth3(double)"/>:<br/>
+    /// 7) <see cref="GetSunEarth4(double)"/>:<br/>
+    /// 8) <see cref="GetSunEarth5(double)"/>:<br/>
+    /// 9) <see cref="GetEarthMoon1(double)"/>:<br/>
+    /// 10) <see cref="GetEarthMoon2(double)"/>:<br/>
+    /// 11) <see cref="GetEarthMoon3(double)"/>:<br/>
+    /// 12) <see cref="GetEarthMoon4(double)"/>:<br/>
+    /// 13) <see cref="GetEarthMoon5(double)"/>:<br/>
     /// </remarks>
     public static class LagrangianPoints
     {
@@ -114,25 +120,85 @@ namespace SunSystem
         /// <summary>
         /// 1 точка Лагранжа для системы Солнце-Земля.
         /// </summary>
-        public static Vector SunEarth1
+        public static (Vector Vector, Vector Velocity) SunEarth1
         {
-            get { return Earth.Vector * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0)); }
+            get
+            {
+                Vector vector = Earth.Vector * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+                Vector velocity = Earth.Velocity * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+                return (vector, velocity);
+            }
         }
 
         /// <summary>
         /// 2 точка Лагранжа для системы Солнце-Земля.
         /// </summary>
-        public static Vector SunEarth2
+        public static (Vector Vector, Vector Velocity) SunEarth2
         {
-            get { return Earth.Vector * (1 + Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0)); }
+            get
+            {
+                Vector vector = Earth.Vector * (1 + Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+                Vector velocity = Earth.Velocity * (1 + Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+                return (vector, velocity);
+            }
         }
 
         /// <summary>
         /// 3 точка Лагранжа для системы Солнце-Земля.
         /// </summary>
-        public static Vector SunEarth3
+        public static (Vector Vector, Vector Velocity) SunEarth3
         {
-            get { return -Earth.Vector * (1 + SunEarthAlpha / 2.4); }
+            get
+            {
+                Vector vector = -Earth.Vector * (1 + SunEarthAlpha / 2.4);
+                Vector velocity = -Earth.Velocity * (1 + SunEarthAlpha / 2.4);
+                return (vector, velocity);
+            }
+        }
+
+        /// <summary>
+        /// 1 точка Лагранжа для системы Солнце-Земля.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetSunEarth1(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Earth.GetParamsMethod(julianDate);
+            Vector vector = vec * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+            Vector velocity = vel * (1 - Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+            return (vector, velocity);
+        }
+
+        /// <summary>
+        /// 2 точка Лагранжа для системы Солнце-Земля.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetSunEarth2(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Earth.GetParamsMethod(julianDate);
+            Vector vector = vec * (1 + Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+            Vector velocity = vel * (1 + Math.Pow(SunEarthAlpha / 3.0, 1 / 3.0));
+            return (vector, velocity);
+        }
+
+        /// <summary>
+        /// 3 точка Лагранжа для системы Солнце-Земля.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetSunEarth3(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Earth.GetParamsMethod(julianDate);
+            Vector vector = -vec * (1 + SunEarthAlpha / 2.4);
+            Vector velocity = -vel * (1 + SunEarthAlpha / 2.4);
+            return (vector, velocity);
         }
 
         /// <summary>
@@ -140,11 +206,14 @@ namespace SunSystem
         /// </summary>
         /// 
         /// <param name="julianDate"> Юлианская дата.</param>
-        public static Vector GetSunEarth4(double julianDate)
+        public static (Vector Vector, Vector Velocity) GetSunEarth4(double julianDate)
         {
-            var result = new Vector(Earth.Vector);
-            result.TurnAxis(GetEarthRotationAxis(julianDate), Math.PI / 3.0);
-            return result;
+            Vector vector, velocity;
+            Basis basis;
+            (vector, velocity, basis) = Earth.GetParamsMethod(julianDate);
+            vector.TurnAxis(GetEarthRotationAxis(julianDate), Math.PI / 3.0);
+            velocity.TurnAxis(GetEarthRotationAxis(julianDate), Math.PI / 3.0);
+            return (vector, velocity);
         }
 
         /// <summary>
@@ -152,11 +221,14 @@ namespace SunSystem
         /// </summary>
         /// 
         /// <param name="julianDate"> Юлианская дата.</param>
-        public static Vector GetSunEarth5(double julianDate)
+        public static (Vector Vector, Vector Velocity) GetSunEarth5(double julianDate)
         {
-            var result = new Vector(Earth.Vector);
-            result.TurnAxis(GetEarthRotationAxis(julianDate), -Math.PI / 3.0);
-            return result;
+            Vector vector, velocity;
+            Basis basis;
+            (vector, velocity, basis) = Earth.GetParamsMethod(julianDate);
+            vector.TurnAxis(GetEarthRotationAxis(julianDate), -Math.PI / 3.0);
+            velocity.TurnAxis(GetEarthRotationAxis(julianDate), -Math.PI / 3.0);
+            return (vector, velocity);
         }
         #endregion
 
@@ -164,25 +236,86 @@ namespace SunSystem
         /// <summary>
         /// 1 точка Лагранжа для системы Земля-Луна.
         /// </summary>
-        public static Vector EarthMoon1
+        public static (Vector Vector, Vector Velocity) EarthMoon1
         {
-            get { return Moon.Vector * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0)); }
+            get
+            {
+                Vector vector = Moon.Vector * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+                Vector velocity = Moon.Velocity * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+                return (vector, velocity);
+            }
         }
 
         /// <summary>
         /// 2 точка Лагранжа для системы Земля-Луна.
         /// </summary>
-        public static Vector EarthMoon2
+        public static (Vector Vector, Vector Velocity) EarthMoon2
         {
-            get { return Moon.Vector * (1 + Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0)); }
+            get
+            {
+                Vector vector = Moon.Vector * (1 + Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+                Vector velocity = Moon.Velocity * (1 + Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+                return (vector, velocity);
+            }
         }
 
         /// <summary>
         /// 3 точка Лагранжа для системы Земля-Луна.
         /// </summary>
-        public static Vector EarthMoon3
+        /// 
+        public static (Vector Vector, Vector Velocity) EarthMoon3
         {
-            get { return -Moon.Vector * (1 + EarthMoonAlpha / 2.4); }
+            get
+            {
+                Vector vector = -Moon.Vector * (1 + EarthMoonAlpha / 2.4);
+                Vector velocity = -Moon.Velocity * (1 + EarthMoonAlpha / 2.4);
+                return (vector, velocity);
+            }
+        }
+
+        /// <summary>
+        /// 1 точка Лагранжа для системы Земля-Луна.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetEarthMoon1(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Moon.GetParamsMethod(julianDate);
+            Vector vector = vec * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+            Vector velocity = vel * (1 - Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+            return (vector, velocity);
+        }
+
+        /// <summary>
+        /// 2 точка Лагранжа для системы Земля-Луна.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetEarthMoon2(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Moon.GetParamsMethod(julianDate);
+            Vector vector = vec * (1 + Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+            Vector velocity = vel * (1 + Math.Pow(EarthMoonAlpha / 3.0, 1 / 3.0));
+            return (vector, velocity);
+        }
+
+        /// <summary>
+        /// 3 точка Лагранжа для системы Земля-Луна.
+        /// </summary>
+        /// 
+        /// <param name="julianDate"> Юлианская дата.</param>
+        public static (Vector Vector, Vector Velocity) GetEarthMoon3(double julianDate)
+        {
+            Vector vec, vel;
+            Basis basis;
+            (vec, vel, basis) = Moon.GetParamsMethod(julianDate);
+            Vector vector = -vec * (1 + EarthMoonAlpha / 2.4);
+            Vector velocity = -vel * (1 + EarthMoonAlpha / 2.4);
+            return (vector, velocity);
         }
 
         /// <summary>
@@ -190,11 +323,14 @@ namespace SunSystem
         /// </summary>
         /// 
         /// <param name="julianDate"> Юлианская дата.</param>
-        public static Vector GetEarthMoon4(double julianDate)
+        public static (Vector Vector, Vector Velocity) GetEarthMoon4(double julianDate)
         {
-            var result = new Vector(Moon.Vector);
-            result.TurnAxis(GetMoonRotationAxis(julianDate), Math.PI / 3.0);
-            return result;
+            Vector vector, velocity;
+            Basis basis;
+            (vector, velocity, basis) = Moon.GetParamsMethod(julianDate);
+            vector.TurnAxis(GetMoonRotationAxis(julianDate), Math.PI / 3.0);
+            velocity.TurnAxis(GetMoonRotationAxis(julianDate), Math.PI / 3.0);
+            return (vector, velocity);
         }
 
         /// <summary>
@@ -202,11 +338,14 @@ namespace SunSystem
         /// </summary>
         /// 
         /// <param name="julianDate"> Юлианская дата.</param>
-        public static Vector GetEarthMoon5(double julianDate)
+        public static (Vector Vector, Vector Velocity) GetEarthMoon5(double julianDate)
         {
-            var result = new Vector(Moon.Vector);
-            result.TurnAxis(GetMoonRotationAxis(julianDate), -Math.PI / 3.0);
-            return result;
+            Vector vector, velocity;
+            Basis basis;
+            (vector, velocity, basis) = Moon.GetParamsMethod(julianDate);
+            vector.TurnAxis(GetMoonRotationAxis(julianDate), -Math.PI / 3.0);
+            velocity.TurnAxis(GetMoonRotationAxis(julianDate), -Math.PI / 3.0);
+            return (vector, velocity);
         }
         #endregion
     }

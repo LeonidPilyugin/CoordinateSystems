@@ -464,7 +464,7 @@ namespace Date
         /// </exception>
         public static double GetJulianDate(Calendar calendar)
         {
-            if(IsCalendarCorrect(calendar))
+            if(!IsCalendarCorrect(calendar))
             {
                 throw new ArgumentException("calendar isn't correct");
             }

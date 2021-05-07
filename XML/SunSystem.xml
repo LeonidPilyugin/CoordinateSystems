@@ -24,10 +24,16 @@
             1) <see cref="M:SunSystem.LagrangianPoints.GetEps0(System.Double)"/>:<br/>
             2) <see cref="M:SunSystem.LagrangianPoints.GetEarthRotationAxis(System.Double)"/>:<br/>
             3) <see cref="M:SunSystem.LagrangianPoints.GetMoonRotationAxis(System.Double)"/>:<br/>
-            4) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth4(System.Double)"/>:<br/>
-            5) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth5(System.Double)"/>:<br/>
-            6) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)"/>:<br/>
-            7) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon5(System.Double)"/>:<br/>
+            4) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth1(System.Double)"/>:<br/>
+            5) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth2(System.Double)"/>:<br/>
+            6) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth3(System.Double)"/>:<br/>
+            7) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth4(System.Double)"/>:<br/>
+            8) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth5(System.Double)"/>:<br/>
+            9) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon1(System.Double)"/>:<br/>
+            10) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon2(System.Double)"/>:<br/>
+            11) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon3(System.Double)"/>:<br/>
+            12) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)"/>:<br/>
+            13) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon5(System.Double)"/>:<br/>
             </remarks>
         </member>
         <member name="M:SunSystem.LagrangianPoints.GetEps0(System.Double)">
@@ -88,6 +94,27 @@
             3 точка Лагранжа для системы Солнце-Земля.
             </summary>
         </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth1(System.Double)">
+            <summary>
+            1 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth2(System.Double)">
+            <summary>
+            2 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth3(System.Double)">
+            <summary>
+            3 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
         <member name="M:SunSystem.LagrangianPoints.GetSunEarth4(System.Double)">
             <summary>
             4 точка Лагранжа для системы Солнце-Земля.
@@ -116,6 +143,28 @@
             <summary>
             3 точка Лагранжа для системы Земля-Луна.
             </summary>
+            
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon1(System.Double)">
+            <summary>
+            1 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon2(System.Double)">
+            <summary>
+            2 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon3(System.Double)">
+            <summary>
+            3 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
         </member>
         <member name="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)">
             <summary>

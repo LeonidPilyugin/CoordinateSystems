@@ -26,7 +26,7 @@ namespace Agents
     /// 7) <see cref="CoordinateSystem.referenceSystem"/><br/>
     /// <br/>
     /// Конструкторы:<br/>
-    /// 1) <see cref="GroundStation(double, double, GroundStationConnector)"/><br/>
+    /// 1) <see cref="Repeater(RepeaterConnector, Vector, Basis, Vector, CoordinateSystem)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Connector"/><br/>

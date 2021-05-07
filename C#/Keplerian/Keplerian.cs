@@ -66,54 +66,54 @@ namespace Keplerian
         /// <summary>
         /// Юлианская дата начала движения.
         /// </summary>
-        public double julianDate;
+        protected double julianDate;
 
         /// <summary>
         /// Эксцентриситет.<br/>
         /// Граничные значения зависят от типа орбиты.
         /// </summary>
-        public double eccentricity;
+        protected double eccentricity;
 
         /// <summary>
         /// Перифокусное расстояние.<br/>
         /// Измеряется в метрах.<br/>
         /// perifocusDistance &gt; 0
         /// </summary>
-        public double perifocusDistance;
+        protected double perifocusDistance;
 
         /// <summary>
         /// Наклонение.<br/>
         /// Измеряется в радианах.<br/>
         /// 0 &lt;= inclination &lt;= <see cref="Math.PI"/>.
         /// </summary>
-        public double inclination;
+        protected double inclination;
 
         /// <summary>
         /// Долгота восходящего узла.<br/>
         /// Измеряется в радианах.<br/>
         /// 0 &lt;= ascendingNodeLongitude &lt;= 2 * <see cref="Math.PI"/>.
         /// </summary>
-        public double ascendingNodeLongitude;
+        protected double ascendingNodeLongitude;
 
         /// <summary>
         /// Аргумент перицентра.<br/>
         /// Измеряется в радианах.<br/>
         /// 0 &lt;= periapsisArgument &lt;= 2 * <see cref="Math.PI"/>.
         /// </summary>
-        public double periapsisArgument;
+        protected double periapsisArgument;
 
         /// <summary>
         /// Истинная аномалия в момент начала движения.<br/>
         /// Измеряется в радианах.<br/>
         /// граничные значения зависят от типа орбиты.
         /// </summary>
-        public double trueAnomaly;
+        protected double trueAnomaly;
 
         /// <summary>
         /// Центр гравитации.<br/>
         /// Не должен быть null.
         /// </summary>
-        public Planet centralBody;
+        protected Planet centralBody;
         #endregion
 
         #region constructors
@@ -205,7 +205,7 @@ namespace Keplerian
         /// Модуль скорости в иннерциальной системе координат базового тела в начале движения.<br/>
         /// Измеряется в метрах в секунду.
         /// </summary>
-        public double Velocity
+        public Vector Velocity
         {
             get
             {
@@ -411,10 +411,10 @@ namespace Keplerian
         /// <param name="julianDate"> Юлианская дата.</param>
         /// 
         /// <returns>
-        /// Модуль скорости относительно центра гравитации.<br/>
-        /// Измеряется в метрах в секунду.
+        /// Скорость относительно центра гравитации.<br/>
+        /// Координаты вектора скорости измеряются в метрах в секунду.
         /// </returns>
-        public abstract double GetVelocity(double julianDate);
+        public abstract Vector GetVelocity(double julianDate);
 
         /// <summary>
         /// Преобразует в строку.

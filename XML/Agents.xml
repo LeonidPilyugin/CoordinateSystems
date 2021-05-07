@@ -73,6 +73,146 @@
             Вызывается, если передается null.
             </exception>
         </member>
+        <member name="T:Agents.LagrangianRepeater">
+            <summary>
+            Ретранслятор, находящийся на орбите. Наследник класса <see cref="T:Agents.Repeater"/>.
+            </summary>
+            
+            <remarks>
+            Типы:<br/>
+            1) <see cref="T:Agents.LagrangianRepeater.GetParams"/><br/>
+            2) <see cref="T:Agents.LagrangianRepeater.LagrangianPoint"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Agents.LagrangianRepeater.getParamsMethod"/><br/>
+            2) <see cref="F:Agents.Repeater.connector"/><br/>
+            3) <see cref="F:CoordinateSystems.Body.bodies"/><br/>
+            4) <see cref="F:CoordinateSystems.Body.id"/><br/>
+            5) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            6) <see cref="F:CoordinateSystems.CoordinateSystem.velocity"/><br/>
+            7) <see cref="F:CoordinateSystems.CoordinateSystem.basis"/><br/>
+            8) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
+            2) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Agents.Repeater.Connector"/><br/>
+            2) <see cref="P:CoordinateSystems.Body.Bodies"/><br/>
+            3) <see cref="P:CoordinateSystems.Body.ID"/><br/>
+            4) <see cref="P:CoordinateSystems.CoordinateSystem.Vector"/><br/>
+            5) <see cref="P:CoordinateSystems.CoordinateSystem.Basis"/><br/>
+            6) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystem"/><br/>
+            7) <see cref="P:CoordinateSystems.CoordinateSystem.Velocity"/><br/>
+            8) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrix"/><br/>
+            9) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+            10) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+            11) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyRoot"/><br/>
+            12) <see cref="P:CoordinateSystems.CoordinateSystem.RootBasis"/><br/>
+            13) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystemBasis"/><br/>
+            14) <see cref="P:CoordinateSystems.CoordinateSystem.VectorFromRoot"/><br/>
+            15) <see cref="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Body.IsInside(CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.CoordinateSystem,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})"/><br/>
+            6) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityFromRoot(CoordinateSystems.Vector)"/><br/>
+            9) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            10) <see cref="M:Agents.LagrangianRepeater.UpdateParams(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="T:Agents.LagrangianRepeater.GetParams">
+            <summary>
+            Делегат описывает функцию получения координат ретранслятора.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="T:Agents.LagrangianRepeater.LagrangianPoint">
+            <summary>
+            Точки Лагранжа.
+            </summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE1">
+            <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE2">
+            <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE3">
+            <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE4">
+            <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE5">
+            <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM1">
+            <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM2">
+            <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM3">
+            <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM4">
+            <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM5">
+            <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:Agents.LagrangianRepeater.getParamsMethod">
+            <summary>
+            Функция, описывающая положение ретранслятора.
+            </summary>
+        </member>
+        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)">
+            <summary>
+            Конструктор.
+            </summary>
+            
+            <param name="function"> Функция, определяющая координаты и скорость точки.</param>
+            <param name="connector"> Средство связи.</param>
+            <param name="basis"> Базис.</param>
+            <param name="vector"> Координаты.</param>
+            <param name="velocity"> Скорость.</param>
+            <param name="centralBody"> Тело, в системе отсчета которого заданы координаты.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)">
+            <summary>
+            Конструктор сам задает функцию по указанной точке Лагранжа.
+            </summary>
+            
+            <param name="lagrangianPoint"> Точка Лагранжа.</param>
+            <param name="connector"> Средство связи.</param>
+            <param name="basis"> Базис.</param>
+            <param name="vector"> Координаты.</param>
+            <param name="velocity"> Скорость.</param>
+            <param name="centralBody"> Тело, в системе отсчета которого заданы координаты.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Agents.LagrangianRepeater.UpdateParams(System.Double)">
+            <summary>
+            Обновляет поля vector и velocity значениями для указанной юлианской даты.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
         <member name="T:Agents.MainSpacecraft">
             <summary>
             Класс MainSpacecraft описывает главный космический аппарат. Наследник класса <see cref="T:CoordinateSystems.Body"/>.
@@ -136,6 +276,91 @@
             Вызывается, если передается null.
             </exception>
         </member>
+        <member name="T:Agents.OrbitRepeater">
+            <summary>
+            Ретранслятор, находящийся на орбите. Наследник класса <see cref="T:Agents.Repeater"/>.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:Agents.OrbitRepeater.keplerian"/><br/>
+            2) <see cref="F:Agents.Repeater.connector"/><br/>
+            3) <see cref="F:CoordinateSystems.Body.bodies"/><br/>
+            4) <see cref="F:CoordinateSystems.Body.id"/><br/>
+            5) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            6) <see cref="F:CoordinateSystems.CoordinateSystem.velocity"/><br/>
+            7) <see cref="F:CoordinateSystems.CoordinateSystem.basis"/><br/>
+            8) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Agents.OrbitRepeater.#ctor(Keplerian.EllipticKeplerian,CoordinateSystems.Basis,Connection.RepeaterConnector)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Agents.Repeater.Connector"/><br/>
+            2) <see cref="P:CoordinateSystems.Body.Bodies"/><br/>
+            3) <see cref="P:CoordinateSystems.Body.ID"/><br/>
+            4) <see cref="P:CoordinateSystems.CoordinateSystem.Vector"/><br/>
+            5) <see cref="P:CoordinateSystems.CoordinateSystem.Basis"/><br/>
+            6) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystem"/><br/>
+            7) <see cref="P:CoordinateSystems.CoordinateSystem.Velocity"/><br/>
+            8) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrix"/><br/>
+            9) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+            10) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+            11) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyRoot"/><br/>
+            12) <see cref="P:CoordinateSystems.CoordinateSystem.RootBasis"/><br/>
+            13) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystemBasis"/><br/>
+            14) <see cref="P:CoordinateSystems.CoordinateSystem.VectorFromRoot"/><br/>
+            15) <see cref="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot"/><br/>
+            16) <see cref="P:Agents.OrbitRepeater.Keplerian"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Body.IsInside(CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.CoordinateSystem,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})"/><br/>
+            6) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityFromRoot(CoordinateSystems.Vector)"/><br/>
+            9) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            10) <see cref="M:Agents.OrbitRepeater.UpdateParams(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:Agents.OrbitRepeater.keplerian">
+            <summary>
+            Keplerian, который хранит параметры орбиты.
+            </summary>
+        </member>
+        <member name="M:Agents.OrbitRepeater.#ctor(Keplerian.EllipticKeplerian,CoordinateSystems.Basis,Connection.RepeaterConnector)">
+            <summary>
+            Конструктор задает полям значения:<br/>
+            velocity — keplerian.Velocity<br/>
+            vector — keplerian.Vector<br/>
+            referenceSystem — keplerian.CentralBody<br/>
+            connector — connector<br/>
+            basis — basis<br/>
+            </summary>
+            
+            <param name="keplerian">Keplerian, который хранит параметры орбиты. Не должен быть null.</param>
+            <param name="basis"> Базис. Не должен быть null.</param>
+            <param name="connector"> Средство связи. Не должно быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Agents.OrbitRepeater.Keplerian">
+            <summary>
+            Keplerian, который хранит параметры орбиты.
+            </summary>
+        </member>
+        <member name="M:Agents.OrbitRepeater.UpdateParams(System.Double)">
+            <summary>
+            Обновляет поля vector и velocity значениями для указанной юлианской даты.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
         <member name="T:Agents.Repeater">
             <summary>
             Класс MainSpacecraft описывает главный космический аппарат. Наследник класса <see cref="T:CoordinateSystems.Body"/>.
@@ -152,7 +377,7 @@
             7) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
             <br/>
             Конструкторы:<br/>
-            1) <see cref="M:Agents.GroundStation.#ctor(System.Double,System.Double,Connection.GroundStationConnector)"/><br/>
+            1) <see cref="M:Agents.Repeater.#ctor(Connection.RepeaterConnector,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>

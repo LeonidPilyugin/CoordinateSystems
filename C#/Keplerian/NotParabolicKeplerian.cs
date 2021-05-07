@@ -224,17 +224,32 @@ namespace Keplerian
                 (1.0 + eccentricity * Cos(trueAnomaly)));
 
             // Поворот вектора
-            result.TurnZ(-periapsisArgument);
+            result.TurnZ(periapsisArgument);
             result.TurnX(-inclination);
             result.TurnZ(ascendingNodeLongitude);
+            result.Y = -result.Y;
 
             return result;
         }
 
         /// <inheritdoc/>
-        public override double GetVelocity(double julianDate)
+        public override Vector GetVelocity(double julianDate)
         {
-            return Sqrt(G * CentralBody.Mass * (2.0 / GetVector(julianDate).Length - 1.0 / SemimajorAxis));
+            // Получение вектора
+            double trueAnomaly = GetTrueAnomaly(julianDate);
+            Vector velocity = new Vector(PI / 2.0, -trueAnomaly);
+            velocity.Length =  Sqrt(G * CentralBody.Mass * (2.0 / GetVector(julianDate).Length - 1.0 / SemimajorAxis));
+            double angle = Asin((1 + eccentricity * Cos(trueAnomaly)) /
+                Sqrt(1 + eccentricity * eccentricity + 2 * eccentricity * Cos(trueAnomaly)));
+
+            // Поворот вектора
+            velocity.TurnZ(PI - angle);
+            velocity.TurnZ(periapsisArgument);
+            velocity.TurnX(-inclination);
+            velocity.TurnZ(ascendingNodeLongitude);
+            velocity.Y = -velocity.Y;
+
+            return velocity;
         }
         #endregion
     }

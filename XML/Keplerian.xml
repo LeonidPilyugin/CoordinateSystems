@@ -574,8 +574,8 @@
             <param name="julianDate"> Юлианская дата.</param>
             
             <returns>
-            Модуль скорости относительно центра гравитации.<br/>
-            Измеряется в метрах в секунду.
+            Скорость относительно центра гравитации.<br/>
+            Координаты вектора скорости измеряются в метрах в секунду.
             </returns>
         </member>
         <member name="M:Keplerian.Keplerian.ToString">
@@ -916,33 +916,10 @@
             </returns>
         </member>
         <member name="M:Keplerian.ParabolicKeplerian.GetVector(System.Double)">
-            <summary>
-            Возвращает координаты в иннерциальной системе отсчета центра гравитации в данный Юлианский день.
-            </summary>
-            
-            <param name="julianDate">
-            Юлианская дата
-            </param>
-            
-            <returns>
-            Вектор, направленный от центра гравитации к телу в
-            иннерциальной системе координат центра гравитации.<br/>
-            Координаты вектора измеряются в метрах.
-            </returns>
+            <inheritdoc/>
         </member>
         <member name="M:Keplerian.ParabolicKeplerian.GetVelocity(System.Double)">
-            <summary>
-            Возвращает скорость в иннерциальной системе отсчета центра гравитации в данную Юлианскую дату.
-            </summary>
-            
-            <param name="julianDate">
-            Юлианская дата
-            </param>
-            
-            <returns>
-            Модуль скорости относительно центра гравитации.<br/>
-            Измеряется в метрах в секунду.
-            </returns>
+            <inheritdoc/>
         </member>
     </members>
 </doc>
