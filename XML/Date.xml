@@ -413,5 +413,303 @@
             Вызывается, если уменьшаемая дата меньше вычитаемой.
             </exception>
         </member>
+        <member name="M:Date.Date.op_Equality(Date.Date,Date.Date)">
+            <summary>
+            Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты или ссылки совпадают.<br/>
+            false, если нет.
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_Inequality(Date.Date,Date.Date)">
+            <summary>
+            Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты или ссылки совпадают.<br/>
+            true, если нет.
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Equality(System.Double,Date.Date)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты равны.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Equality(Date.Date,System.Double)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты равны.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Inequality(System.Double,Date.Date)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты совпадают.<br/>
+            true, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Inequality(Date.Date,System.Double)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты совпадают.<br/>
+            true, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
     </members>
 </doc>

@@ -188,8 +188,28 @@ namespace Connection
             {
             Send(message);
             }*/
+            if(CanAccess(message.FindNext(this)))
+            {
+                Send(message);
+            }
+            else
+            {
+                // Получить новый путь
+                LinkedList<Connector> newPath = null;
+                while(newPath == null)
+                {
+                    newPath = GetPath(message.Last);
+                }
 
-            Send(message);
+                // Добавить к нему начало этого пути.
+                for(LinkedListNode<Connector> temp = message.Path.Find(this);
+                    temp != message.Path.First; temp = temp.Previous)
+                {
+                    newPath.AddFirst(temp.Value);
+                }
+
+                Send(new Message(message.Type, newPath));
+            }
         }
         #endregion
 

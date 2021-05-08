@@ -756,93 +756,440 @@ namespace Date
             return new Date(julianDate - date.julianDate);
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если даты или ссылки совпадают.<br/>
+        /// false, если нет.
+        /// </returns>
         public static bool operator ==(Date date1, Date date2)
         {
+            if(Equals(date1, null) || Equals(date2, null))
+            {
+                return Equals(date1, date2);
+            }
+
             return date1.julianDate == date2.julianDate;
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// false, если даты или ссылки совпадают.<br/>
+        /// true, если нет.
+        /// </returns>
         public static bool operator !=(Date date1, Date date2)
         {
             return date1.julianDate != date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >(Date date1, Date date2)
         {
+            if(date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1.julianDate > date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <(Date date1, Date date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1.julianDate < date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >=(Date date1, Date date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1.julianDate >= date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <=(Date date1, Date date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1.julianDate <= date2.julianDate;
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если даты равны.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator ==(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 == date2.julianDate;
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если даты равны.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator ==(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date2 == date1.julianDate;
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// false, если даты совпадают.<br/>
+        /// true, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator !=(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 != date2.julianDate;
         }
 
+        /// <summary>
+        /// Проверяет совпадение дат.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// false, если даты совпадают.<br/>
+        /// true, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator !=(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date2 != date1.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 > date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date1.julianDate > date2;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 < date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt; date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date1.julianDate < date2;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >=(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 >= date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &gt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator >=(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date1.julianDate >= date2;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <=(double date1, Date date2)
         {
+            if (date2 == null)
+            {
+                throw new ArgumentNullException("date2 mustn't be null");
+            }
             return date1 <= date2.julianDate;
         }
 
+        /// <summary>
+        /// Сравнивает даты.
+        /// </summary>
+        /// 
+        /// <param name="date1"> Дата.</param>
+        /// <param name="date2"> Дата.</param>
+        /// 
+        /// <returns>
+        /// true, если date1 &lt;= date2.<br/>
+        /// false, если нет.
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
         public static bool operator <=(Date date1, double date2)
         {
+            if (date1 == null)
+            {
+                throw new ArgumentNullException("date1 mustn't be null");
+            }
             return date1.julianDate <= date2;
         }
         #endregion
