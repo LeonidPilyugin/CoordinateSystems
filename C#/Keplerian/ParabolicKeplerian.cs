@@ -242,10 +242,7 @@ namespace Keplerian
             result.Length = perifocusDistance * 2.0 / (1.0 + Cos(trueAnomaly));
 
             // Поворот вектора
-            result.TurnZ(periapsisArgument);
-            result.TurnX(-inclination);
-            result.TurnZ(ascendingNodeLongitude);
-            result.Y = -result.Y;
+            result.TurnEuler(-periapsisArgument, -inclination, -ascendingNodeLongitude);
 
             return result;
         }

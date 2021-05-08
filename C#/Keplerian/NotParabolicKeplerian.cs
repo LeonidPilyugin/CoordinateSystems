@@ -219,15 +219,12 @@ namespace Keplerian
         {
             // Получение вектора
             double trueAnomaly = GetTrueAnomaly(julianDate);
-            Vector result = new Vector(PI / 2.0, -trueAnomaly);
+            Vector result = new Vector(PI / 2.0, trueAnomaly);
             result.Length = Abs(SemimajorAxis * (1.0 - eccentricity * eccentricity) /
                 (1.0 + eccentricity * Cos(trueAnomaly)));
 
             // Поворот вектора
-            result.TurnZ(periapsisArgument);
-            result.TurnX(-inclination);
-            result.TurnZ(ascendingNodeLongitude);
-            result.Y = -result.Y;
+            result.TurnEuler(-periapsisArgument, -inclination, -ascendingNodeLongitude);
 
             return result;
         }
