@@ -28,6 +28,7 @@ namespace Agents
     /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="OrbitRepeater(EllipticKeplerian, Basis, RepeaterConnector)"/><br/>
+    /// 1) <see cref="OrbitRepeater.OrbitRepeater(string, EllipticKeplerian, Basis, Vector, Basis, View)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Repeater.Connector"/><br/>
@@ -89,6 +90,32 @@ namespace Agents
             base(connector, keplerian.Vector, basis, keplerian.Velocity, keplerian.CentralBody)
         {
             this.keplerian = keplerian;
+        }
+
+        /// <summary>
+        /// Конструктор задает полям значения:<br/>
+        /// velocity — keplerian.Velocity<br/>
+        /// vector — keplerian.Vector<br/>
+        /// referenceSystem — keplerian.CentralBody<br/>
+        /// connector — connector<br/>
+        /// basis — basis<br/>
+        /// </summary>
+        /// 
+        /// <param name="keplerian">Keplerian, который хранит параметры орбиты. Не должен быть null.</param>
+        /// <param name="basis"> Базис. Не должен быть null.</param>
+        /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="view"> Область видимости средства связи.</param>
+        /// <param name="id"> Идентификатор.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public OrbitRepeater(string id, EllipticKeplerian keplerian, Basis basis,
+            Vector connectorVector, Basis connectorBasis, View view) :
+            base(keplerian.Vector, basis, keplerian.Velocity, keplerian.CentralBody)
+        {
+            connector = new RepeaterConnector(id, connectorVector, connectorBasis, view, this);
         }
         #endregion
 

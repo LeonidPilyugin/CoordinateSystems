@@ -100,6 +100,7 @@ namespace SunSystem
             this.mass = mass;
             MinRadius = minRadius;
             MaxRadius = maxRadius;
+            Body.bodies.Add(this);
         }
         #endregion
 

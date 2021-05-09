@@ -32,7 +32,9 @@ namespace Agents
     /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="LagrangianRepeater(GetParams, RepeaterConnector, Basis, Vector, Vector, Body)"/><br/>
-    /// 2) <see cref="LagrangianRepeater(LagrangianPoint, RepeaterConnector, Basis, Vector, Vector, Body)"/><br/>
+    /// 2) <see cref="LagrangianRepeater(LagrangianPoint, RepeaterConnector, Basis, Vector, Vector)"/><br/>
+    /// 3) <see cref="LagrangianRepeater(GetParams, string, Vector, Basis, Vector, CoordinateSystem, Vector, Basis, View)"/><br/>
+    /// 4) <see cref="LagrangianRepeater(LagrangianPoint, string, Vector, Basis, Vector, Vector, Basis, View)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Repeater.Connector"/><br/>
@@ -143,29 +145,95 @@ namespace Agents
         /// <param name="basis"> Базис.</param>
         /// <param name="vector"> Координаты.</param>
         /// <param name="velocity"> Скорость.</param>
-        /// <param name="centralBody"> Тело, в системе отсчета которого заданы координаты.</param>
         /// 
         /// <exception cref="ArgumentNullException">
         /// Вызывается при передаче null.
         /// </exception>
         public LagrangianRepeater(LagrangianPoint lagrangianPoint, RepeaterConnector connector, Basis basis,
-            Vector vector, Vector velocity, Body centralBody) : base(connector, vector,
-                basis, velocity, centralBody)
+            Vector vector, Vector velocity) : base(connector, vector,
+                basis, velocity, Planets.Sun)
         {
             switch(lagrangianPoint)
             {
-                case LagrangianPoint.EM1: getParamsMethod += LagrangianPoints.GetEarthMoon1; break;
-                case LagrangianPoint.EM2: getParamsMethod += LagrangianPoints.GetEarthMoon2; break;
-                case LagrangianPoint.EM3: getParamsMethod += LagrangianPoints.GetEarthMoon3; break;
-                case LagrangianPoint.EM4: getParamsMethod += LagrangianPoints.GetEarthMoon4; break;
-                case LagrangianPoint.EM5: getParamsMethod += LagrangianPoints.GetEarthMoon5; break;
+                case LagrangianPoint.EM1: getParamsMethod += LagrangianPoints.GetEarthMoon1; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM2: getParamsMethod += LagrangianPoints.GetEarthMoon2; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM3: getParamsMethod += LagrangianPoints.GetEarthMoon3; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM4: getParamsMethod += LagrangianPoints.GetEarthMoon4; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM5: getParamsMethod += LagrangianPoints.GetEarthMoon5; referenceSystem = Planets.Earth; break;
 
-                case LagrangianPoint.SE1: getParamsMethod += LagrangianPoints.GetSunEarth1; break;
-                case LagrangianPoint.SE2: getParamsMethod += LagrangianPoints.GetSunEarth2; break;
-                case LagrangianPoint.SE3: getParamsMethod += LagrangianPoints.GetSunEarth3; break;
-                case LagrangianPoint.SE4: getParamsMethod += LagrangianPoints.GetSunEarth4; break;
-                case LagrangianPoint.SE5: getParamsMethod += LagrangianPoints.GetSunEarth5; break;
+                case LagrangianPoint.SE1: getParamsMethod += LagrangianPoints.GetSunEarth1; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE2: getParamsMethod += LagrangianPoints.GetSunEarth2; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE3: getParamsMethod += LagrangianPoints.GetSunEarth3; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE4: getParamsMethod += LagrangianPoints.GetSunEarth4; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE5: getParamsMethod += LagrangianPoints.GetSunEarth5; referenceSystem = Planets.Sun; break;
             }
+        }
+
+        /// <summary>
+        /// Конструктор сам задает функцию по указанной точке Лагранжа.
+        /// </summary>
+        /// 
+        /// <param name="lagrangianPoint"> Точка Лагранжа.</param>
+        /// <param name="basis"> Базис.</param>
+        /// <param name="vector"> Координаты.</param>
+        /// <param name="velocity"> Скорость.</param>
+        /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="view"> Область видимости средства связи.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public LagrangianRepeater(LagrangianPoint lagrangianPoint, string id, Vector vector, Basis basis, Vector velocity,
+            Vector connectorVector, Basis connectorBasis, View view) :
+            base(vector, basis, velocity)
+        {
+            switch (lagrangianPoint)
+            {
+                case LagrangianPoint.EM1: getParamsMethod += LagrangianPoints.GetEarthMoon1; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM2: getParamsMethod += LagrangianPoints.GetEarthMoon2; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM3: getParamsMethod += LagrangianPoints.GetEarthMoon3; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM4: getParamsMethod += LagrangianPoints.GetEarthMoon4; referenceSystem = Planets.Earth; break;
+                case LagrangianPoint.EM5: getParamsMethod += LagrangianPoints.GetEarthMoon5; referenceSystem = Planets.Earth; break;
+
+                case LagrangianPoint.SE1: getParamsMethod += LagrangianPoints.GetSunEarth1; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE2: getParamsMethod += LagrangianPoints.GetSunEarth2; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE3: getParamsMethod += LagrangianPoints.GetSunEarth3; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE4: getParamsMethod += LagrangianPoints.GetSunEarth4; referenceSystem = Planets.Sun; break;
+                case LagrangianPoint.SE5: getParamsMethod += LagrangianPoints.GetSunEarth5; referenceSystem = Planets.Sun; break;
+            }
+
+            connector = new RepeaterConnector(id, connectorVector, connectorBasis, view, this);
+        }
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// 
+        /// <param name="function"> Функция, определяющая координаты и скорость точки.</param>
+        /// <param name="basis"> Базис.</param>
+        /// <param name="vector"> Координаты.</param>
+        /// <param name="velocity"> Скорость.</param>
+        /// <param name="referenceSystem"> Система координат, в которой задан ретранслятор.</param>
+        /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="view"> Область видимости средства связи.</param>
+        /// <param name="id"> Идентификатор.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public LagrangianRepeater(GetParams function, string id, Vector vector, Basis basis, Vector velocity,
+            CoordinateSystem referenceSystem, Vector connectorVector, Basis connectorBasis, View view) :
+            base(vector, basis, velocity, referenceSystem)
+        {
+            if (function == null)
+            {
+                throw new ArgumentNullException("function mustn't be null");
+            }
+            getParamsMethod += function;
+
+            connector = new RepeaterConnector(id, connectorVector, connectorBasis, view, this);
         }
         #endregion
 

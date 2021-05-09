@@ -28,6 +28,7 @@ namespace Agents
     /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="GroundStation(double, double, GroundStationConnector)"/><br/>
+    /// 2) <see cref="GroundStation(string, double, double, Basis, View)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Connector"/><br/>
@@ -74,10 +75,42 @@ namespace Agents
         /// Вызывается при передаче null.
         /// </exception>
         public GroundStation(double latitude, double longitude, GroundStationConnector connector) :
-            base(connector.ID, Coordinates.GetGCStoTCSvector(latitude, longitude), new Basis(),
+            base(connector.ID + " station", Coordinates.GetGCStoTCSvector(latitude, longitude), new Basis(),
                 new Vector(0.0, 0.0, 0.0), SunSystem.Planets.FixedEarth)
         {
             Connector = connector;
+            connector.Carrier = this;
+            Body.bodies.Add(this);
+            Body.bodies.Add(connector);
+        }
+
+        /// <summary>
+        /// Конструктор задает полям переданные значения, но:<br/>
+        /// id = connector.id<br/>
+        /// vector = Coordinates.GetGCStoTCSvector(latitude, longitude)<br/>
+        /// bais = new Basis()<br/>
+        /// velocity = new Vector(0.0, 0.0, 0.0)<br/>
+        /// centralBody = <see cref="SunSystem.Planets.FixedEarth"/><br/>
+        /// </summary>
+        /// 
+        /// <param name="latitude"> Широта. Измеряется в радианах. -<see cref="Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="Math.PI"/> / 2.</param>
+        /// <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="Math.PI"/> &lt;= latitude &lt;= <see cref="Math.PI"/>.</param>
+        /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="view"> Область видимости средства связи.</param>
+        /// <param name="id"> Идентификатор.</param>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Вызывается, если передается широта, по модулю большая <see cref="Math.PI"/> / 2 или
+        /// долгота, по модулю большая <see cref="Math.PI"/>.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public GroundStation(string id, double latitude, double longitude, Basis connectorBasis, View view) :
+            base(id + " station", Coordinates.GetGCStoTCSvector(latitude, longitude), new Basis(),
+                new Vector(0.0, 0.0, 0.0), SunSystem.Planets.FixedEarth)
+        {
+            connector = new GroundStationConnector(id, connectorBasis, view, this);
         }
         #endregion
 

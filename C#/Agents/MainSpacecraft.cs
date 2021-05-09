@@ -26,7 +26,8 @@ namespace Agents
     /// 7) <see cref="CoordinateSystem.referenceSystem"/><br/>
     /// <br/>
     /// Конструкторы:<br/>
-    /// 1) <see cref="GroundStation(double, double, GroundStationConnector)"/><br/>
+    /// 1) <see cref="MainSpacecraft(MainSpacecraftConnector, Vector, Basis, Vector, CoordinateSystem)"/><br/>
+    /// 2) <see cref="MainSpacecraft.MainSpacecraft(string, Vector, Basis, Vector, CoordinateSystem, Vector, Basis, View)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Connector"/><br/>
@@ -67,9 +68,36 @@ namespace Agents
         /// Вызывается при передаче null.
         /// </exception>
         public MainSpacecraft(MainSpacecraftConnector connector, Vector vector, Basis basis, Vector velocity,
-            CoordinateSystem referenceSystem = null) : base(connector.ID, vector, basis, velocity, referenceSystem)
+            CoordinateSystem referenceSystem) : base(connector.ID + " carrier", vector, basis, velocity, referenceSystem)
         {
             Connector = connector;
+            connector.Carrier = this;
+            Body.bodies.Add(this);
+            Body.bodies.Add(connector);
+        }
+
+        /// <summary>
+        /// Конструктор задает полям переданные значения, но:<br/>
+        /// id = connector.id<br/>
+        /// </summary>
+        /// 
+        /// <param name="vector"> Вектор относительно базовой системы координат.</param>
+        /// <param name="basis"> Базис относительно базовой системы координат.</param>
+        /// <param name="velocity"> Скорость относительно базовой системы координат.</param>
+        /// <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+        /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+        /// <param name="view"> Область видимости средства связи.</param>
+        /// <param name="id"> Идентификатор.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        public MainSpacecraft(string id, Vector vector, Basis basis, Vector velocity,
+            CoordinateSystem referenceSystem, Vector connectorVector, Basis connectorBasis, View view) :
+            base(id + " carrier", vector, basis, velocity, referenceSystem)
+        {
+            connector = new MainSpacecraftConnector(id, connectorVector, connectorBasis, view, this);
         }
         #endregion
 

@@ -27,6 +27,7 @@ namespace Agents
     /// <br/>
     /// Конструкторы:<br/>
     /// 1) <see cref="Repeater(RepeaterConnector, Vector, Basis, Vector, CoordinateSystem)"/><br/>
+    /// 2) <see cref="Repeater(Vector, Basis, Vector, CoordinateSystem)"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Connector"/><br/>
@@ -81,9 +82,32 @@ namespace Agents
         /// Вызывается при передаче null.
         /// </exception>
         public Repeater(RepeaterConnector connector, Vector vector, Basis basis, Vector velocity,
-            CoordinateSystem referenceSystem = null) : base(connector.ID, vector, basis, velocity, referenceSystem)
+            CoordinateSystem referenceSystem = null) : base(connector.ID + " carrier", vector,
+                basis, velocity, referenceSystem)
         {
             Connector = connector;
+            connector.Carrier = this;
+            Body.bodies.Add(this);
+            Body.bodies.Add(connector);
+        }
+
+        /// <summary>
+        /// Конструктор задает полям переданные значения, но средство связи не задается.
+        /// </summary>
+        /// 
+        /// <param name="vector"> Вектор относительно базовой системы координат.</param>
+        /// <param name="basis"> Базис относительно базовой системы координат.</param>
+        /// <param name="velocity"> Скорость относительно базовой системы координат.</param>
+        /// <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается при передаче null.
+        /// </exception>
+        protected Repeater(Vector vector, Basis basis, Vector velocity,
+            CoordinateSystem referenceSystem = null) : base("new repeater", vector,
+                basis, velocity, referenceSystem)
+        {
+
         }
         #endregion
 

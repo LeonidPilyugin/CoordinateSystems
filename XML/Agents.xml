@@ -21,6 +21,7 @@
             <br/>
             Конструкторы:<br/>
             1) <see cref="M:Agents.GroundStation.#ctor(System.Double,System.Double,Connection.GroundStationConnector)"/><br/>
+            2) <see cref="M:Agents.GroundStation.#ctor(System.String,System.Double,System.Double,CoordinateSystems.Basis,Connection.View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.GroundStation.Connector"/><br/>
@@ -64,6 +65,30 @@
             Вызывается при передаче null.
             </exception>
         </member>
+        <member name="M:Agents.GroundStation.#ctor(System.String,System.Double,System.Double,CoordinateSystems.Basis,Connection.View)">
+            <summary>
+            Конструктор задает полям переданные значения, но:<br/>
+            id = connector.id<br/>
+            vector = Coordinates.GetGCStoTCSvector(latitude, longitude)<br/>
+            bais = new Basis()<br/>
+            velocity = new Vector(0.0, 0.0, 0.0)<br/>
+            centralBody = <see cref="P:SunSystem.Planets.FixedEarth"/><br/>
+            </summary>
+            
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
+            <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+            <param name="view"> Область видимости средства связи.</param>
+            <param name="id"> Идентификатор.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
         <member name="P:Agents.GroundStation.Connector">
             <summary>
             Средство связи. Не должно быть null.
@@ -95,7 +120,9 @@
             <br/>
             Конструкторы:<br/>
             1) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
-            2) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
+            2) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
+            4) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>
@@ -190,7 +217,7 @@
             Вызывается при передаче null.
             </exception>
         </member>
-        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)">
+        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)">
             <summary>
             Конструктор сам задает функцию по указанной точке Лагранжа.
             </summary>
@@ -200,7 +227,42 @@
             <param name="basis"> Базис.</param>
             <param name="vector"> Координаты.</param>
             <param name="velocity"> Скорость.</param>
-            <param name="centralBody"> Тело, в системе отсчета которого заданы координаты.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+            <summary>
+            Конструктор сам задает функцию по указанной точке Лагранжа.
+            </summary>
+            
+            <param name="lagrangianPoint"> Точка Лагранжа.</param>
+            <param name="basis"> Базис.</param>
+            <param name="vector"> Координаты.</param>
+            <param name="velocity"> Скорость.</param>
+            <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+            <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+            <param name="view"> Область видимости средства связи.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+            <summary>
+            Конструктор.
+            </summary>
+            
+            <param name="function"> Функция, определяющая координаты и скорость точки.</param>
+            <param name="basis"> Базис.</param>
+            <param name="vector"> Координаты.</param>
+            <param name="velocity"> Скорость.</param>
+            <param name="referenceSystem"> Система координат, в которой задан ретранслятор.</param>
+            <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+            <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+            <param name="view"> Область видимости средства связи.</param>
+            <param name="id"> Идентификатор.</param>
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается при передаче null.
@@ -229,7 +291,8 @@
             7) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
             <br/>
             Конструкторы:<br/>
-            1) <see cref="M:Agents.GroundStation.#ctor(System.Double,System.Double,Connection.GroundStationConnector)"/><br/>
+            1) <see cref="M:Agents.MainSpacecraft.#ctor(Connection.MainSpacecraftConnector,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
+            2) <see cref="M:Agents.MainSpacecraft.#ctor(System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.MainSpacecraft.Connector"/><br/>
@@ -267,6 +330,25 @@
             Вызывается при передаче null.
             </exception>
         </member>
+        <member name="M:Agents.MainSpacecraft.#ctor(System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+            <summary>
+            Конструктор задает полям переданные значения, но:<br/>
+            id = connector.id<br/>
+            </summary>
+            
+            <param name="vector"> Вектор относительно базовой системы координат.</param>
+            <param name="basis"> Базис относительно базовой системы координат.</param>
+            <param name="velocity"> Скорость относительно базовой системы координат.</param>
+            <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+            <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+            <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+            <param name="view"> Область видимости средства связи.</param>
+            <param name="id"> Идентификатор.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
         <member name="P:Agents.MainSpacecraft.Connector">
             <summary>
             Средство связи. Не должно быть null.
@@ -294,6 +376,7 @@
             <br/>
             Конструкторы:<br/>
             1) <see cref="M:Agents.OrbitRepeater.#ctor(Keplerian.EllipticKeplerian,CoordinateSystems.Basis,Connection.RepeaterConnector)"/><br/>
+            1) <see cref="M:Agents.OrbitRepeater.#ctor(System.String,Keplerian.EllipticKeplerian,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>
@@ -349,6 +432,27 @@
             Вызывается при передаче null.
             </exception>
         </member>
+        <member name="M:Agents.OrbitRepeater.#ctor(System.String,Keplerian.EllipticKeplerian,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+            <summary>
+            Конструктор задает полям значения:<br/>
+            velocity — keplerian.Velocity<br/>
+            vector — keplerian.Vector<br/>
+            referenceSystem — keplerian.CentralBody<br/>
+            connector — connector<br/>
+            basis — basis<br/>
+            </summary>
+            
+            <param name="keplerian">Keplerian, который хранит параметры орбиты. Не должен быть null.</param>
+            <param name="basis"> Базис. Не должен быть null.</param>
+            <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
+            <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
+            <param name="view"> Область видимости средства связи.</param>
+            <param name="id"> Идентификатор.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
         <member name="P:Agents.OrbitRepeater.Keplerian">
             <summary>
             Keplerian, который хранит параметры орбиты.
@@ -378,6 +482,7 @@
             <br/>
             Конструкторы:<br/>
             1) <see cref="M:Agents.Repeater.#ctor(Connection.RepeaterConnector,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
+            2) <see cref="M:Agents.Repeater.#ctor(CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>
@@ -420,6 +525,20 @@
             </summary>
             
             <param name="connector"> Средство связи. Не должно быть null.</param>
+            <param name="vector"> Вектор относительно базовой системы координат.</param>
+            <param name="basis"> Базис относительно базовой системы координат.</param>
+            <param name="velocity"> Скорость относительно базовой системы координат.</param>
+            <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Agents.Repeater.#ctor(CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор задает полям переданные значения, но средство связи не задается.
+            </summary>
+            
             <param name="vector"> Вектор относительно базовой системы координат.</param>
             <param name="basis"> Базис относительно базовой системы координат.</param>
             <param name="velocity"> Скорость относительно базовой системы координат.</param>
