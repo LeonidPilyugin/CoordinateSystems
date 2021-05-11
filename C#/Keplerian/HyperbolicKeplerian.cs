@@ -235,7 +235,7 @@ namespace Keplerian
         public override double GetTrueAnomaly(double julianDate)
         {
             double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) + MeanAngularVelocity *
-                    (julianDate - this.julianDate) * Date.JDtoSecond;
+                    (julianDate - this.julianDate) * Date.JD_TO_SECOND;
 
             return GetTrueAnomaly2(meanAnomaly);
         }
@@ -249,7 +249,7 @@ namespace Keplerian
             }
 
             return ((GetMeanAnomaly(trueAnomaly) - GetMeanAnomaly(this.trueAnomaly)) /
-                MeanAngularVelocity / Date.JDtoSecond) + this.julianDate;
+                MeanAngularVelocity / Date.JD_TO_SECOND) + this.julianDate;
         }
         #endregion
     }

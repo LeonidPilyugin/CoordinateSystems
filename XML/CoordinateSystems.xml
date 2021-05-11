@@ -35,7 +35,7 @@
             4) <see cref="M:CoordinateSystems.Basis.TurnI(System.Double)"/><br/>
             5) <see cref="M:CoordinateSystems.Basis.TurnJ(System.Double)"/><br/>
             6) <see cref="M:CoordinateSystems.Basis.TurnK(System.Double)"/><br/>
-            7) <see cref="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.Vector,System.Double)"/><br/>
+            7) <see cref="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.UnitVector,System.Double)"/><br/>
             8) <see cref="M:CoordinateSystems.Basis.TurnEuler(System.Double,System.Double,System.Double)"/><br/>
             <br/>
             Операторы:<br/>
@@ -210,7 +210,7 @@
             
             <param name="angle"> Угол поворота. Измеряется в радианах.</param>
         </member>
-        <member name="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.Vector,System.Double)">
+        <member name="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.UnitVector,System.Double)">
             <summary>
             Поворачивает базис вокруг заданной оси на заданный угол.
             </summary>
@@ -466,17 +466,13 @@
             6) <see cref="M:CoordinateSystems.Coordinates.GetGCStoICSmatrix(System.Double)"/><br/>
             7) <see cref="M:CoordinateSystems.Coordinates.GetGCStoTCSmatrix(CoordinateSystems.Vector)"/><br/>
             8) <see cref="M:CoordinateSystems.Coordinates.GetTCStoGCSmatrix(CoordinateSystems.Vector)"/><br/>
-            9) <see cref="M:CoordinateSystems.Coordinates.GetICStoHICSmatrix(System.Double)"/><br/>
-            10) <see cref="M:CoordinateSystems.Coordinates.GetHICStoICSmatrix(System.Double)"/><br/>
-            11) <see cref="M:CoordinateSystems.Coordinates.GetHICStoICSvector(System.Double)"/><br/>
-            12) <see cref="M:CoordinateSystems.Coordinates.GetICStoHICSvector(System.Double)"/><br/>
-            13) <see cref="M:CoordinateSystems.Coordinates.GetGCStoTCSvector(System.Double,System.Double)"/><br/>
-            14) <see cref="M:CoordinateSystems.Coordinates.GetTCStoGCSvector(System.Double,System.Double)"/><br/>
-            15) <see cref="M:CoordinateSystems.Coordinates.ConvertTo(CoordinateSystems.Matrix,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
-            16) <see cref="M:CoordinateSystems.Coordinates.ConvertICStoGCS(System.Double,CoordinateSystems.Vector)"/><br/>
-            17) <see cref="M:CoordinateSystems.Coordinates.ConvertGCStoICS(System.Double,CoordinateSystems.Vector)"/><br/>
-            18) <see cref="M:CoordinateSystems.Coordinates.ConvertICStoHICS(System.Double,CoordinateSystems.Vector)"/><br/>
-            19) <see cref="M:CoordinateSystems.Coordinates.ConvertHICStoICS(System.Double,CoordinateSystems.Vector)"/><br/>
+            9) <see cref="M:CoordinateSystems.Coordinates.GetGCStoTCSvector(System.Double,System.Double)"/><br/>
+            10) <see cref="M:CoordinateSystems.Coordinates.GetTCStoGCSvector(System.Double,System.Double)"/><br/>
+            11) <see cref="M:CoordinateSystems.Coordinates.ConvertTo(CoordinateSystems.Matrix,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            12) <see cref="M:CoordinateSystems.Coordinates.ConvertICStoGCS(System.Double,CoordinateSystems.Vector)"/><br/>
+            13) <see cref="M:CoordinateSystems.Coordinates.ConvertGCStoICS(System.Double,CoordinateSystems.Vector)"/><br/>
+            14) <see cref="M:CoordinateSystems.Coordinates.ConvertGCStoTCS(System.Double,System.Double,CoordinateSystems.Vector)"/><br/>
+            15) <see cref="M:CoordinateSystems.Coordinates.ConvertTCStoGCS(System.Double,System.Double,CoordinateSystems.Vector)"/><br/>
             </remarks>
         </member>
         <member name="F:CoordinateSystems.Coordinates.EARTH_POLAR_COMPRESSION">
@@ -589,28 +585,6 @@
             Матрица перехода из топоцентрической системы координат в первую экваториальную.
             </returns>
         </member>
-        <member name="M:CoordinateSystems.Coordinates.GetICStoHICSmatrix(System.Double)">
-            <summary>
-            Матрица перехода из второй экваториальной системы координат в гелиоцентрическую (вторая экваториальная с центром в Солнце).
-            </summary>
-            
-            <param name="julianDate"> Юлианская дата.</param>
-            
-            <returns>
-            Матрица перехода из второй экваториальной системы координат в гелиоцентрическую (вторая экваториальная с центром в Солнце).
-            </returns>
-        </member>
-        <member name="M:CoordinateSystems.Coordinates.GetHICStoICSmatrix(System.Double)">
-            <summary>
-            Матрица перехода из гелиоцентрической (вторая экваториальная с центром в Солнце) системы координат во вторую экваториальную.
-            </summary>
-            
-            <param name="julianDate"> Юлианская дата.</param>
-            
-            <returns>
-            Матрица перехода из гелиоцентрической (вторая экваториальная с центром в Солнце) системы координат во вторую экваториальную.
-            </returns>
-        </member>
         <member name="M:CoordinateSystems.Coordinates.GetGCStoTCSvector(System.Double,System.Double)">
             <summary>
             Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
@@ -644,28 +618,6 @@
             Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
             долгота, по модулю большая <see cref="F:System.Math.PI"/>.
             </exception>
-        </member>
-        <member name="M:CoordinateSystems.Coordinates.GetHICStoICSvector(System.Double)">
-            <summary>
-            Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный на Землю.
-            </summary>
-            
-            <param name="julianDate"> Юлианская дата.</param>
-            
-            <returns>
-            Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный на Землю.
-            </returns>
-        </member>
-        <member name="M:CoordinateSystems.Coordinates.GetICStoHICSvector(System.Double)">
-            <summary>
-            Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный от Земли в начало координат.
-            </summary>
-            
-            <param name="julianDate"> Юлианская дата.</param>
-            
-            <returns>
-            Вектор в гелиоцентрической (второй экваториальной с центром в Солнце) системе координат, направленный от Земли в начало координат.
-            </returns>
         </member>
         <member name="M:CoordinateSystems.Coordinates.ConvertTo(CoordinateSystems.Matrix,CoordinateSystems.Vector,CoordinateSystems.Vector)">
             <summary>
@@ -704,29 +656,41 @@
             Переведенный вектор.
             </returns>
         </member>
-        <member name="M:CoordinateSystems.Coordinates.ConvertICStoHICS(System.Double,CoordinateSystems.Vector)">
+        <member name="M:CoordinateSystems.Coordinates.ConvertGCStoTCS(System.Double,System.Double,CoordinateSystems.Vector)">
             <summary>
-            Переводит вектор из второй экваториальной системы координат в гелиоцентрическую (вторую экваториальную с центром в Солнце).
+            Переводит вектор из первой экваториальной системы координат в топоцентрическую.
             </summary>
             
-            <param name="julianDate"> Юлианская дата.</param>
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
             <param name="point"> Переводимый вектор.</param>
             
             <returns>
             Переведенный вектор.
             </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
         </member>
-        <member name="M:CoordinateSystems.Coordinates.ConvertHICStoICS(System.Double,CoordinateSystems.Vector)">
+        <member name="M:CoordinateSystems.Coordinates.ConvertTCStoGCS(System.Double,System.Double,CoordinateSystems.Vector)">
             <summary>
-            Переводит вектор из гелиоцентрической (второй экваториальной с центром в Солнце) системы координат во вторую экваториальную.
+            Переводит вектор из топоцентрической системы координат в первую экваториальную.
             </summary>
             
-            <param name="julianDate"> Юлианская дата.</param>
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
             <param name="point"> Переводимый вектор.</param>
             
             <returns>
             Переведенный вектор.
             </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
         </member>
         <member name="T:CoordinateSystems.CoordinateSystem">
             <summary>
@@ -1011,7 +975,7 @@
             7) <see cref="M:CoordinateSystems.Matrix.op_Addition(CoordinateSystems.Matrix,CoordinateSystems.Matrix)"/><br/>
             8) <see cref="M:CoordinateSystems.Matrix.op_Subtraction(CoordinateSystems.Matrix,CoordinateSystems.Matrix)"/><br/>
             9) <see cref="M:CoordinateSystems.Matrix.op_Division(CoordinateSystems.Matrix,System.Double)"/><br/>
-            10) <see cref="!:operator ^(Matrix, uint)"/><br/>
+            10) <see cref="M:CoordinateSystems.Matrix.op_ExclusiveOr(CoordinateSystems.Matrix,System.Int32)"/><br/>
             </remarks>
         </member>
         <member name="F:CoordinateSystems.Matrix.matrix">
@@ -1203,6 +1167,9 @@
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если axis = null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче нулевого вектора.
             </exception>
         </member>
         <member name="P:CoordinateSystems.Matrix.Item(System.Int32,System.Int32)">
@@ -1814,6 +1781,9 @@
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается при axis = null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче нулевого вектора.
             </exception>
         </member>
         <member name="M:CoordinateSystems.Vector.TurnEuler(System.Double,System.Double,System.Double)">

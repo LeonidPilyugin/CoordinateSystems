@@ -10,15 +10,22 @@
             </summary>
             
             <remarks>
+            Типы:<br/>
+            1) <see cref="T:SunSystem.LagrangianPoints.LagrangianPoint"/><br/>
+            <br/>
             Свойства:<br/>
             1) <see cref="P:SunSystem.LagrangianPoints.SunEarthAlpha"/>:<br/>
             2) <see cref="P:SunSystem.LagrangianPoints.EarthMoonAlpha"/>:<br/>
             3) <see cref="P:SunSystem.LagrangianPoints.SunEarth1"/>:<br/>
             4) <see cref="P:SunSystem.LagrangianPoints.SunEarth2"/>:<br/>
             5) <see cref="P:SunSystem.LagrangianPoints.SunEarth3"/>:<br/>
-            6) <see cref="P:SunSystem.LagrangianPoints.EarthMoon1"/>:<br/>
-            7) <see cref="P:SunSystem.LagrangianPoints.EarthMoon2"/>:<br/>
-            8) <see cref="P:SunSystem.LagrangianPoints.EarthMoon3"/>:<br/>
+            6) <see cref="P:SunSystem.LagrangianPoints.SunEarth4"/>:<br/>
+            7) <see cref="P:SunSystem.LagrangianPoints.SunEarth5"/>:<br/>
+            8) <see cref="P:SunSystem.LagrangianPoints.EarthMoon1"/>:<br/>
+            9) <see cref="P:SunSystem.LagrangianPoints.EarthMoon2"/>:<br/>
+            10) <see cref="P:SunSystem.LagrangianPoints.EarthMoon3"/>:<br/>
+            11) <see cref="P:SunSystem.LagrangianPoints.EarthMoon4"/>:<br/>
+            12) <see cref="P:SunSystem.LagrangianPoints.EarthMoon5"/>:<br/>
             <br/>
             Функции:<br/>
             1) <see cref="M:SunSystem.LagrangianPoints.GetEps0(System.Double)"/>:<br/>
@@ -35,6 +42,47 @@
             12) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)"/>:<br/>
             13) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon5(System.Double)"/>:<br/>
             </remarks>
+        </member>
+        <member name="T:SunSystem.LagrangianPoints.LagrangianPoint">
+            <summary>
+            Точки Лагранжа.
+            </summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE1">
+            <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE2">
+            <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE3">
+            <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE4">
+            <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE5">
+            <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM1">
+            <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM2">
+            <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM3">
+            <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM4">
+            <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM5">
+            <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.TIME_CONST">
+            <summary>
+            Время в юлианских днях, через которое определяется вектор
+            координат для определения мгновенной оси вращения.
+            </summary>
         </member>
         <member name="M:SunSystem.LagrangianPoints.GetEps0(System.Double)">
             <summary>
@@ -94,6 +142,16 @@
             3 точка Лагранжа для системы Солнце-Земля.
             </summary>
         </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth4">
+            <summary>
+            4 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth5">
+            <summary>
+            5 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
         <member name="M:SunSystem.LagrangianPoints.GetSunEarth1(System.Double)">
             <summary>
             1 точка Лагранжа для системы Солнце-Земля.
@@ -144,6 +202,16 @@
             3 точка Лагранжа для системы Земля-Луна.
             </summary>
             
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon4">
+            <summary>
+            4 точка Лагранжа для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon5">
+            <summary>
+            5 точка Лагранжа для системы Земля-Луна.
+            </summary>
         </member>
         <member name="M:SunSystem.LagrangianPoints.GetEarthMoon1(System.Double)">
             <summary>
@@ -370,6 +438,7 @@
             9) <see cref="F:SunSystem.Planets.saturn"/><br/>
             10) <see cref="F:SunSystem.Planets.uranus"/><br/>
             11) <see cref="F:SunSystem.Planets.neptune"/><br/>
+            12) <see cref="F:SunSystem.Planets.julianDate"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:SunSystem.Planets.Sun"/><br/>
@@ -383,6 +452,7 @@
             9) <see cref="P:SunSystem.Planets.Saturn"/><br/>
             10) <see cref="P:SunSystem.Planets.Uranus"/><br/>
             11) <see cref="P:SunSystem.Planets.Neptune"/><br/>
+            11) <see cref="P:SunSystem.Planets.JulianDate"/><br/>
             <br/>
             Функции:<br/>
             1) <see cref="M:SunSystem.Planets.SunParams(System.Double)"/><br/>
@@ -398,6 +468,11 @@
             11) <see cref="M:SunSystem.Planets.NeptuneParams(System.Double)"/><br/>
             12) <see cref="M:SunSystem.Planets.UpdateParams(System.Double)"/><br/>
             </remarks>
+        </member>
+        <member name="F:SunSystem.Planets.julianDate">
+            <summary>
+            Юлианская дата.
+            </summary>
         </member>
         <member name="F:SunSystem.Planets.sun">
             <summary>
@@ -574,6 +649,11 @@
             <returns>
             Положение и скорость Нептуна.
             </returns>
+        </member>
+        <member name="P:SunSystem.Planets.JulianDate">
+            <summary>
+            Юлианская дата.
+            </summary>
         </member>
         <member name="P:SunSystem.Planets.Sun">
             <summary>

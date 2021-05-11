@@ -215,6 +215,7 @@ namespace Keplerian
             double eccentricAnomaly = 2.0 * Atan(Tan(trueAnomaly / 2.0) *
                 Sqrt((1.0 - eccentricity) / (1.0 + eccentricity)));
 
+
             if (Sin(trueAnomaly) < 0)
             {
                 eccentricAnomaly = -eccentricAnomaly;
@@ -255,7 +256,8 @@ namespace Keplerian
         public override double GetTrueAnomaly(double julianDate)
         {
             double meanAnomaly = GetMeanAnomaly(this.trueAnomaly) +
-                MeanAngularVelocity * (julianDate - this.julianDate) * Date.JDtoSecond;
+                MeanAngularVelocity * (julianDate - this.julianDate) * Date.JD_TO_SECOND;
+
             return GetTrueAnomaly2(meanAnomaly);
         }
 
@@ -275,7 +277,7 @@ namespace Keplerian
                 timeInterval += OrbitalPeriod;
             }
 
-            return timeInterval / Date.JDtoSecond + this.julianDate;
+            return timeInterval / Date.JD_TO_SECOND + this.julianDate;
         }
         #endregion
     }

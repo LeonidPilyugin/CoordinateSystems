@@ -14,7 +14,7 @@ namespace Date
     /// <br/>
     /// Константы:<br/>
     /// 1) <see cref="J2000"/><br/>
-    /// 2) <see cref="JDtoSecond"/><br/>
+    /// 2) <see cref="JD_TO_SECOND"/><br/>
     /// <br/>
     /// Поля:<br/>
     /// 1) <see cref="julianDate"/><br/>
@@ -128,7 +128,7 @@ namespace Date
         /// <summary>
         /// Число секунд в дне
         /// </summary>
-        public const double JDtoSecond = 86400.0;
+        public const double JD_TO_SECOND = 86400.0;
         #endregion
 
         #region data
@@ -474,7 +474,7 @@ namespace Date
             int m = calendar.Month + 12 * a - 3;
             double s = ((calendar.Hour * 60.0) + calendar.Minute * 60.0) + calendar.Second;
             return calendar.Day + (int)((153.0 * m + 2.0) / 5) + 365 * y +
-                (int)(y / 4.0) - (int)(y / 100.0) + (int)(y / 400.0) - 32045 + s / JDtoSecond;
+                (int)(y / 4.0) - (int)(y / 100.0) + (int)(y / 400.0) - 32045 + s / JD_TO_SECOND;
         }
 
         /// <summary>

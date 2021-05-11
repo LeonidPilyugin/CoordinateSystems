@@ -106,7 +106,7 @@
             <remarks>
             Типы:<br/>
             1) <see cref="T:Agents.LagrangianRepeater.GetParams"/><br/>
-            2) <see cref="T:Agents.LagrangianRepeater.LagrangianPoint"/><br/>
+            2) <see cref="T:SunSystem.LagrangianPoints.LagrangianPoint"/><br/>
             <br/>
             Поля:<br/>
             1) <see cref="F:Agents.LagrangianRepeater.getParamsMethod"/><br/>
@@ -120,9 +120,9 @@
             <br/>
             Конструкторы:<br/>
             1) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
-            2) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
             3) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
-            4) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
+            4) <see cref="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>
@@ -161,41 +161,6 @@
             
             <param name="julianDate"> Юлианская дата.</param>
         </member>
-        <member name="T:Agents.LagrangianRepeater.LagrangianPoint">
-            <summary>
-            Точки Лагранжа.
-            </summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE1">
-            <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE2">
-            <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE3">
-            <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE4">
-            <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.SE5">
-            <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM1">
-            <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM2">
-            <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM3">
-            <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM4">
-            <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
-        </member>
-        <member name="F:Agents.LagrangianRepeater.LagrangianPoint.EM5">
-            <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
-        </member>
         <member name="F:Agents.LagrangianRepeater.getParamsMethod">
             <summary>
             Функция, описывающая положение ретранслятора.
@@ -217,7 +182,7 @@
             Вызывается при передаче null.
             </exception>
         </member>
-        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)">
+        <member name="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)">
             <summary>
             Конструктор сам задает функцию по указанной точке Лагранжа.
             </summary>
@@ -232,7 +197,7 @@
             Вызывается при передаче null.
             </exception>
         </member>
-        <member name="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+        <member name="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
             <summary>
             Конструктор сам задает функцию по указанной точке Лагранжа.
             </summary>
@@ -244,6 +209,7 @@
             <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
             <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
             <param name="view"> Область видимости средства связи.</param>
+            <param name="id"> Идентификатор.</param>
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается при передаче null.
@@ -640,7 +606,6 @@
             <param name="vector"> Вектор относительно базовой системы координат.</param>
             <param name="basis"> Базис относительно базовой системы координат.</param>
             <param name="view"> Область видимости.</param>
-            <param name="carrier"> Носитель.</param>
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается при передаче null.
@@ -1158,7 +1123,7 @@
             <remarks>
             Поля:<br/>
             1) <see cref="F:Connection.Connector.isAnalizing"/><br/>
-            2) <see cref="!:Connector.carrier"/><br/>
+            2) <see cref="F:Connection.RepeaterConnector.carrier"/><br/>
             3) <see cref="F:Connection.Connector.view"/><br/>
             4) <see cref="F:Connection.Connector.workingConnectors"/><br/>
             5) <see cref="F:CoordinateSystems.Body.id"/><br/>

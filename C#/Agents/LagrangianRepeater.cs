@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CoordinateSystems;
 using Connection;
 using SunSystem;
+using static SunSystem.LagrangianPoints;
 
 // Файл содержит класс LagrangianRepeater
 
@@ -74,33 +75,6 @@ namespace Agents
         /// 
         /// <param name="julianDate"> Юлианская дата.</param>
         public delegate (Vector Vector, Vector Velocity) GetParams(double julianDate);
-
-        /// <summary>
-        /// Точки Лагранжа.
-        /// </summary>
-        public enum LagrangianPoint
-        {
-            /// <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
-            SE1,
-            /// <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
-            SE2,
-            /// <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
-            SE3,
-            /// <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
-            SE4,
-            /// <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
-            SE5,
-            /// <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
-            EM1,
-            /// <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
-            EM2,
-            /// <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
-            EM3,
-            /// <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
-            EM4,
-            /// <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
-            EM5
-        }
         #endregion
 
         #region data
@@ -180,6 +154,7 @@ namespace Agents
         /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
         /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
         /// <param name="view"> Область видимости средства связи.</param>
+        /// <param name="id"> Идентификатор.</param>
         /// 
         /// <exception cref="ArgumentNullException">
         /// Вызывается при передаче null.

@@ -81,7 +81,7 @@ namespace Keplerian
         /// <param name="centralBody"> Центр гравитации. Не должен быть null</param>
         /// 
         /// <exception cref="ArgumentNullException">
-        /// Вызывается при передаче null в <see cref="centralBody"/>.
+        /// Вызывается при передаче null.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Вызывается при передаче некорректных значений.
@@ -204,7 +204,7 @@ namespace Keplerian
             double tan1 = Tan(trueAnomaly / 2.0);
             double tan0 = Tan(this.trueAnomaly / 2.0);
             return (tan1 - tan0 + tan1 * tan1 * tan1 / 3.0 - tan0 * tan0 * tan0 / 3.0) /
-                MeanAngularVelocity / Date.JDtoSecond + julianDate;
+                MeanAngularVelocity / Date.JD_TO_SECOND + julianDate;
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Keplerian
             // Юлианская дата на момент прохождения перицентра
             double jd0 = GetJulianDate(0.0);
             // Средняя аномалия
-            double m = MeanAngularVelocity * (julianDate - jd0) * Date.JDtoSecond;
+            double m = MeanAngularVelocity * (julianDate - jd0) * Date.JD_TO_SECOND;
             // Вспомогательная величина
             double x = 0.5 * Pow(12.0 * m + 4.0 * Sqrt(9.0 * m * m + 4.0), 1 / 3.0);
             // Результат
@@ -252,16 +252,14 @@ namespace Keplerian
         {
             // Получение вектора
             double trueAnomaly = GetTrueAnomaly(julianDate);
-            Vector velocity = new Vector(PI / 2.0, -trueAnomaly);
+            Vector velocity = new Vector(PI / 2.0, trueAnomaly);
             velocity.Length = Sqrt(2.0 * G * CentralBody.Mass / GetVector(julianDate).Length);
             double angle = Asin((1 + eccentricity * Cos(trueAnomaly)) /
                 Sqrt(1 + eccentricity * eccentricity + 2 * eccentricity * Cos(trueAnomaly)));
 
             // Поворот вектора
             velocity.TurnZ(PI - angle);
-            velocity.TurnZ(-periapsisArgument);
-            velocity.TurnX(-inclination);
-            velocity.TurnZ(ascendingNodeLongitude);
+            velocity.TurnEuler(-periapsisArgument, -inclination, -ascendingNodeLongitude);
 
             return velocity;
         }

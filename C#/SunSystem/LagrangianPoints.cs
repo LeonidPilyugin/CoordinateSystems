@@ -16,15 +16,22 @@ namespace SunSystem
     /// </summary>
     /// 
     /// <remarks>
+    /// Типы:<br/>
+    /// 1) <see cref="LagrangianPoint"/><br/>
+    /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="SunEarthAlpha"/>:<br/>
     /// 2) <see cref="EarthMoonAlpha"/>:<br/>
     /// 3) <see cref="SunEarth1"/>:<br/>
     /// 4) <see cref="SunEarth2"/>:<br/>
     /// 5) <see cref="SunEarth3"/>:<br/>
-    /// 6) <see cref="EarthMoon1"/>:<br/>
-    /// 7) <see cref="EarthMoon2"/>:<br/>
-    /// 8) <see cref="EarthMoon3"/>:<br/>
+    /// 6) <see cref="SunEarth4"/>:<br/>
+    /// 7) <see cref="SunEarth5"/>:<br/>
+    /// 8) <see cref="EarthMoon1"/>:<br/>
+    /// 9) <see cref="EarthMoon2"/>:<br/>
+    /// 10) <see cref="EarthMoon3"/>:<br/>
+    /// 11) <see cref="EarthMoon4"/>:<br/>
+    /// 12) <see cref="EarthMoon5"/>:<br/>
     /// <br/>
     /// Функции:<br/>
     /// 1) <see cref="GetEps0(double)"/>:<br/>
@@ -43,6 +50,43 @@ namespace SunSystem
     /// </remarks>
     public static class LagrangianPoints
     {
+        #region types
+        /// <summary>
+        /// Точки Лагранжа.
+        /// </summary>
+        public enum LagrangianPoint
+        {
+            /// <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
+            SE1,
+            /// <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
+            SE2,
+            /// <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
+            SE3,
+            /// <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
+            SE4,
+            /// <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
+            SE5,
+            /// <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
+            EM1,
+            /// <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
+            EM2,
+            /// <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
+            EM3,
+            /// <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
+            EM4,
+            /// <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
+            EM5
+        }
+        #endregion
+
+        #region data
+        /// <summary>
+        /// Время в юлианских днях, через которое определяется вектор
+        /// координат для определения мгновенной оси вращения.
+        /// </summary>
+        private const double TIME_CONST = 1e-6;
+        #endregion
+
         #region auxiliary functions
         /// <summary>
         /// Угол наклона эклиптики к экватору.
@@ -77,7 +121,7 @@ namespace SunSystem
 
             // Вариант через мгновенную ось вращения
             // (перемножаю два вектора координат, найденных через малый промежуток времени).
-            return Earth.GetParamsMethod(julianDate).Vector * Earth.GetParamsMethod(julianDate + 1e-6).Vector;
+            return Earth.GetParamsMethod(julianDate).Vector * Earth.GetParamsMethod(julianDate + TIME_CONST).Vector;
         }
 
         /// <summary>
@@ -96,7 +140,7 @@ namespace SunSystem
 
             // Вариант через мгновенную ось вращения
             // (перемножаю два вектора координат, найденных через малый промежуток времени).
-            return Moon.GetParamsMethod(julianDate).Vector * Moon.GetParamsMethod(julianDate + 1e-6).Vector;
+            return Moon.GetParamsMethod(julianDate).Vector * Moon.GetParamsMethod(julianDate + TIME_CONST).Vector;
         }
 
         /// <summary>
@@ -152,6 +196,36 @@ namespace SunSystem
             {
                 Vector vector = -Earth.Vector * (1 + SunEarthAlpha / 2.4);
                 Vector velocity = -Earth.Velocity * (1 + SunEarthAlpha / 2.4);
+                return (vector, velocity);
+            }
+        }
+
+        /// <summary>
+        /// 4 точка Лагранжа для системы Солнце-Земля.
+        /// </summary>
+        public static (Vector Vector, Vector Velocity) SunEarth4
+        {
+            get
+            {
+                Vector vector = new Vector(Earth.Vector);
+                Vector velocity = new Vector(Earth.Velocity);
+                vector.TurnAxis(GetEarthRotationAxis(Planets.JulianDate), Math.PI / 3.0);
+                velocity.TurnAxis(GetEarthRotationAxis(Planets.JulianDate), Math.PI / 3.0);
+                return (vector, velocity);
+            }
+        }
+
+        /// <summary>
+        /// 5 точка Лагранжа для системы Солнце-Земля.
+        /// </summary>
+        public static (Vector Vector, Vector Velocity) SunEarth5
+        {
+            get
+            {
+                Vector vector = new Vector(Earth.Vector);
+                Vector velocity = new Vector(Earth.Velocity);
+                vector.TurnAxis(GetEarthRotationAxis(Planets.JulianDate), -Math.PI / 3.0);
+                velocity.TurnAxis(GetEarthRotationAxis(Planets.JulianDate), -Math.PI / 3.0);
                 return (vector, velocity);
             }
         }
@@ -273,6 +347,35 @@ namespace SunSystem
             }
         }
 
+        /// <summary>
+        /// 4 точка Лагранжа для системы Земля-Луна.
+        /// </summary>
+        public static (Vector Vector, Vector Velocity) EarthMoon4
+        {
+            get
+            {
+                Vector vector = new Vector(Moon.Vector);
+                Vector velocity = new Vector(Moon.Velocity);
+                vector.TurnAxis(GetMoonRotationAxis(Planets.JulianDate), Math.PI / 3.0);
+                velocity.TurnAxis(GetMoonRotationAxis(Planets.JulianDate), Math.PI / 3.0);
+                return (vector, velocity);
+            }
+        }
+
+        /// <summary>
+        /// 5 точка Лагранжа для системы Земля-Луна.
+        /// </summary>
+        public static (Vector Vector, Vector Velocity) EarthMoon5
+        {
+            get
+            {
+                Vector vector = new Vector(Moon.Vector);
+                Vector velocity = new Vector(Moon.Velocity);
+                vector.TurnAxis(GetMoonRotationAxis(Planets.JulianDate), -Math.PI / 3.0);
+                velocity.TurnAxis(GetMoonRotationAxis(Planets.JulianDate), -Math.PI / 3.0);
+                return (vector, velocity);
+            }
+        }
         /// <summary>
         /// 1 точка Лагранжа для системы Земля-Луна.
         /// </summary>

@@ -116,7 +116,7 @@ namespace Connection
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <inheritdoc/>
         protected override void Analize(Message message)
         {

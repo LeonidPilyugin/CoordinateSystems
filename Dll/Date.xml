@@ -15,7 +15,7 @@
             <br/>
             Константы:<br/>
             1) <see cref="F:Date.Date.J2000"/><br/>
-            2) <see cref="F:Date.Date.JDtoSecond"/><br/>
+            2) <see cref="F:Date.Date.JD_TO_SECOND"/><br/>
             <br/>
             Поля:<br/>
             1) <see cref="F:Date.Date.julianDate"/><br/>
@@ -121,7 +121,7 @@
             Юлианская дата эпохи J2000.0
             </summary>
         </member>
-        <member name="F:Date.Date.JDtoSecond">
+        <member name="F:Date.Date.JD_TO_SECOND">
             <summary>
             Число секунд в дне
             </summary>

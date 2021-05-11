@@ -835,7 +835,7 @@
             <param name="centralBody"> Центр гравитации. Не должен быть null</param>
             
             <exception cref="T:System.ArgumentNullException">
-            Вызывается при передаче null в <see cref="!:centralBody"/>.
+            Вызывается при передаче null.
             </exception>
             <exception cref="T:System.ArgumentException">
             Вызывается при передаче некорректных значений.

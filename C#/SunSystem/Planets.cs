@@ -27,6 +27,7 @@ namespace SunSystem
     /// 9) <see cref="saturn"/><br/>
     /// 10) <see cref="uranus"/><br/>
     /// 11) <see cref="neptune"/><br/>
+    /// 12) <see cref="julianDate"/><br/>
     /// <br/>
     /// Свойства:<br/>
     /// 1) <see cref="Sun"/><br/>
@@ -40,6 +41,7 @@ namespace SunSystem
     /// 9) <see cref="Saturn"/><br/>
     /// 10) <see cref="Uranus"/><br/>
     /// 11) <see cref="Neptune"/><br/>
+    /// 11) <see cref="JulianDate"/><br/>
     /// <br/>
     /// Функции:<br/>
     /// 1) <see cref="SunParams(double)"/><br/>
@@ -58,6 +60,11 @@ namespace SunSystem
     public static class Planets
     {
         #region data
+        /// <summary>
+        /// Юлианская дата.
+        /// </summary>
+        private static double julianDate;
+
         /// <summary>
         /// Солнце.
         /// </summary>
@@ -117,6 +124,8 @@ namespace SunSystem
         #region constructor
         static Planets()
         {
+            julianDate = Date.J2000;
+
             sun = new Planet(1.9885e30, 6.9551e8, 6.955e8, "Sun",
                 new Vector(0.0, 0.0, 0.0), new Basis(), new Vector(0.0, 0.0, 0.0), null);
             sun.GetParamsMethod += SunParams;
@@ -193,7 +202,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 1, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -211,7 +220,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 2, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -230,7 +239,7 @@ namespace SunSystem
             IAUSOFA.iauEpv00(Date.J2000, julianDate - Date.J2000, pvh, pvb);
             var vector = new Vector(pvh[0, 0], pvh[0, 1], pvh[0, 2]);
             var velocity = new Vector(pvh[1, 0], pvh[1, 1], pvh[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -267,7 +276,7 @@ namespace SunSystem
             var pv = new double[2, 3];
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 3, pv);
             Vector EMBVector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]) * IAUSOFA.DAU;
-            Vector EMBVelocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]) * IAUSOFA.DAU / Date.JDtoSecond;
+            Vector EMBVelocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]) * IAUSOFA.DAU / Date.JD_TO_SECOND;
 
             return (new Vector((EMBVector * (earth.Mass + moon.Mass) - EarthVector * earth.Mass) / moon.Mass - EarthVector),
                 new Vector((EMBVelocity * (earth.Mass + moon.Mass) - EarthVelocity * earth.Mass) / moon.Mass - EarthVelocity),
@@ -289,7 +298,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 4, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -307,7 +316,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 5, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -325,7 +334,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 6, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -343,7 +352,7 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 7, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
 
         /// <summary>
@@ -361,11 +370,22 @@ namespace SunSystem
             IAUSOFA.iauPlan94(Date.J2000, julianDate - Date.J2000, 8, pv);
             var vector = new Vector(pv[0, 0], pv[0, 1], pv[0, 2]);
             var velocity = new Vector(pv[1, 0], pv[1, 1], pv[1, 2]);
-            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JDtoSecond, new Basis());
+            return (vector * IAUSOFA.DAU, velocity * IAUSOFA.DAU / Date.JD_TO_SECOND, new Basis());
         }
         #endregion
 
         #region properties
+        /// <summary>
+        /// Юлианская дата.
+        /// </summary>
+        public static double JulianDate
+        {
+            get
+            {
+                return julianDate;
+            }
+        }
+
         /// <summary>
         /// Солнце.
         /// </summary>
@@ -507,6 +527,7 @@ namespace SunSystem
             saturn.UpdateParams(julianDate);
             uranus.UpdateParams(julianDate);
             neptune.UpdateParams(julianDate);
+            Planets.julianDate = julianDate;
         }
         #endregion
     }

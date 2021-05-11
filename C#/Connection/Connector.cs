@@ -86,9 +86,6 @@ namespace Connection
         /// </summary>
         protected bool isAnalizing;
 
-        /// <summary>
-        /// Носитель.
-        /// </summary>
         //protected Body carrier;
 
         /// <summary>
@@ -114,7 +111,6 @@ namespace Connection
         /// <param name="vector"> Вектор относительно базовой системы координат.</param>
         /// <param name="basis"> Базис относительно базовой системы координат.</param>
         /// <param name="view"> Область видимости.</param>
-        /// <param name="carrier"> Носитель.</param>
         /// 
         /// <exception cref="ArgumentNullException">
         /// Вызывается при передаче null.

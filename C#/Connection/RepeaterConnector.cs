@@ -18,7 +18,7 @@ namespace Connection
     /// <remarks>
     /// Поля:<br/>
     /// 1) <see cref="Connector.isAnalizing"/><br/>
-    /// 2) <see cref="Connector.carrier"/><br/>
+    /// 2) <see cref="carrier"/><br/>
     /// 3) <see cref="Connector.view"/><br/>
     /// 4) <see cref="Connector.workingConnectors"/><br/>
     /// 5) <see cref="Body.id"/><br/>
@@ -117,7 +117,7 @@ namespace Connection
         }
         #endregion
 
-        #region functions
+        #region methods
         /// <inheritdoc/>
         protected override void Analize(Message message)
         {
