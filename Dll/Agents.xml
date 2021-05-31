@@ -122,7 +122,7 @@
             1) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Body)"/><br/>
             2) <see cref="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,Connection.RepeaterConnector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
             3) <see cref="M:Agents.LagrangianRepeater.#ctor(Agents.LagrangianRepeater.GetParams,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
-            4) <see cref="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)"/><br/>
+            4) <see cref="!:LagrangianRepeater(LagrangianPoint, string, Vector, Basis, Vector, Vector, Basis, View)"/><br/>
             <br/>
             Свойства:<br/>
             1) <see cref="P:Agents.Repeater.Connector"/><br/>
@@ -197,15 +197,14 @@
             Вызывается при передаче null.
             </exception>
         </member>
-        <member name="M:Agents.LagrangianRepeater.#ctor(SunSystem.LagrangianPoints.LagrangianPoint,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
+        <member name="M:Agents.LagrangianRepeater.#ctor(System.Double,SunSystem.LagrangianPoints.LagrangianPoint,System.String,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.Basis,Connection.View)">
             <summary>
             Конструктор сам задает функцию по указанной точке Лагранжа.
             </summary>
             
             <param name="lagrangianPoint"> Точка Лагранжа.</param>
             <param name="basis"> Базис.</param>
-            <param name="vector"> Координаты.</param>
-            <param name="velocity"> Скорость.</param>
+            <param name="julianDate"> Юлианская дата.</param>
             <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
             <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
             <param name="view"> Область видимости средства связи.</param>

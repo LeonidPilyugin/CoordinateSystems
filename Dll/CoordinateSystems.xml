@@ -1011,7 +1011,7 @@
             Копирование матрицы из массива.
             </summary>
             
-            <param name="matrix"> Копируемый массив. Не должна быть null.</param>
+            <param name="matrix"> Копируемый массив. Не должен быть null.</param>
             
             <exception cref="T:System.ArgumentNullException">
             Вызывается при передаче null.
