@@ -1,0 +1,925 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Keplerian</name>
+    </assembly>
+    <members>
+        <member name="T:Keplerian.EllipticKeplerian">
+            <summary>
+            Абстрактный класс EllipticKeplerian описывает
+            положение и движение тела по эллиптической орбите
+            с использованием Кеплеровых элементов орбиты.<br/>
+            Наследник класса <see cref="T:Keplerian.NotParabolicKeplerian"/>.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:Keplerian.Keplerian.G"/><br/>
+            2) <see cref="F:Keplerian.NotParabolicKeplerian.ITERATION_CONSTANT"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            2) <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            3) <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            4) <see cref="F:Keplerian.Keplerian.inclination"/><br/>
+            5) <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            6) <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            7) <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            8) <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Keplerian.EllipticKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            2) <see cref="M:Keplerian.EllipticKeplerian.#ctor(Keplerian.EllipticKeplerian)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Keplerian.NotParabolicKeplerian.Vector"/><br/>
+            2) <see cref="P:Keplerian.EllipticKeplerian.MeanAngularVelocity"/><br/>
+            3) <see cref="P:Keplerian.EllipticKeplerian.Eccentricity"/><br/>
+            4) <see cref="P:Keplerian.EllipticKeplerian.TrueAnomaly"/><br/>
+            5) <see cref="P:Keplerian.Keplerian.Velocity"/><br/>
+            6) <see cref="P:Keplerian.Keplerian.JulianDate"/><br/>
+            7) <see cref="P:Keplerian.Keplerian.CentralBody"/><br/>
+            8) <see cref="P:Keplerian.Keplerian.PerifocusDistance"/><br/>
+            9) <see cref="P:Keplerian.Keplerian.Inclination"/><br/>
+            10) <see cref="P:Keplerian.Keplerian.AscendingNodeLongitude"/><br/>
+            11) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            12) <see cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/><br/>
+            13) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            14) <see cref="P:Keplerian.EllipticKeplerian.OrbitalPeriod"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Keplerian.EllipticKeplerian.GetTrueAnomaly(System.Double)"/><br/>
+            2) <see cref="M:Keplerian.EllipticKeplerian.GetJulianDate(System.Double)"/><br/>
+            3) <see cref="M:Keplerian.NotParabolicKeplerian.GetVector(System.Double)"/><br/>
+            4) <see cref="M:Keplerian.NotParabolicKeplerian.GetVelocity(System.Double)"/><br/>
+            5) <see cref="M:Keplerian.Keplerian.ToString"/><br/>
+            6) <see cref="M:Keplerian.Keplerian.ToString(System.Double)"/><br/>
+            7) <see cref="M:Keplerian.EllipticKeplerian.GetEccentricAnomaly(System.Double)"/><br/>
+            8) <see cref="M:Keplerian.EllipticKeplerian.GetMeanAnomaly(System.Double)"/><br/>
+            9) <see cref="M:Keplerian.EllipticKeplerian.GetTrueAnomaly2(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)">
+            <summary>
+            Конструктор, параметры которого соответствуют полям,
+            за исключением большей полуоси, которая пересчитывается в перифокусное расстояние.<br/>
+            См. также:<br/>
+            <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <seealso cref="M:Keplerian.Keplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            <seealso cref="M:Keplerian.NotParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            <seealso cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/>
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата</param>
+            <param name="eccentricity"> Эксцентриситет. Граничные значения зависят от типа орбиты</param>
+            <param name="semimajorAxis"> Большая полуось. Измеряется в метрах, &gt; 0 для эллипса и &lt; 0 для гиперболы.</param>
+            <param name="inclination"> Наклонение. Измеряется в радианах, 0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="ascendingNodeLongitude"> Долгота восходящего узла. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
+            <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.#ctor(Keplerian.EllipticKeplerian)">
+            <summary>
+            Конструктор копирования.<br/>
+            См. также:<br/>
+            <see cref="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)"/><br/>
+            <see cref="M:Keplerian.NotParabolicKeplerian.#ctor(Keplerian.NotParabolicKeplerian)"/>
+            </summary>
+            
+            <param name="keplerian"> Копируемый EllipticKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.EllipticKeplerian.MeanAngularVelocity">
+            <inheritdoc/>
+        </member>
+        <member name="P:Keplerian.EllipticKeplerian.OrbitalPeriod">
+            <summary>
+            Орбитальный период.<br/>
+            Измеряется в секундах.
+            </summary>
+        </member>
+        <member name="P:Keplerian.EllipticKeplerian.Eccentricity">
+            <summary>
+            Эксцентриситет.<br/>
+            0 &lt;= eccentricity &lt; 1
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передачи значения меньшего, чем 0 или большего или равного 1.
+            </exception>
+        </member>
+        <member name="P:Keplerian.EllipticKeplerian.TrueAnomaly">
+            <summary>
+            Истинная аномалия в начале движения.<br/>
+            Измеряется в радианах.<br/>
+            -<see cref="F:System.Math.PI"/> &lt;= trueAnomaly &lt;= <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при записи значения большего, чем <see cref="F:System.Math.PI"/>
+            или меньшего, чем <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.GetEccentricAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.GetMeanAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.GetTrueAnomaly2(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.GetTrueAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.EllipticKeplerian.GetJulianDate(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Keplerian.HyperbolicKeplerian">
+            <summary>
+            Абстрактный класс HyperbolicKeplerian описывает
+            положение и движение тела по гиперболической орбите
+            с использованием Кеплеровых элементов орбиты.<br/>
+            Наследник класса <see cref="T:Keplerian.NotParabolicKeplerian"/>.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:Keplerian.Keplerian.G"/><br/>
+            2) <see cref="F:Keplerian.NotParabolicKeplerian.ITERATION_CONSTANT"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            2) <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            3) <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            4) <see cref="F:Keplerian.Keplerian.inclination"/><br/>
+            5) <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            6) <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            7) <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            8) <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Keplerian.HyperbolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            2) <see cref="M:Keplerian.HyperbolicKeplerian.#ctor(Keplerian.HyperbolicKeplerian)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Keplerian.NotParabolicKeplerian.Vector"/><br/>
+            2) <see cref="P:Keplerian.HyperbolicKeplerian.MeanAngularVelocity"/><br/>
+            3) <see cref="P:Keplerian.HyperbolicKeplerian.Eccentricity"/><br/>
+            4) <see cref="P:Keplerian.HyperbolicKeplerian.TrueAnomaly"/><br/>
+            5) <see cref="P:Keplerian.Keplerian.Velocity"/><br/>
+            6) <see cref="P:Keplerian.Keplerian.JulianDate"/><br/>
+            7) <see cref="P:Keplerian.Keplerian.CentralBody"/><br/>
+            8) <see cref="P:Keplerian.Keplerian.PerifocusDistance"/><br/>
+            9) <see cref="P:Keplerian.Keplerian.Inclination"/><br/>
+            10) <see cref="P:Keplerian.Keplerian.AscendingNodeLongitude"/><br/>
+            11) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            12) <see cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/><br/>
+            13) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Keplerian.HyperbolicKeplerian.GetTrueAnomaly(System.Double)"/><br/>
+            2) <see cref="M:Keplerian.HyperbolicKeplerian.GetJulianDate(System.Double)"/><br/>
+            3) <see cref="M:Keplerian.NotParabolicKeplerian.GetVector(System.Double)"/><br/>
+            4) <see cref="M:Keplerian.NotParabolicKeplerian.GetVelocity(System.Double)"/><br/>
+            5) <see cref="M:Keplerian.Keplerian.ToString"/><br/>
+            6) <see cref="M:Keplerian.Keplerian.ToString(System.Double)"/><br/>
+            7) <see cref="M:Keplerian.HyperbolicKeplerian.GetEccentricAnomaly(System.Double)"/><br/>
+            8) <see cref="M:Keplerian.HyperbolicKeplerian.GetMeanAnomaly(System.Double)"/><br/>
+            9) <see cref="M:Keplerian.HyperbolicKeplerian.GetTrueAnomaly2(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)">
+            <summary>
+            Конструктор, параметры которого соответствуют полям,
+            за исключением большей полуоси, которая пересчитывается в перифокусное расстояние.<br/>
+            См. также:<br/>
+            <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <seealso cref="M:Keplerian.Keplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            <seealso cref="M:Keplerian.NotParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            <seealso cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/>
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата</param>
+            <param name="eccentricity"> Эксцентриситет. Граничные значения зависят от типа орбиты</param>
+            <param name="semimajorAxis"> Большая полуось. Измеряется в метрах, &gt; 0 для эллипса и &lt; 0 для гиперболы.</param>
+            <param name="inclination"> Наклонение. Измеряется в радианах, 0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="ascendingNodeLongitude"> Долгота восходящего узла. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
+            <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.#ctor(Keplerian.HyperbolicKeplerian)">
+            <summary>
+            Конструктор копирования.<br/>
+            См. также:<br/>
+            <see cref="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)"/><br/>
+            <see cref="M:Keplerian.NotParabolicKeplerian.#ctor(Keplerian.NotParabolicKeplerian)"/>
+            </summary>
+            
+            <param name="keplerian"> Копируемый HyperbolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.HyperbolicKeplerian.MeanAngularVelocity">
+            <inheritdoc/>
+        </member>
+        <member name="P:Keplerian.HyperbolicKeplerian.Eccentricity">
+            <summary>
+            Эксцентриситет.<br/>
+            eccentricity &gt; 1
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передачи значения меньшего или равного 1.
+            </exception>
+        </member>
+        <member name="P:Keplerian.HyperbolicKeplerian.TrueAnomaly">
+            <summary>
+            Истинная аномалия в начале движения.<br/>
+            Измеряется в радианах.<br/>
+            eccentricity * Cos(trueAnomaly) &gt; -1.0
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при записи значения, для которого eccentricity * Cos(trueAnomaly) &lt;= -1.0.
+            </exception>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.GetEccentricAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.GetMeanAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.GetTrueAnomaly2(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.GetTrueAnomaly(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.HyperbolicKeplerian.GetJulianDate(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Keplerian.Keplerian">
+            <summary>
+            Абстрактный класс Keplerian описывает положение и движение
+            малого тела относительно центра гравитации
+            с использованием Кеплеровых элементов орбиты.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:Keplerian.Keplerian.G"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            2) <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            3) <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            4) <see cref="F:Keplerian.Keplerian.inclination"/><br/>
+            5) <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            6) <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            7) <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            8) <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Keplerian.Keplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            2) <see cref="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Keplerian.Keplerian.Vector"/><br/>
+            2) <see cref="P:Keplerian.Keplerian.MeanAngularVelocity"/><br/>
+            3) <see cref="P:Keplerian.Keplerian.Eccentricity"/><br/>
+            4) <see cref="P:Keplerian.Keplerian.TrueAnomaly"/><br/>
+            5) <see cref="P:Keplerian.Keplerian.Velocity"/><br/>
+            6) <see cref="P:Keplerian.Keplerian.JulianDate"/><br/>
+            7) <see cref="P:Keplerian.Keplerian.CentralBody"/><br/>
+            8) <see cref="P:Keplerian.Keplerian.PerifocusDistance"/><br/>
+            9) <see cref="P:Keplerian.Keplerian.Inclination"/><br/>
+            10) <see cref="P:Keplerian.Keplerian.AscendingNodeLongitude"/><br/>
+            11) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Keplerian.Keplerian.GetTrueAnomaly(System.Double)"/><br/>
+            2) <see cref="M:Keplerian.Keplerian.GetJulianDate(System.Double)"/><br/>
+            3) <see cref="M:Keplerian.Keplerian.GetVector(System.Double)"/><br/>
+            4) <see cref="M:Keplerian.Keplerian.GetVelocity(System.Double)"/><br/>
+            5) <see cref="M:Keplerian.Keplerian.ToString"/><br/>
+            6) <see cref="M:Keplerian.Keplerian.ToString(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:Keplerian.Keplerian.G">
+            <summary>
+            Гравитационная постоянная. Измеряется в единицах СИ
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.julianDate">
+            <summary>
+            Юлианская дата начала движения.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.eccentricity">
+            <summary>
+            Эксцентриситет.<br/>
+            Граничные значения зависят от типа орбиты.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.perifocusDistance">
+            <summary>
+            Перифокусное расстояние.<br/>
+            Измеряется в метрах.<br/>
+            perifocusDistance &gt; 0
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.inclination">
+            <summary>
+            Наклонение.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/>.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.ascendingNodeLongitude">
+            <summary>
+            Долгота восходящего узла.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= ascendingNodeLongitude &lt;= 2 * <see cref="F:System.Math.PI"/>.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.periapsisArgument">
+            <summary>
+            Аргумент перицентра.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= periapsisArgument &lt;= 2 * <see cref="F:System.Math.PI"/>.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.trueAnomaly">
+            <summary>
+            Истинная аномалия в момент начала движения.<br/>
+            Измеряется в радианах.<br/>
+            граничные значения зависят от типа орбиты.
+            </summary>
+        </member>
+        <member name="F:Keplerian.Keplerian.centralBody">
+            <summary>
+            Центр гравитации.<br/>
+            Не должен быть null.
+            </summary>
+        </member>
+        <member name="M:Keplerian.Keplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)">
+            <summary>
+            Конструктор, параметры которого соответствуют полям.<br/>
+            См. также:<br/>
+            <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата</param>
+            <param name="eccentricity"> Эксцентриситет. Граничные значения зависят от типа орбиты</param>
+            <param name="perifocusDistance"> Перифокусное расстояние. Измеряется в метрах, &gt; 0</param>
+            <param name="inclination"> Наклонение. Измеряется в радианах, 0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="ascendingNodeLongitude"> Долгота восходящего узла. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
+            <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в <see cref="F:Keplerian.Keplerian.centralBody"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
+        </member>
+        <member name="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="keplerian"> Копируемый Keplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.Keplerian.Vector">
+            <summary>
+            Координаты в иннерциальной системе координат базового тела в начале движения.<br/>
+            Координаты измеряются в метрах.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.MeanAngularVelocity">
+            <summary>
+            Среднее движение.<br/>
+            Измеряется в радинах в секунду.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.Eccentricity">
+            <summary>
+            Эксцентриситет.<br/>
+            Граничные значения зависят от типа орбиты.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.TrueAnomaly">
+            <summary>
+            Истинная аномалия в начале движения.<br/>
+            Измеряется в радианах.<br/>
+            Граничные значения зависят от типа орбиты.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.Velocity">
+            <summary>
+            Модуль скорости в иннерциальной системе координат базового тела в начале движения.<br/>
+            Измеряется в метрах в секунду.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.JulianDate">
+            <summary>
+            Юлианская дата начала движения.
+            </summary>
+        </member>
+        <member name="P:Keplerian.Keplerian.CentralBody">
+            <summary>
+            Центр гравитации.<br/>
+            Не должен быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается передаче значения null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.Keplerian.PerifocusDistance">
+            <summary>
+            Перифокусное расстоняние.<br/>
+            Измеряется в метрах.<br/>
+            perifocusDistance &gt; 0
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="P:Keplerian.Keplerian.Inclination">
+            <summary>
+            Наклонение.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/>
+            
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается передаче отрицательного занчения или значения, большего, чем <see cref="F:System.Math.PI"/>
+            </exception>
+        </member>
+        <member name="P:Keplerian.Keplerian.AscendingNodeLongitude">
+            <summary>
+            Долгота восходящего узла.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= ascendingNodeLongitude &lt;= 2 * <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается передаче отрицательного занчения или значения, большего, чем 2 * <see cref="F:System.Math.PI"/>
+            </exception>
+        </member>
+        <member name="P:Keplerian.Keplerian.PeriapsisArgument">
+            <summary>
+            Аргумент перицентра.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= periapsisArgument &lt;= 2 * <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается передаче отрицательного занчения или значения, большего, чем 2 * <see cref="F:System.Math.PI"/>
+            </exception>
+        </member>
+        <member name="M:Keplerian.Keplerian.GetTrueAnomaly(System.Double)">
+            <summary>
+            Возвращает истинную аномалию в данную юлианскую дату.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Истинная аномалия в указанную Юлианскую дату.<br/>
+            Измеряется в радианах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.Keplerian.GetJulianDate(System.Double)">
+            <summary>
+            Возвращает юлианскую дату, в который истинная аномалия равна данной.
+            </summary>
+            
+            <param name="trueAnomaly"> Истинная аномалия.</param>
+            
+            <returns>
+            Юлианская дата, в которую достигается указанная истинная аномалия.
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если такая истинная аномалия не достигается никогда.
+            </exception>
+        </member>
+        <member name="M:Keplerian.Keplerian.GetVector(System.Double)">
+            <summary>
+            Возвращает координаты в иннерциальной системе отсчета центра гравитации в данный Юлианский день.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Вектор, направленный от центра гравитации к телу в
+            иннерциальной системе координат центра гравитации.<br/>
+            Координаты вектора измеряются в метрах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.Keplerian.GetVelocity(System.Double)">
+            <summary>
+            Возвращает скорость в иннерциальной системе отсчета центра гравитации в данную Юлианскую дату.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Скорость относительно центра гравитации.<br/>
+            Координаты вектора скорости измеряются в метрах в секунду.
+            </returns>
+        </member>
+        <member name="M:Keplerian.Keplerian.ToString">
+            <summary>
+            Преобразует в строку.
+            </summary>
+            
+            <returns>
+            строка: "[дата] [координаты] [скорость]".
+            </returns>
+        </member>
+        <member name="M:Keplerian.Keplerian.ToString(System.Double)">
+            <summary>
+            Преобразует в строку.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Строка: "[дата] [координаты] [скорость]" с данными, соответствующими указанной Юлианской дате.
+            </returns>
+        </member>
+        <member name="T:Keplerian.NotParabolicKeplerian">
+            <summary>
+            Абстрактный класс NotParabolicKeplerian описывает
+            положение и движение тела по не параболической орбите
+            с использованием Кеплеровых элементов орбиты.<br/>
+            Наследник класса <see cref="T:Keplerian.Keplerian"/>.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:Keplerian.Keplerian.G"/><br/>
+            2) <see cref="F:Keplerian.NotParabolicKeplerian.ITERATION_CONSTANT"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            2) <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            3) <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            4) <see cref="F:Keplerian.Keplerian.inclination"/><br/>
+            5) <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            6) <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            7) <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            8) <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Keplerian.NotParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            2) <see cref="M:Keplerian.NotParabolicKeplerian.#ctor(Keplerian.NotParabolicKeplerian)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Keplerian.NotParabolicKeplerian.Vector"/><br/>
+            2) <see cref="P:Keplerian.Keplerian.MeanAngularVelocity"/><br/>
+            3) <see cref="P:Keplerian.Keplerian.Eccentricity"/><br/>
+            4) <see cref="P:Keplerian.Keplerian.TrueAnomaly"/><br/>
+            5) <see cref="P:Keplerian.Keplerian.Velocity"/><br/>
+            6) <see cref="P:Keplerian.Keplerian.JulianDate"/><br/>
+            7) <see cref="P:Keplerian.Keplerian.CentralBody"/><br/>
+            8) <see cref="P:Keplerian.Keplerian.PerifocusDistance"/><br/>
+            9) <see cref="P:Keplerian.Keplerian.Inclination"/><br/>
+            10) <see cref="P:Keplerian.Keplerian.AscendingNodeLongitude"/><br/>
+            11) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            12) <see cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Keplerian.Keplerian.GetTrueAnomaly(System.Double)"/><br/>
+            2) <see cref="M:Keplerian.Keplerian.GetJulianDate(System.Double)"/><br/>
+            3) <see cref="M:Keplerian.NotParabolicKeplerian.GetVector(System.Double)"/><br/>
+            4) <see cref="M:Keplerian.NotParabolicKeplerian.GetVelocity(System.Double)"/><br/>
+            5) <see cref="M:Keplerian.Keplerian.ToString"/><br/>
+            6) <see cref="M:Keplerian.Keplerian.ToString(System.Double)"/><br/>
+            7) <see cref="M:Keplerian.NotParabolicKeplerian.GetEccentricAnomaly(System.Double)"/><br/>
+            8) <see cref="M:Keplerian.NotParabolicKeplerian.GetMeanAnomaly(System.Double)"/><br/>
+            9) <see cref="M:Keplerian.NotParabolicKeplerian.GetTrueAnomaly2(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:Keplerian.NotParabolicKeplerian.ITERATION_CONSTANT">
+            <summary>
+            Количество итераций в решении уравнения Кеплера.
+            </summary>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)">
+            <summary>
+            Конструктор, параметры которого соответствуют полям,
+            за исключением большей полуоси, которая пересчитывается в перифокусное расстояние.<br/>
+            См. также:<br/>
+            <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <seealso cref="M:Keplerian.Keplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            <seealso cref="P:Keplerian.NotParabolicKeplerian.SemimajorAxis"/>
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата</param>
+            <param name="eccentricity"> Эксцентриситет. Граничные значения зависят от типа орбиты</param>
+            <param name="semimajorAxis"> Большая полуось. Измеряется в метрах, &gt; 0 для эллипса и &lt; 0 для гиперболы.</param>
+            <param name="inclination"> Наклонение. Измеряется в радианах, 0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="ascendingNodeLongitude"> Долгота восходящего узла. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
+            <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в centralBody.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.#ctor(Keplerian.NotParabolicKeplerian)">
+            <summary>
+            Конструктор копирования.<br/>
+            См. также: <see cref="M:Keplerian.Keplerian.#ctor(Keplerian.Keplerian)"/>
+            </summary>
+            
+            <param name="keplerian"> Копируемый NotParabolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.NotParabolicKeplerian.SemimajorAxis">
+            <summary>
+            Большая полуось.<br/>
+            Измеряется в метрах.<br/>
+            Для гиперболы отрицательна, для эллипса положительна.
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче отрицательного значения при передачече
+            неположительного значения для эллипса и неотрицательного для гиперболы.
+            </exception>
+        </member>
+        <member name="P:Keplerian.NotParabolicKeplerian.Vector">
+            <summary>
+            Координаты в иннерциальной системе координат базового тела в начале движения.<br/>
+            Координаты измеряются в метрах.<br/>
+            См. также: <see cref="P:Keplerian.Keplerian.Vector"/>.
+            </summary>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.GetEccentricAnomaly(System.Double)">
+            <summary>
+            Возвращает значение эксцентрической аномалии, соответствующее переданной истинной аномалии.<br/>
+            Измеряется в радианах.<br/>
+            </summary>
+            
+            <param name="trueAnomaly"> Истинная аномалия в радианах.</param>
+            
+            <returns>
+            Эксцентрическая аномалия, соответствующая переданной истинной аномалии.<br/>
+            Измеряется в радианах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.GetMeanAnomaly(System.Double)">
+            <summary>
+            Возвращает значение средней аномалии, соответствующее переданной истинной аномалии.<br/>
+            Измеряется в радианах.<br/>
+            </summary>
+            
+            <param name="trueAnomaly"> Истинная аномалия в радианах.</param>
+            
+            <returns>
+            Средняя аномалия, соответствующая переданной истинной аномалии.<br/>
+            Измеряется в радианах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.GetTrueAnomaly2(System.Double)">
+            <summary>
+            Возвращает значение истинной аномалии, соответствующее переданной средней аномалии.<br/>
+            Измеряется в радианах.<br/>
+            </summary>
+            
+            <param name="meanAnomaly"> Средняя аномалия в радианах.</param>
+            
+            <returns>
+            Истинная аномалия, соответствующая переданной средней аномалии.<br/>
+            Измеряется в радианах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.GetVector(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.NotParabolicKeplerian.GetVelocity(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Keplerian.ParabolicKeplerian">
+            <summary>
+            Класс ParabolicKeplerian описывает
+            положение и движение тела по параболической орбите
+            с использованием Кеплеровых элементов орбиты.<br/>
+            Наследник класса <see cref="T:Keplerian.Keplerian"/>.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:Keplerian.Keplerian.G"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            2) <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            3) <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            4) <see cref="F:Keplerian.Keplerian.inclination"/><br/>
+            5) <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            6) <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            7) <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            8) <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Keplerian.ParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)"/><br/>
+            2) <see cref="M:Keplerian.ParabolicKeplerian.#ctor(Keplerian.ParabolicKeplerian)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Keplerian.ParabolicKeplerian.Vector"/><br/>
+            2) <see cref="P:Keplerian.ParabolicKeplerian.MeanAngularVelocity"/><br/>
+            3) <see cref="P:Keplerian.ParabolicKeplerian.Eccentricity"/><br/>
+            4) <see cref="P:Keplerian.ParabolicKeplerian.TrueAnomaly"/><br/>
+            5) <see cref="P:Keplerian.Keplerian.Velocity"/><br/>
+            6) <see cref="P:Keplerian.Keplerian.JulianDate"/><br/>
+            7) <see cref="P:Keplerian.Keplerian.CentralBody"/><br/>
+            8) <see cref="P:Keplerian.Keplerian.PerifocusDistance"/><br/>
+            9) <see cref="P:Keplerian.Keplerian.Inclination"/><br/>
+            10) <see cref="P:Keplerian.Keplerian.AscendingNodeLongitude"/><br/>
+            11) <see cref="P:Keplerian.Keplerian.PeriapsisArgument"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Keplerian.ParabolicKeplerian.GetTrueAnomaly(System.Double)"/><br/>
+            2) <see cref="M:Keplerian.ParabolicKeplerian.GetJulianDate(System.Double)"/><br/>
+            3) <see cref="M:Keplerian.ParabolicKeplerian.GetVector(System.Double)"/><br/>
+            4) <see cref="M:Keplerian.ParabolicKeplerian.GetVelocity(System.Double)"/><br/>
+            5) <see cref="M:Keplerian.Keplerian.ToString"/><br/>
+            6) <see cref="M:Keplerian.Keplerian.ToString(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,SunSystem.Planet)">
+            <summary>
+            Конструктор, параметры которого соответствуют полям,<br/>
+            за исключением эксцентриситета, который принимается равным 1.<br/>
+            См. также:<br/>
+            <see cref="F:Keplerian.Keplerian.julianDate"/><br/>
+            <see cref="F:Keplerian.Keplerian.eccentricity"/><br/>
+            <see cref="F:Keplerian.Keplerian.perifocusDistance"/><br/>
+            <see cref="F:Keplerian.Keplerian.ascendingNodeLongitude"/><br/>
+            <see cref="F:Keplerian.Keplerian.periapsisArgument"/><br/>
+            <see cref="F:Keplerian.Keplerian.trueAnomaly"/><br/>
+            <see cref="F:Keplerian.Keplerian.centralBody"/><br/>
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата</param>
+            <param name="perifocusDistance"> Перифокусное расстояние. Измеряется в метрах, &gt; 0</param>
+            <param name="inclination"> Наклонение. Измеряется в радианах, 0 &lt;= inclination &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="ascendingNodeLongitude"> Долгота восходящего узла. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="periapsisArgument"> Аргумент перицентра. Измеряется в радианах, 0 &lt;= inclination &lt;= 2 * <see cref="F:System.Math.PI"/></param>
+            <param name="trueAnomaly"> Истинная аномалия. Измеряется в радианах, граничные значения зависят от типа орбиты</param>
+            <param name="centralBody"> Центр гравитации. Не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректных значений.
+            </exception>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.#ctor(Keplerian.ParabolicKeplerian)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="keplerian"> Копируемый ParabolicKeplerian не должен быть null</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:Keplerian.ParabolicKeplerian.Vector">
+            <summary>
+            Координаты в иннерциальной системе координат базового тела в начале движения.<br/>
+            Координаты измеряются в метрах.<br/>
+            См. также: <see cref="P:Keplerian.Keplerian.Vector"/>.
+            </summary>
+        </member>
+        <member name="P:Keplerian.ParabolicKeplerian.MeanAngularVelocity">
+            <summary>
+            Среднее движение.<br/>
+            Измеряется в радинах в секунду.<br/>
+            См. также: <see cref="P:Keplerian.Keplerian.MeanAngularVelocity"/>.
+            </summary>
+        </member>
+        <member name="P:Keplerian.ParabolicKeplerian.Eccentricity">
+            <summary>
+            Эксцентриситет.<br/>
+            Всегда равен 1, поэтому недоступен для записи.
+            </summary>
+        </member>
+        <member name="P:Keplerian.ParabolicKeplerian.TrueAnomaly">
+            <summary>
+            Истинная аномалия в начале движения.<br/>
+            Измеряется в радианах.<br/>
+            -<see cref="F:System.Math.PI"/> &lt; trueAnomaly &lt; <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при записи значения большего или равного <see cref="F:System.Math.PI"/>
+            или меньшего или равного <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.GetJulianDate(System.Double)">
+            <summary>
+            Возвращает Юлианскую дату, в который истинная аномалия равна данной.
+            </summary>
+            
+            <param name="trueAnomaly">
+            Истинная аномалия
+            </param>
+            
+            <returns>
+            Юлианская дата, в которую достигается указанная истинная аномалия.
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если такая истинная аномалия не достигается никогда.
+            </exception>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.GetTrueAnomaly(System.Double)">
+            <summary>
+            Возвращает истинную аномалию в данную Юлианскую дату.
+            </summary>
+            
+            <param name="julianDate">
+            Юлианская дата
+            </param>
+            
+            <returns>
+            Истинная аномалия в указанную Юлианскую дату.<br/>
+            Измеряется в радианах.
+            </returns>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.GetVector(System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Keplerian.ParabolicKeplerian.GetVelocity(System.Double)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

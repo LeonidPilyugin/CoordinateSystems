@@ -1,0 +1,715 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Date</name>
+    </assembly>
+    <members>
+        <member name="T:Date.Date">
+            <summary>
+            Класс Date представляет дату и время и позволяет переводить их в Юлианскую дату и обратно.
+            </summary>
+            
+            <remarks>
+            Типы:<br/>
+            1) структура <see cref="T:Date.Date.Calendar"/><br/>
+            <br/>
+            Константы:<br/>
+            1) <see cref="F:Date.Date.J2000"/><br/>
+            2) <see cref="F:Date.Date.JD_TO_SECOND"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:Date.Date.julianDate"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:Date.Date.#ctor"/><br/>
+            2) <see cref="M:Date.Date.#ctor(Date.Date.Calendar)"/><br/>
+            3) <see cref="M:Date.Date.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double)"/><br/>
+            4) <see cref="M:Date.Date.#ctor(System.Double)"/><br/>
+            5) <see cref="M:Date.Date.#ctor(Date.Date)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:Date.Date.GrigorianCalendar"/><br/>
+            2) <see cref="P:Date.Date.JulianDate"/><br/>
+            3) <see cref="P:Date.Date.Second"/><br/>
+            4) <see cref="P:Date.Date.Minute"/><br/>
+            5) <see cref="P:Date.Date.Hour"/><br/>
+            6) <see cref="P:Date.Date.Day"/><br/>
+            7) <see cref="P:Date.Date.Month"/><br/>
+            8) <see cref="P:Date.Date.Year"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:Date.Date.GetJulianDate(Date.Date.Calendar)"/><br/>
+            2) <see cref="M:Date.Date.GetGrigorianCalendar(System.Double)"/><br/>
+            3) <see cref="M:Date.Date.IsDateCorrect(System.Int32,System.Int32,System.Int32)"/><br/>
+            4) <see cref="M:Date.Date.IsYearLeap(System.Int32)"/><br/>
+            5) <see cref="M:Date.Date.IsCalendarCorrect(Date.Date.Calendar)"/><br/>
+            <br/>
+            Операторы:<br/>
+            1) <see cref="M:Date.Date.op_Addition(Date.Date,Date.Date)"/><br/>
+            2) <see cref="M:Date.Date.op_Subtraction(Date.Date,Date.Date)"/><br/>
+            3) <see cref="M:Date.Date.op_Addition(Date.Date,System.Double)"/><br/>
+            4) <see cref="M:Date.Date.op_Addition(System.Double,Date.Date)"/><br/>
+            5) <see cref="M:Date.Date.op_Subtraction(Date.Date,System.Double)"/><br/>
+            6) <see cref="M:Date.Date.op_Subtraction(System.Double,Date.Date)"/><br/>
+            7) <see cref="M:Date.Date.op_Equality(Date.Date,Date.Date)"/><br/>
+            8) <see cref="M:Date.Date.op_Equality(System.Double,Date.Date)"/><br/>
+            9) <see cref="M:Date.Date.op_Equality(Date.Date,System.Double)"/><br/>
+            10) <see cref="M:Date.Date.op_Inequality(Date.Date,Date.Date)"/><br/>
+            11) <see cref="M:Date.Date.op_Inequality(System.Double,Date.Date)"/><br/>
+            12) <see cref="M:Date.Date.op_Inequality(Date.Date,System.Double)"/><br/>
+            13) <see cref="M:Date.Date.op_GreaterThan(Date.Date,Date.Date)"/><br/>
+            14) <see cref="M:Date.Date.op_GreaterThan(System.Double,Date.Date)"/><br/>
+            15) <see cref="M:Date.Date.op_GreaterThan(Date.Date,System.Double)"/><br/>
+            16) <see cref="M:Date.Date.op_LessThan(Date.Date,Date.Date)"/><br/>
+            17) <see cref="M:Date.Date.op_LessThan(System.Double,Date.Date)"/><br/>
+            18) <see cref="M:Date.Date.op_LessThan(Date.Date,System.Double)"/><br/>
+            19) <see cref="M:Date.Date.op_GreaterThanOrEqual(Date.Date,Date.Date)"/><br/>
+            20) <see cref="M:Date.Date.op_GreaterThanOrEqual(System.Double,Date.Date)"/><br/>
+            21) <see cref="M:Date.Date.op_GreaterThanOrEqual(Date.Date,System.Double)"/><br/>
+            22) <see cref="M:Date.Date.op_LessThanOrEqual(Date.Date,Date.Date)"/><br/>
+            23) <see cref="M:Date.Date.op_LessThanOrEqual(System.Double,Date.Date)"/><br/>
+            24) <see cref="M:Date.Date.op_LessThanOrEqual(Date.Date,System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="T:Date.Date.Calendar">
+            <summary>
+            Структура представляет календарь.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:Date.Date.Calendar.Year"/><br/>
+            1) <see cref="F:Date.Date.Calendar.Month"/><br/>
+            1) <see cref="F:Date.Date.Calendar.Day"/><br/>
+            1) <see cref="F:Date.Date.Calendar.Hour"/><br/>
+            1) <see cref="F:Date.Date.Calendar.Minute"/><br/>
+            1) <see cref="F:Date.Date.Calendar.Second"/><br/>
+            </remarks>
+        </member>
+        <member name="F:Date.Date.Calendar.Year">
+            <summary>
+            Год
+            </summary>
+        </member>
+        <member name="F:Date.Date.Calendar.Month">
+            <summary>
+            Месяц
+            </summary>
+        </member>
+        <member name="F:Date.Date.Calendar.Day">
+            <summary>
+            День
+            </summary>
+        </member>
+        <member name="F:Date.Date.Calendar.Hour">
+            <summary>
+            Час
+            </summary>
+        </member>
+        <member name="F:Date.Date.Calendar.Minute">
+            <summary>
+            Минута
+            </summary>
+        </member>
+        <member name="F:Date.Date.Calendar.Second">
+            <summary>
+            Секунда
+            </summary>
+        </member>
+        <member name="F:Date.Date.J2000">
+            <summary>
+            Юлианская дата эпохи J2000.0
+            </summary>
+        </member>
+        <member name="F:Date.Date.JD_TO_SECOND">
+            <summary>
+            Число секунд в дне
+            </summary>
+        </member>
+        <member name="F:Date.Date.julianDate">
+            <summary>
+            Юлианская дата
+            </summary>
+        </member>
+        <member name="M:Date.Date.#ctor">
+            <summary>
+            Конструктор по умолчанию. Задает значение <see cref="F:Date.Date.julianDate"/> = <see cref="F:Date.Date.J2000"/>.
+            </summary>
+        </member>
+        <member name="M:Date.Date.#ctor(Date.Date.Calendar)">
+            <summary>
+            Конструктор задает значение julianDate, соответствующее переданной дате Григорианского календаря.
+            Дата должна быть позднее 23 ноября -4713 года.
+            </summary>
+            
+            <param name="calendar"> Григорианский календарь. Дата должна быть позднее 23 ноября -4713 года.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
+        </member>
+        <member name="M:Date.Date.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double)">
+            <summary>
+            Конструктор задает значение julianDate, соответствующее переданной дате Григорианского календаря.
+            Дата должна быть позднее 23 ноября -4713 года.
+            </summary>
+            
+            <param name="year"> год</param>
+            <param name="month"> месяц</param>
+            <param name="day"> день</param>
+            <param name="hour"> час</param>
+            <param name="minute"> минута</param>
+            <param name="second"> секунда</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
+        </member>
+        <member name="M:Date.Date.#ctor(System.Double)">
+            <summary>
+            Конструктор задает значение julianDate, аргументу.
+            Переданная Юлианская дата должна быть положительна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата. должна быть положительна.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче отрицательной юлианской даты.
+            </exception>
+        </member>
+        <member name="M:Date.Date.#ctor(Date.Date)">
+            <summary>
+            Конструктор копирования. Копируемая дата не должна быть null.
+            </summary>
+            
+            <param name="date"> Копируемая дата не должна быть null.</param>
+        </member>
+        <member name="P:Date.Date.GrigorianCalendar">
+            <summary>
+            Дата Григорианского календаря. Должна быть позднее 23 Ноября -4713 года
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при несоответствии полей переданной структуры возможным.
+            </exception>
+        </member>
+        <member name="P:Date.Date.JulianDate">
+            <summary>
+            Юлианская дата. Должна быть положительной.
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при несоответствии полей переданной структуры возможным.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Second">
+            <summary>
+            Секунда. 0 &lt;= Second &lt; 60
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче отрицательного или большего или равного 60 значения.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Minute">
+            <summary>
+            Минута. 0 &lt;= Second &lt; 60
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче отрицательного или большего или равного 60 значения.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Hour">
+            <summary>
+            Минута. 0 &lt;= Second &lt; 24
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче отрицательного или большего или равного 24 значения.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Day">
+            <summary>
+            День.
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче недопустимого значения.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Month">
+            <summary>
+            Месяц. 1 &lt;= month &lt;= 12
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче недопустимого значения.
+            </exception>
+        </member>
+        <member name="P:Date.Date.Year">
+            <summary>
+            Год.
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается при передаче недопустимого значения.
+            </exception>
+        </member>
+        <member name="M:Date.Date.GetJulianDate(Date.Date.Calendar)">
+            <summary>
+            Функция возвращает Юлианский день, соответствующий переданной дате Григорианского календаря.
+            </summary>
+            
+            <param name="calendar"> Дата григорианского календаря. Должна быть позднее 23 ноября -4713 года.</param>
+            
+            <returns>
+            Юлианский день, соответствующий переданной дате Григорианского календаря.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректной даты.
+            </exception>
+        </member>
+        <member name="M:Date.Date.GetGrigorianCalendar(System.Double)">
+            <summary>
+            Функция возвращает дату Григорианского календаря, соответствующую переданной Юлианской дате.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата. Должна быть положительна.</param>
+            
+            <returns>
+            Дата Григорианского календаря, соответствующую переданной Юлианской дате.
+            </returns>
+        </member>
+        <member name="M:Date.Date.IsCalendarCorrect(Date.Date.Calendar)">
+            <summary>
+            Проверяет, существует ли переданная дата в Григорианском календаре.
+            </summary>
+            
+            <param name="calendar"> Дата Григорианского календаря.</param>
+            
+            <returns>
+            true, если дата существует.<br/>
+            false, если нет.
+            </returns>
+        </member>
+        <member name="M:Date.Date.IsDateCorrect(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Функция проверяет, могут ли переданные аргументы соответствовать дате Григорианского календаря,
+            которую можно перевести в Юлианскую дату.
+            </summary>
+            
+            <param name="year"> Год</param>
+            <param name="month"> Месяц</param>
+            <param name="day"> День</param>
+            
+            <returns>
+            true, если переданная дата Григорианского календаря существует и ее можно перевести в Юлианскую дату<br/>
+            false, если нет
+            </returns>
+        </member>
+        <member name="M:Date.Date.IsYearLeap(System.Int32)">
+            <summary>
+            Функция проверяет, является ли переданный год високосным в Григорианском календаре.
+            </summary>
+            
+            <param name="year"> Год Григорианского календаря.</param>
+            
+            <returns>
+            true, если переданный год является високосным в Григорианском календаре<br/>
+            false, если нет
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_Addition(Date.Date,Date.Date)">
+            <summary>
+            Складывает даты.
+            </summary>
+            
+            <param name="date1"></param>
+            <param name="date2"></param>
+            
+            <returns>
+            Сумма дат.
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_Subtraction(Date.Date,Date.Date)">
+            <summary>
+            Вычитает даты. Уменьшаемая дата должна быть больше вычитаемой.
+            </summary>
+            
+            <param name="date1"> Уменьшаемая дата</param>
+            <param name="date2"> Вычитаемая дата</param>
+            
+            <returns>
+            Разность дат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если уменьшаемая дата меньше вычитаемой.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Addition(Date.Date,System.Double)">
+            <summary>
+            Складывает дату с Юлианской датой. Сумма дат должна быть положительна.
+            </summary>
+            
+            <param name="date"> Дата</param>
+            <param name="julianDate"> Юлианская дата</param>
+            
+            <returns>
+            Сумма дат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если сумма дат неположительна.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Addition(System.Double,Date.Date)">
+            <summary>
+            Складывает дату с Юлианской датой. Сумма дат должна быть положительна.
+            </summary>
+            
+            <param name="date"> Дата</param>
+            <param name="julianDate"> Юлианская дата</param>
+            
+            <returns>
+            Сумма дат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если сумма дат неположительна.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Subtraction(Date.Date,System.Double)">
+            <summary>
+            Вычитает даты. Уменьшаемая дата должна быть больше вычитаемой.
+            </summary>
+            
+            <param name="date"> Уменьшаемая дата</param>
+            <param name="julianDate"> Вычитаемая Юлианская дата</param>
+            
+            <returns>
+            Разность дат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если уменьшаемая дата меньше вычитаемой.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Subtraction(System.Double,Date.Date)">
+            <summary>
+            Вычитает даты. Уменьшаемая дата должна быть больше вычитаемой.
+            </summary>
+            
+            <param name="date"> Вычитаемая дата</param>
+            <param name="julianDate"> Уменьшаемая Юлианская дата</param>
+            
+            <returns>
+            Разность дат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если уменьшаемая дата меньше вычитаемой.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Equality(Date.Date,Date.Date)">
+            <summary>
+            Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты или ссылки совпадают.<br/>
+            false, если нет.
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_Inequality(Date.Date,Date.Date)">
+            <summary>
+            Проверяет совпадение дат. Если они равны null, то проверяет ссылки.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты или ссылки совпадают.<br/>
+            true, если нет.
+            </returns>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(Date.Date,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Equality(System.Double,Date.Date)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты равны.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Equality(Date.Date,System.Double)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если даты равны.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Inequality(System.Double,Date.Date)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты совпадают.<br/>
+            true, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_Inequality(Date.Date,System.Double)">
+            <summary>
+            Проверяет совпадение дат.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            false, если даты совпадают.<br/>
+            true, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThan(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThan(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt; date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_GreaterThanOrEqual(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &gt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(System.Double,Date.Date)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:Date.Date.op_LessThanOrEqual(Date.Date,System.Double)">
+            <summary>
+            Сравнивает даты.
+            </summary>
+            
+            <param name="date1"> Дата.</param>
+            <param name="date2"> Дата.</param>
+            
+            <returns>
+            true, если date1 &lt;= date2.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+    </members>
+</doc>

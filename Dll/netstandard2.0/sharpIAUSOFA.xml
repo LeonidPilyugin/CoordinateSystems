@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>sharpIAUSOFA</name>
+    </assembly>
+    <members>
+        <member name="T:IAUSOFA.IAUSOFA">
+            <summary>
+            Статический класс IAUSOFA содержит некоторые функции и константы этой библиотеки.<br/>
+            Библиотека: https://www.iausofa.org/ <br/>
+            Описания функций и их исходный код можно найти там.
+            </summary>
+            
+            <remarks>
+            Константы:<br/>
+            1) <see cref="F:IAUSOFA.IAUSOFA.DD2R"/><br/>
+            2) <see cref="F:IAUSOFA.IAUSOFA.DAU"/><br/>
+            3) <see cref="F:IAUSOFA.IAUSOFA.DAS2R"/><br/>
+            <br/>
+            Функции:<br/>
+            1) <see cref="M:IAUSOFA.IAUSOFA.iauPmat06(System.Double,System.Double,System.Double[0:,0:])"/><br/>
+            2) <see cref="M:IAUSOFA.IAUSOFA.iauGst06a(System.Double,System.Double,System.Double,System.Double)"/><br/>
+            3) <see cref="M:IAUSOFA.IAUSOFA.iauObl06(System.Double,System.Double)"/><br/>
+            4) <see cref="M:IAUSOFA.IAUSOFA.iauNut06a(System.Double,System.Double,System.Double@,System.Double@)"/><br/>
+            5) <see cref="M:IAUSOFA.IAUSOFA.iauNumat(System.Double,System.Double,System.Double,System.Double[0:,0:])"/><br/>
+            6) <see cref="M:IAUSOFA.IAUSOFA.iauEpv00(System.Double,System.Double,System.Double[0:,0:],System.Double[0:,0:])"/><br/>
+            7) <see cref="M:IAUSOFA.IAUSOFA.iauPlan94(System.Double,System.Double,System.Int32,System.Double[0:,0:])"/><br/>
+            </remarks>
+        </member>
+        <member name="F:IAUSOFA.IAUSOFA.DD2R">
+            <summary>
+            Радиан в одном градусе
+            </summary>
+        </member>
+        <member name="F:IAUSOFA.IAUSOFA.DAU">
+            <summary>
+            Метров в астрономической единице
+            </summary>
+        </member>
+        <member name="F:IAUSOFA.IAUSOFA.DAS2R">
+            <summary>
+            Радиан в угловой секунде
+            </summary>
+        </member>
+    </members>
+</doc>

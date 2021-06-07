@@ -120,19 +120,11 @@ namespace Connection
         /// <inheritdoc/>
         protected override void Analize(Message message)
         {
-            isAnalizing = true;
-            Connector sender = message.FindPrevious(this);
-            Console.WriteLine(DateTime.Now + ": " + ID + " got " + message.Type + " from " + sender.ID);
-
-            /*if (message.Data == MessageType.Got)
-            {
-                RemoveReceiverFromReceivers(sender);
-            }*/
-            isAnalizing = false;
+            // что-то делает
         }
 
         /// <inheritdoc/>
-        protected override bool CanAccess(Body receiver)
+        public override bool CanAccess(Body receiver)
         {
             return base.CanAccess(receiver) || (!Body.IsCrossing(carrier, receiver) && receiver.ConvertTo(this).Length < view.Length);
         }

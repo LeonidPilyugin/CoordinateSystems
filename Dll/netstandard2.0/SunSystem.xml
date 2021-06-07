@@ -1,0 +1,721 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SunSystem</name>
+    </assembly>
+    <members>
+        <member name="T:SunSystem.LagrangianPoints">
+            <summary>
+            Класс LagrangianPoints описывает точки Лагранжа для систем Солнце-Земля и Земля-Луна.
+            </summary>
+            
+            <remarks>
+            Типы:<br/>
+            1) <see cref="T:SunSystem.LagrangianPoints.LagrangianPoint"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:SunSystem.LagrangianPoints.SunEarthAlpha"/>:<br/>
+            2) <see cref="P:SunSystem.LagrangianPoints.EarthMoonAlpha"/>:<br/>
+            3) <see cref="P:SunSystem.LagrangianPoints.SunEarth1"/>:<br/>
+            4) <see cref="P:SunSystem.LagrangianPoints.SunEarth2"/>:<br/>
+            5) <see cref="P:SunSystem.LagrangianPoints.SunEarth3"/>:<br/>
+            6) <see cref="P:SunSystem.LagrangianPoints.SunEarth4"/>:<br/>
+            7) <see cref="P:SunSystem.LagrangianPoints.SunEarth5"/>:<br/>
+            8) <see cref="P:SunSystem.LagrangianPoints.EarthMoon1"/>:<br/>
+            9) <see cref="P:SunSystem.LagrangianPoints.EarthMoon2"/>:<br/>
+            10) <see cref="P:SunSystem.LagrangianPoints.EarthMoon3"/>:<br/>
+            11) <see cref="P:SunSystem.LagrangianPoints.EarthMoon4"/>:<br/>
+            12) <see cref="P:SunSystem.LagrangianPoints.EarthMoon5"/>:<br/>
+            <br/>
+            Функции:<br/>
+            1) <see cref="M:SunSystem.LagrangianPoints.GetEps0(System.Double)"/>:<br/>
+            2) <see cref="M:SunSystem.LagrangianPoints.GetEarthRotationAxis(System.Double)"/>:<br/>
+            3) <see cref="M:SunSystem.LagrangianPoints.GetMoonRotationAxis(System.Double)"/>:<br/>
+            4) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth1(System.Double)"/>:<br/>
+            5) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth2(System.Double)"/>:<br/>
+            6) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth3(System.Double)"/>:<br/>
+            7) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth4(System.Double)"/>:<br/>
+            8) <see cref="M:SunSystem.LagrangianPoints.GetSunEarth5(System.Double)"/>:<br/>
+            9) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon1(System.Double)"/>:<br/>
+            10) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon2(System.Double)"/>:<br/>
+            11) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon3(System.Double)"/>:<br/>
+            12) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)"/>:<br/>
+            13) <see cref="M:SunSystem.LagrangianPoints.GetEarthMoon5(System.Double)"/>:<br/>
+            </remarks>
+        </member>
+        <member name="T:SunSystem.LagrangianPoints.LagrangianPoint">
+            <summary>
+            Точки Лагранжа.
+            </summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE1">
+            <summary> 1 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE2">
+            <summary> 2 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE3">
+            <summary> 3 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE4">
+            <summary> 4 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.SE5">
+            <summary> 5 точка Лагранжа системы Солнце-Земля.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM1">
+            <summary> 1 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM2">
+            <summary> 2 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM3">
+            <summary> 3 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM4">
+            <summary> 4 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.LagrangianPoint.EM5">
+            <summary> 5 точка Лагранжа системы Земля-Луна.</summary>
+        </member>
+        <member name="F:SunSystem.LagrangianPoints.TIME_CONST">
+            <summary>
+            Время в юлианских днях, через которое определяется вектор
+            координат для определения мгновенной оси вращения.
+            </summary>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEps0(System.Double)">
+            <summary>
+            Угол наклона эклиптики к экватору.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Угол наклона эклиптики к экватору.
+            </returns>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthRotationAxis(System.Double)">
+            <summary>
+            Ось вращения Земли вокруг Солнца в гелиоцентрической системе координат.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Ось вращения Земли вокруг Солнца в гелиоцентрической системе координат.
+            </returns>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetMoonRotationAxis(System.Double)">
+            <summary>
+            Ось вращения Луны вокруг Земли в геоцентрической системе координат.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Ось вращения Луны вокруг Земли в геоцентрической системе координат.
+            </returns>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarthAlpha">
+            <summary>
+            Вспомогательное значение для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoonAlpha">
+            <summary>
+            Вспомогательное значение для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth1">
+            <summary>
+            1 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth2">
+            <summary>
+            2 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth3">
+            <summary>
+            3 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth4">
+            <summary>
+            4 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.SunEarth5">
+            <summary>
+            5 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth1(System.Double)">
+            <summary>
+            1 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth2(System.Double)">
+            <summary>
+            2 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth3(System.Double)">
+            <summary>
+            3 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth4(System.Double)">
+            <summary>
+            4 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetSunEarth5(System.Double)">
+            <summary>
+            5 точка Лагранжа для системы Солнце-Земля.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon1">
+            <summary>
+            1 точка Лагранжа для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon2">
+            <summary>
+            2 точка Лагранжа для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon3">
+            <summary>
+            3 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon4">
+            <summary>
+            4 точка Лагранжа для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.LagrangianPoints.EarthMoon5">
+            <summary>
+            5 точка Лагранжа для системы Земля-Луна.
+            </summary>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon1(System.Double)">
+            <summary>
+            1 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon2(System.Double)">
+            <summary>
+            2 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon3(System.Double)">
+            <summary>
+            3 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon4(System.Double)">
+            <summary>
+            4 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.LagrangianPoints.GetEarthMoon5(System.Double)">
+            <summary>
+            5 точка Лагранжа для системы Земля-Луна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="T:SunSystem.Planet">
+            <summary>
+            Класс Planet описывает крупное небесное тело, имеющее форму эллипсоида вращения. Наследник класса <see cref="T:CoordinateSystems.Body"/>.
+            </summary>
+            
+            <remarks>
+            Типы:<br/>
+            1) <see cref="T:SunSystem.Planet.GetParams"/><br/>
+            <br/>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            2) <see cref="F:CoordinateSystems.CoordinateSystem.velocity"/><br/>
+            3) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
+            4) <see cref="F:CoordinateSystems.CoordinateSystem.basis"/><br/>
+            5) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            6) <see cref="F:CoordinateSystems.Body.id"/><br/>
+            7) <see cref="F:CoordinateSystems.Body.bodies"/><br/>
+            8) <see cref="F:SunSystem.Planet.mass"/><br/>
+            9) <see cref="F:SunSystem.Planet.maxRadius"/><br/>
+            10) <see cref="F:SunSystem.Planet.minRadius"/><br/>
+            11) <see cref="F:SunSystem.Planet.GetParamsMethod"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:SunSystem.Planet.#ctor(System.Double,System.Double,System.Double,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:SunSystem.Planet.Mass"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:SunSystem.Planet.IsInside(CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:SunSystem.Planet.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:SunSystem.Planet.GetDirectionVector(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:SunSystem.Planet.GetProjection(CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:SunSystem.Planet.UpdateParams(System.Double)"/><br/>
+            6) <see cref="M:SunSystem.Planet.ToString"/><br/>
+            </remarks>
+        </member>
+        <member name="T:SunSystem.Planet.GetParams">
+            <summary>
+            Делегат описывает метод для получения положения и скорости тела.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость тела.
+            </returns>
+        </member>
+        <member name="F:SunSystem.Planet.mass">
+            <summary>
+            Масса. Должна быть положительна.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planet.minRadius">
+            <summary>
+            Полярный радиус. Должен быть положителен.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planet.maxRadius">
+            <summary>
+            Экваториальный радиус. Должен быть положителен.
+            </summary>
+        </member>
+        <member name="M:SunSystem.Planet.#ctor(System.Double,System.Double,System.Double,System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор присваивает полям значения, переданные в аргументах.
+            </summary>
+            
+            <param name="mass"> Масса. Должна быть положительна.</param>
+            <param name="minRadius"> Полярный радиус. Должен быть положителен.</param>
+            <param name="maxRadius"> Экваториальный радиус. Должен быть положителен.</param>
+            <param name="id"> Идентификатор. Не должен быть null.</param>
+            <param name="vector"> Вектор в базовой системе координат, направленный в барицентр планеты. Не должен быть null.</param>
+            <param name="basis"> Базис относительно базовой системы координат. Не должен быть null.</param>
+            <param name="velocity"> Скорость относительно базовой системы координат. Не должна быть null.</param>
+            <param name="referenceSystem"> Базовая система координат.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче некорректного значения.
+            </exception>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче bull.
+            </exception>
+        </member>
+        <member name="P:SunSystem.Planet.Mass">
+            <summary>
+            Масса. Должны быть положительной.
+            </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="P:SunSystem.Planet.MinRadius">
+            <summary>
+            Полярный радиус. Должен быть положителен.
+            </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="P:SunSystem.Planet.MaxRadius">
+            <summary>
+            Экваториальный радиус. Должен быть положителен.
+            </summary>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче неположительного значения.
+            </exception>
+        </member>
+        <member name="F:SunSystem.Planet.GetParamsMethod">
+            <summary>
+            Функция, получающая положение и скорость тела.
+            </summary>
+        </member>
+        <member name="M:SunSystem.Planet.IsInside(CoordinateSystems.Vector)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SunSystem.Planet.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SunSystem.Planet.GetDirectionVector(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Единичный вектор, сонаправленный с вектором point2 - point1.
+            </summary>
+            
+            <param name="point1"> Конец отрезка. Не должен быть null.</param>
+            <param name="point2"> Конец отрезка. Не должен быть null.</param>
+            
+            <returns>
+            Единичный вектор, сонаправленный с вектором point2 - point1.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:SunSystem.Planet.GetProjection(CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Получает проекцию точки на прямую.
+            </summary>
+            
+            <param name="vector1"> Точка на прямой. Не должна быть null.</param>
+            <param name="vector2"> Точка на прямой. Не должна быть null.</param>
+            <param name="point"> Проецируемая точка. Не должна быть null.</param>
+            
+            <returns>
+            Проекция точки point на прямую vector1 vector2.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:SunSystem.Planet.UpdateParams(System.Double)">
+            <summary>
+            Обновляет поля vector, velocity и basis значениями для указанной юлианской даты.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+        <member name="M:SunSystem.Planet.ToString">
+            <summary>
+            Возвращает строку: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+            </summary>
+            
+            <returns>
+            Строка: "[x_posistion] [y_posistion] [z_posistion] [x_velocity] [y_velocity] [z_velocity]".
+            </returns>
+        </member>
+        <member name="T:SunSystem.Planets">
+            <summary>
+            Статический класс Planets описывает основные планеты Солнечной системы, Луну и Солнце.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:SunSystem.Planets.sun"/><br/>
+            2) <see cref="F:SunSystem.Planets.mercury"/><br/>
+            3) <see cref="F:SunSystem.Planets.venus"/><br/>
+            4) <see cref="F:SunSystem.Planets.earth"/><br/>
+            5) <see cref="F:SunSystem.Planets.fixedEarth"/><br/>
+            6) <see cref="F:SunSystem.Planets.moon"/><br/>
+            7) <see cref="F:SunSystem.Planets.mars"/><br/>
+            8) <see cref="F:SunSystem.Planets.jupiter"/><br/>
+            9) <see cref="F:SunSystem.Planets.saturn"/><br/>
+            10) <see cref="F:SunSystem.Planets.uranus"/><br/>
+            11) <see cref="F:SunSystem.Planets.neptune"/><br/>
+            12) <see cref="F:SunSystem.Planets.julianDate"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:SunSystem.Planets.Sun"/><br/>
+            2) <see cref="P:SunSystem.Planets.Mercury"/><br/>
+            3) <see cref="P:SunSystem.Planets.Venus"/><br/>
+            4) <see cref="P:SunSystem.Planets.Earth"/><br/>
+            5) <see cref="P:SunSystem.Planets.FixedEarth"/><br/>
+            6) <see cref="P:SunSystem.Planets.Moon"/><br/>
+            7) <see cref="P:SunSystem.Planets.Mars"/><br/>
+            8) <see cref="P:SunSystem.Planets.Jupiter"/><br/>
+            9) <see cref="P:SunSystem.Planets.Saturn"/><br/>
+            10) <see cref="P:SunSystem.Planets.Uranus"/><br/>
+            11) <see cref="P:SunSystem.Planets.Neptune"/><br/>
+            11) <see cref="P:SunSystem.Planets.JulianDate"/><br/>
+            <br/>
+            Функции:<br/>
+            1) <see cref="M:SunSystem.Planets.SunParams(System.Double)"/><br/>
+            2) <see cref="M:SunSystem.Planets.MercuryParams(System.Double)"/><br/>
+            3) <see cref="M:SunSystem.Planets.VenusParams(System.Double)"/><br/>
+            4) <see cref="M:SunSystem.Planets.EarthParams(System.Double)"/><br/>
+            5) <see cref="M:SunSystem.Planets.FixedEarthParams(System.Double)"/><br/>
+            6) <see cref="M:SunSystem.Planets.MoonParams(System.Double)"/><br/>
+            7) <see cref="M:SunSystem.Planets.MarsParams(System.Double)"/><br/>
+            8) <see cref="M:SunSystem.Planets.JupiterParams(System.Double)"/><br/>
+            9) <see cref="M:SunSystem.Planets.SaturnParams(System.Double)"/><br/>
+            10) <see cref="M:SunSystem.Planets.UranusParams(System.Double)"/><br/>
+            11) <see cref="M:SunSystem.Planets.NeptuneParams(System.Double)"/><br/>
+            12) <see cref="M:SunSystem.Planets.UpdateParams(System.Double)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:SunSystem.Planets.julianDate">
+            <summary>
+            Юлианская дата.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.sun">
+            <summary>
+            Солнце.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.mercury">
+            <summary>
+            Меркурий.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.venus">
+            <summary>
+            Венера.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.earth">
+            <summary>
+            Невращающаяся Земля.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.fixedEarth">
+            <summary>
+            Вращающаяся Земля.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.moon">
+            <summary>
+            Луна.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.mars">
+            <summary>
+            Марс.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.jupiter">
+            <summary>
+            Юпитер.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.saturn">
+            <summary>
+            Сатурн.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.uranus">
+            <summary>
+            Уран.
+            </summary>
+        </member>
+        <member name="F:SunSystem.Planets.neptune">
+            <summary>
+            Нептун.
+            </summary>
+        </member>
+        <member name="M:SunSystem.Planets.SunParams(System.Double)">
+            <summary>
+            Положение и скорость Солнца.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Солнца.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.MercuryParams(System.Double)">
+            <summary>
+            Положение и скорость Мкркурия.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Меркурия.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.VenusParams(System.Double)">
+            <summary>
+            Положение и скорость Венеры.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Венеры.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.EarthParams(System.Double)">
+            <summary>
+            Положение и скорость невращающейся Земли.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость невращающейся Земли.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.FixedEarthParams(System.Double)">
+            <summary>
+            Положение и скорость вращающейся Земли.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость вращающейся Земли.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.MoonParams(System.Double)">
+            <summary>
+            Положение и скорость Луны.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Луны.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.MarsParams(System.Double)">
+            <summary>
+            Положение и скорость Марса.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Марса.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.JupiterParams(System.Double)">
+            <summary>
+            Положение и скорость Юпитера.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Юпитера.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.SaturnParams(System.Double)">
+            <summary>
+            Положение и скорость Сатурна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Сатурна.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.UranusParams(System.Double)">
+            <summary>
+            Положение и скорость Урана.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Урана.
+            </returns>
+        </member>
+        <member name="M:SunSystem.Planets.NeptuneParams(System.Double)">
+            <summary>
+            Положение и скорость Нептуна.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Положение и скорость Нептуна.
+            </returns>
+        </member>
+        <member name="P:SunSystem.Planets.JulianDate">
+            <summary>
+            Юлианская дата.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Sun">
+            <summary>
+            Солнце.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Mercury">
+            <summary>
+            Меркурий.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Venus">
+            <summary>
+            Венера.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Earth">
+            <summary>
+            Невращающаяся Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.FixedEarth">
+            <summary>
+            Вращающаяся Земля.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Moon">
+            <summary>
+            Луна.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Mars">
+            <summary>
+            Марс.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Jupiter">
+            <summary>
+            Юпитер.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Saturn">
+            <summary>
+            Сатурн.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Uranus">
+            <summary>
+            Уран.
+            </summary>
+        </member>
+        <member name="P:SunSystem.Planets.Neptune">
+            <summary>
+            Нептун.
+            </summary>
+        </member>
+        <member name="M:SunSystem.Planets.UpdateParams(System.Double)">
+            <summary>
+            Обновляет положение и скорость всех тел, указанных в полях.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+        </member>
+    </members>
+</doc>

@@ -120,15 +120,7 @@ namespace Connection
         /// <inheritdoc/>
         protected override void Analize(Message message)
         {
-            isAnalizing = true;
-            var sender = message.FindPrevious(this);
-            Console.WriteLine(DateTime.Now + ": " + ID + " got " + message.Type + " from " + sender.ID);
-
-            /*if (message.Data == MessageType.Got)
-            {
-                RemoveReceiverFromReceivers(sender);
-            }*/
-            isAnalizing = false;
+            // что-то делает
         }
         #endregion
 

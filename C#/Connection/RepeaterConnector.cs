@@ -121,31 +121,11 @@ namespace Connection
         /// <inheritdoc/>
         protected override void Analize(Message message)
         {
-            isAnalizing = true;
-
-            Connector sender = message.FindPrevious(this);
-            Connector receiver = message.FindNext(this);
-            Console.WriteLine(DateTime.Now + ": " + ID + " got " + message.Type + " from " + sender.ID);
-
-            /*if (message.Data == MessageType.Got)
-            {
-                // Remove receiver from receivers
-                RemoveReceiverFromReceivers((Repeater)sender);
-            }
-            else
-            {
-                Send(new Message(MessageType.Got, this, sender));
-            }*/
-
-            if (receiver != null)
-            {
-                Resend(message);
-            }
-            isAnalizing = false;
+            // что-то делает
         }
 
         /// <inheritdoc/>
-        protected override bool CanAccess(Body receiver)
+        public override bool CanAccess(Body receiver)
         {
             return base.CanAccess(receiver) || (!Body.IsCrossing(carrier, receiver) && receiver.ConvertTo(this).Length < view.Length);
         }
@@ -164,7 +144,7 @@ namespace Connection
             }
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Пересылает сообщение следующему в списке аппарату.
         /// </summary>
         /// 
@@ -187,7 +167,7 @@ namespace Connection
             else
             {
             Send(message);
-            }*/
+            }
             if(CanAccess(message.FindNext(this)))
             {
                 Send(message);
@@ -210,7 +190,7 @@ namespace Connection
 
                 Send(new Message(message.Type, newPath));
             }
-        }
+        }*/
         #endregion
 
         #region properties

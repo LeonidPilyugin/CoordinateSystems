@@ -1,0 +1,1998 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoordinateSystems</name>
+    </assembly>
+    <members>
+        <member name="T:CoordinateSystems.Basis">
+            <summary>
+            Класс описывает базис.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.Basis.i"/><br/>
+            2) <see cref="F:CoordinateSystems.Basis.j"/><br/>
+            3) <see cref="F:CoordinateSystems.Basis.k"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.Basis.#ctor"/><br/>
+            2) <see cref="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)"/><br/>
+            4) <see cref="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.Matrix)"/><br/>
+            5) <see cref="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.Basis)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.Basis.I"/><br/>
+            2) <see cref="P:CoordinateSystems.Basis.J"/><br/>
+            3) <see cref="P:CoordinateSystems.Basis.K"/><br/>
+            4) <see cref="P:CoordinateSystems.Basis.Matrix"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Basis.TurnX(System.Double)"/><br/>
+            2) <see cref="M:CoordinateSystems.Basis.TurnY(System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.Basis.TurnZ(System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Basis.TurnI(System.Double)"/><br/>
+            5) <see cref="M:CoordinateSystems.Basis.TurnJ(System.Double)"/><br/>
+            6) <see cref="M:CoordinateSystems.Basis.TurnK(System.Double)"/><br/>
+            7) <see cref="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.UnitVector,System.Double)"/><br/>
+            8) <see cref="M:CoordinateSystems.Basis.TurnEuler(System.Double,System.Double,System.Double)"/><br/>
+            <br/>
+            Операторы:<br/>
+            1) <see cref="P:CoordinateSystems.Basis.Item(System.Int32)"/><br/>
+            2) <see cref="M:CoordinateSystems.Basis.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Basis)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.Basis.i">
+            <summary>
+            Единичный вектор i. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Basis.j">
+            <summary>
+            Единичный вектор j. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Basis.k">
+            <summary>
+            Единичный вектор k. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Basis.#ctor">
+            <summary>
+            i {1; 0; 0}<br/>
+            j {0; 1; 0}<br/>
+            k {0; 0; 1}<br/>
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)">
+            <summary>
+            Копирует вектора из параметров. Вектора не должны быть компланарны или null.
+            </summary>
+            
+            <param name="i"> Единичный вектор i. Не должен быть равен null.</param>
+            <param name="j"> Единичный вектор j. Не должен быть равен null.</param>
+            <param name="k"> Единичный вектор k. Не должен быть равен null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один из параметров null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передаваемые векторы компланарны.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)">
+            <summary>
+            Правая система координат по единичным векторам i и j. Эти вектора не должны быть коллинеарными.
+            </summary>
+            
+            <param name="i"> Единичный вектор i. Не должен быть равен null.</param>
+            <param name="j"> Единичный вектор j. Не должен быть равен null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один из параметров null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.Matrix)">
+            <summary>
+            Копирует базис из матрицы:<br/>
+            Ix, Iy, Iz<br/>
+            Jx, Jy, Jz<br/>
+            Kx, Ky, Kz<br/>
+            </summary>
+            
+            <param name="matrix"> Копируемая матрица. Должна быть 3 * 3, не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Basis.#ctor(CoordinateSystems.Basis)">
+            <summary>
+            Копирование базиса.
+            </summary>
+            
+            <param name="basis"> Копируемый базис. Не должен быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр равен null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Basis.I">
+            <summary>
+            Единичный вектор I. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            Не должен быть null. Вектора не должны быть компланарны.
+            Возвращает копию поля.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передаваемый вектор компланарен J и K.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Basis.J">
+            <summary>
+            Единичный вектор J. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            Не должен быть null. Вектора не должны быть компланарны.
+            Возвращает копию поля.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передаваемый вектор компланарен I и K.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Basis.K">
+            <summary>
+            Единичный вектор K. Выражается через единичные вектора, направленные вдоль X, Y, Z.
+            Не должен быть null. Вектора не должны быть компланарны.
+            Возвращает копию поля.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передаваемый вектор компланарен I и K.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Basis.Matrix">
+            <summary>
+            Матрица:<br/>
+            Ix, Iy, Iz<br/>
+            Jx, Jy, Jz<br/>
+            Kx, Ky, Kz<br/>
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnX(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси X на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnY(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси Y на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnZ(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси Z на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnI(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси I на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnJ(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси J на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnK(System.Double)">
+            <summary>
+            Поворачивает базис вокруг оси K на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnAxis(CoordinateSystems.UnitVector,System.Double)">
+            <summary>
+            Поворачивает базис вокруг заданной оси на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            <param name="axis"> Ось вращения. Не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при axis = null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Basis.TurnEuler(System.Double,System.Double,System.Double)">
+            <summary>
+            Поворачивает базис при помощи углов Эйлера.
+            </summary>
+            
+            <param name="precession"> Прецессия. Измеряется в радианах.</param>
+            <param name="nutation"> Нутация. Измеряется в радианах.</param>
+            <param name="rotation"> Вращение. Измеряется в радианах.</param>
+        </member>
+        <member name="P:CoordinateSystems.Basis.Item(System.Int32)">
+            <summary>
+            Соответствующее поле:<br/>
+            0 — i<br/>
+            1 — j<br/>
+            2 — k<br/>
+            </summary>
+            
+            <param name="m">
+            Индекс.<br/>
+            Соответствие полям:<br/>
+            0 — i<br/>
+            1 — j<br/>
+            2 — k<br/>
+            </param>
+            
+            <returns>
+            Соответствующее поле:<br/>
+            0 — i<br/>
+            1 — j<br/>
+            2 — k<br/>
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если индекс не равен 0, 1 или 2.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Basis.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Basis)">
+            <summary>
+            Умножение матрицы на базис. Эквивалентно умножению двух матриц 3 * 3.
+            </summary>
+            
+            <param name="matrix"> Матрица 3 * 3. Не должна быть null.</param>
+            <param name="basis"> Базис. Не должен быть null.</param>
+            
+            <returns>
+            Произведение матрицы на базис.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрица не 3 * 3.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если матрица или базис равны null.
+            </exception>
+        </member>
+        <member name="T:CoordinateSystems.Body">
+            <summary>
+            Класс Body описывает тело. Наследник класса <see cref="T:CoordinateSystems.CoordinateSystem"/>.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.Body.bodies"/><br/>
+            2) <see cref="F:CoordinateSystems.Body.id"/><br/>
+            3) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            4) <see cref="F:CoordinateSystems.CoordinateSystem.velocity"/><br/>
+            5) <see cref="F:CoordinateSystems.CoordinateSystem.basis"/><br/>
+            6) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.Body.#ctor"/><br/>
+            2) <see cref="M:CoordinateSystems.Body.#ctor(CoordinateSystems.Body)"/><br/>
+            3) <see cref="M:CoordinateSystems.Body.#ctor(System.String,CoordinateSystems.CoordinateSystem)"/><br/>
+            4) <see cref="M:CoordinateSystems.Body.#ctor(System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.Body.Bodies"/><br/>
+            2) <see cref="P:CoordinateSystems.Body.ID"/><br/>
+            3) <see cref="P:CoordinateSystems.CoordinateSystem.Vector"/><br/>
+            4) <see cref="P:CoordinateSystems.CoordinateSystem.Basis"/><br/>
+            5) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystem"/><br/>
+            6) <see cref="P:CoordinateSystems.CoordinateSystem.Velocity"/><br/>
+            7) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrix"/><br/>
+            8) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+            9) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+            10) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyRoot"/><br/>
+            11) <see cref="P:CoordinateSystems.CoordinateSystem.RootBasis"/><br/>
+            12) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystemBasis"/><br/>
+            13) <see cref="P:CoordinateSystems.CoordinateSystem.VectorFromRoot"/><br/>
+            14) <see cref="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Body.IsInside(CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.CoordinateSystem,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})"/><br/>
+            6) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityFromRoot(CoordinateSystems.Vector)"/><br/>
+            9) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.Body.bodies">
+            <summary>
+            Все тела.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Body.id">
+            <summary>
+            Идентификатор.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Body.#ctor(System.String,CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор. Задает поля значениями, переданными в аргументах. Они не должны быть null.
+            </summary>
+            
+            <param name="id"> Идентификатор.</param>
+            <param name="vector"> Вектор относительно базовой системы координат.</param>
+            <param name="basis"> Базис относительно базовой системы координат.</param>
+            <param name="velocity"> Скорость относительно базовой системы координат.</param>
+            <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если vector, basis, velocity или id равны null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Body.#ctor">
+            <summary>
+            Задает парметры конструкторами по умолчанию, referenceSystem = null, id = "New Body".
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Body.#ctor(CoordinateSystems.Body)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="body"> Копируемое тело.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Body.#ctor(System.String,CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор коприует параметры системы координат и ID.
+            </summary>
+            
+            <param name="ID"> Идентификатор. Не должен быть null.</param>
+            <param name="coordinateSystem"> Система координат. Не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Body.#cctor">
+            <summary>
+            Статический конструктор создает список bodies.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Body.Bodies">
+            <summary>
+            Остальные тела.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Body.ID">
+            <summary>
+            Идентификатор. Не должен быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Body.IsInside(CoordinateSystems.Vector)">
+            <summary>
+            Проверяет, находится ли точка внутри тела.
+            </summary>
+            
+            <param name="point"> Точка в системе координат этого тела.</param>
+            
+            <returns>
+            true, если точка внутри тела.
+            false, если снаружи.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если точка равна null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Проверяет, пересекает ли отрезок с переданными концами это тело.
+            </summary>
+            
+            <param name="vector1"> Конец отрезка, заданный в системе координат этого тела.</param>
+            <param name="vector2"> Конец отрезка, заданный в системе координат этого тела.</param>
+            
+            <returns>
+            true, если пересекает, false — если нет.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Body.IsCrossing(CoordinateSystems.CoordinateSystem,CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Проверяет, пересекает ли отрезок с переданными концами это тело.
+            </summary>
+            
+            <param name="cs1"> Система координат, в которой задается vector1.</param>м
+            <param name="cs2"> Система координат, в которой задается vector2.</param>
+            <param name="vector1"> Конец отрезка, заданный в системе координат cs1. Если равен null, то принимается за нулевой вектор.</param>
+            <param name="vector2"> Конец отрезка, заданный в системе координат cs2. Если равен null, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            true, если пересекает, false — если нет.
+            </returns>
+        </member>
+        <member name="T:CoordinateSystems.Coordinates">
+            <summary>
+            Класс содержит методы и константы для перехода между системами координат.
+            </summary>
+            
+            <remarks>
+            Сокращения систем координат:<br/>
+            ICS — иннерциальная система координат (вторая экваториальная)<br/>
+            GCS — неиннерциальная система координат (первая экваториальная)<br/>
+            TCS — топоцентрическая система координат (горизонтальная)<br/>
+            HICS — гелиоцентрическая иннерциальная (вторая экваториальная с центром в Солнце)<br/>
+            
+            Константы:<br/>
+            1) <see cref="F:CoordinateSystems.Coordinates.EARTH_POLAR_COMPRESSION"/><br/>
+            2) <see cref="F:CoordinateSystems.Coordinates.EARTH_MEAN_RADIUS"/><br/>
+            3) <see cref="F:CoordinateSystems.Coordinates.EARTH_MAX_RADIUS"/><br/>
+            4) <see cref="F:CoordinateSystems.Coordinates.EARTH_MIN_RADIUS"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Coordinates.GetPrecessionMatrix(System.Double)"/><br/>
+            2) <see cref="M:CoordinateSystems.Coordinates.GetNutationMatrix(System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.Coordinates.GetPolarMotionMatrix(System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Coordinates.GetEarthRotationMatrix(System.Double)"/><br/>
+            5) <see cref="M:CoordinateSystems.Coordinates.GetICStoGCSmatrix(System.Double)"/><br/>
+            6) <see cref="M:CoordinateSystems.Coordinates.GetGCStoICSmatrix(System.Double)"/><br/>
+            7) <see cref="M:CoordinateSystems.Coordinates.GetGCStoTCSmatrix(CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.Coordinates.GetTCStoGCSmatrix(CoordinateSystems.Vector)"/><br/>
+            9) <see cref="M:CoordinateSystems.Coordinates.GetGCStoTCSvector(System.Double,System.Double)"/><br/>
+            10) <see cref="M:CoordinateSystems.Coordinates.GetTCStoGCSvector(System.Double,System.Double)"/><br/>
+            11) <see cref="M:CoordinateSystems.Coordinates.ConvertTo(CoordinateSystems.Matrix,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            12) <see cref="M:CoordinateSystems.Coordinates.ConvertICStoGCS(System.Double,CoordinateSystems.Vector)"/><br/>
+            13) <see cref="M:CoordinateSystems.Coordinates.ConvertGCStoICS(System.Double,CoordinateSystems.Vector)"/><br/>
+            14) <see cref="M:CoordinateSystems.Coordinates.ConvertGCStoTCS(System.Double,System.Double,CoordinateSystems.Vector)"/><br/>
+            15) <see cref="M:CoordinateSystems.Coordinates.ConvertTCStoGCS(System.Double,System.Double,CoordinateSystems.Vector)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.Coordinates.EARTH_POLAR_COMPRESSION">
+            <summary>
+            Полярное сжатие Земли.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Coordinates.EARTH_MEAN_RADIUS">
+            <summary>
+            Средний радиус Земли.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Coordinates.EARTH_MAX_RADIUS">
+            <summary>
+            Экваториальный радиус Земли.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Coordinates.EARTH_MIN_RADIUS">
+            <summary>
+            Полярный радиус Земли.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetPrecessionMatrix(System.Double)">
+            <summary>
+            Матрица земной прецессии в указанную юлианскую дату.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица земной прецессии в указанную юлианскую дату.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetNutationMatrix(System.Double)">
+            <summary>
+            Матрица земной нутации в указанную юлианскую дату.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица земной нутации в указанную юлианскую дату.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetPolarMotionMatrix(System.Double)">
+            <summary>
+            Матрица полярного движения Земли в указанную юлианскую дату.<br/>
+            Не найдены функции, описывающие это движение, но с высокой точностью можно считать,
+            что этого движения не существует.
+            /// </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица полярного движения Земли в указанную юлианскую дату.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetEarthRotationMatrix(System.Double)">
+            <summary>
+            Матрица земного вращения в указанную юлианскую дату.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица земного вращения в указанную юлианскую дату.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetICStoGCSmatrix(System.Double)">
+            <summary>
+            Матрица перехода из второй экваториальной системы координат в первую.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица перехода из второй экваториальной системы координат в первую.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetGCStoICSmatrix(System.Double)">
+            <summary>
+            Матрица перехода из первой экваториальной системы координат во вторую.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            
+            <returns>
+            Матрица перехода из второй экваториальной системы координат в первую.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetGCStoTCSmatrix(CoordinateSystems.Vector)">
+            <summary>
+            Матрица перехода из первой экваториальной системы координат в топоцентрическую.
+            </summary>
+            
+            <param name="vector"> Вектор в первой экваториальной системе координат, направленный на точку на поверхности.</param>
+            
+            <returns>
+            Матрица перехода из первой экваториальной системы координат в топоцентрическую.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetTCStoGCSmatrix(CoordinateSystems.Vector)">
+            <summary>
+            Матрица перехода из топоцентрической системы координат в первую экваториальную.
+            </summary>
+            
+            <param name="vector"> Вектор в первой экваториальной системе координат, направленный на точку на поверхности.</param>
+            
+            <returns>
+            Матрица перехода из топоцентрической системы координат в первую экваториальную.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetGCStoTCSvector(System.Double,System.Double)">
+            <summary>
+            Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
+            </summary>
+            
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
+            
+            <returns>
+            Вектор в первой экваториальной системы координат, направленный в пункт с указанными широтой и долготой.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.GetTCStoGCSvector(System.Double,System.Double)">
+            <summary>
+            Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
+            </summary>
+            
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
+            
+            <returns>
+            Вектор в первой экваториальной системы координат, направленный от пункта с указанными широтой и долготой в начало координат.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.ConvertTo(CoordinateSystems.Matrix,CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор в новую систему координат.
+            </summary>
+            
+            <param name="matrix"> Матрица перехода.</param>
+            <param name="vector"> Векториз старой системы координат в новую.</param>
+            <param name="point"> Переводимый вектор.</param>
+            
+            <returns>
+            Вектор в новой системе координат.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.ConvertICStoGCS(System.Double,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор из первой экваториальной системы координат во вторую.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            <param name="point"> Переводимый вектор.</param>
+            
+            <returns>
+            Переведенный вектор.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.ConvertGCStoICS(System.Double,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор из второй экваториальной системы координат в первую.
+            </summary>
+            
+            <param name="julianDate"> Юлианская дата.</param>
+            <param name="point"> Переводимый вектор.</param>
+            
+            <returns>
+            Переведенный вектор.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.ConvertGCStoTCS(System.Double,System.Double,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор из первой экваториальной системы координат в топоцентрическую.
+            </summary>
+            
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
+            <param name="point"> Переводимый вектор.</param>
+            
+            <returns>
+            Переведенный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Coordinates.ConvertTCStoGCS(System.Double,System.Double,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор из топоцентрической системы координат в первую экваториальную.
+            </summary>
+            
+            <param name="latitude"> Широта. Измеряется в радианах. -<see cref="F:System.Math.PI"/> / 2 &lt;= latitude &lt;= <see cref="F:System.Math.PI"/> / 2.</param>
+            <param name="longitude">  Долгота. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= latitude &lt;= <see cref="F:System.Math.PI"/>.</param>
+            <param name="point"> Переводимый вектор.</param>
+            
+            <returns>
+            Переведенный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если передается широта, по модулю большая <see cref="F:System.Math.PI"/> / 2 или
+            долгота, по модулю большая <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="T:CoordinateSystems.CoordinateSystem">
+            <summary>
+            Класс CoordinateSystem описывает систему координат.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.CoordinateSystem.vector"/><br/>
+            2) <see cref="F:CoordinateSystems.CoordinateSystem.basis"/><br/>
+            3) <see cref="F:CoordinateSystems.CoordinateSystem.velocity"/><br/>
+            4) <see cref="F:CoordinateSystems.CoordinateSystem.referenceSystem"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.CoordinateSystem.#ctor(CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)"/><br/>
+            2) <see cref="M:CoordinateSystems.CoordinateSystem.#ctor"/><br/>
+            3) <see cref="M:CoordinateSystems.CoordinateSystem.#ctor(CoordinateSystems.CoordinateSystem)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.CoordinateSystem.Vector"/><br/>
+            2) <see cref="P:CoordinateSystems.CoordinateSystem.Basis"/><br/>
+            3) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystem"/><br/>
+            4) <see cref="P:CoordinateSystems.CoordinateSystem.Velocity"/><br/>
+            5) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrix"/><br/>
+            6) <see cref="P:CoordinateSystems.CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+            7) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+            8) <see cref="P:CoordinateSystems.CoordinateSystem.BasisRelativelyRoot"/><br/>
+            9) <see cref="P:CoordinateSystems.CoordinateSystem.RootBasis"/><br/>
+            10) <see cref="P:CoordinateSystems.CoordinateSystem.ReferenceSystemBasis"/><br/>
+            11) <see cref="P:CoordinateSystems.CoordinateSystem.VectorFromRoot"/><br/>
+            12) <see cref="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})"/><br/>
+            3) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:CoordinateSystems.CoordinateSystem.GetVectorRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityFromRoot(CoordinateSystems.Vector)"/><br/>
+            4) <see cref="M:CoordinateSystems.CoordinateSystem.GetVelocityRelativelyReferenceSystem(CoordinateSystems.Vector)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.CoordinateSystem.vector">
+            <summary>
+            Вектор от базовой системы координат
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.CoordinateSystem.basis">
+            <summary>
+            Базис относительно базовой системы координат
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.CoordinateSystem.velocity">
+            <summary>
+            Скорость относительно базовой системы координат.
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.CoordinateSystem.referenceSystem">
+            <summary>
+            Базовая система координат. Если значение null, то положение задано относительно корня.
+            В этом проекте корнем является гелиоцентрическая (вторая экваториальная с центром в Солнце) система координат.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.#ctor(CoordinateSystems.Vector,CoordinateSystems.Basis,CoordinateSystems.Vector,CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор, задающий поля. они не должны быть null.
+            </summary>
+            
+            <param name="vector"> Вектор относительно базовой системы координат.</param>
+            <param name="basis"> Базис относительно базовой системы координат.</param>
+            <param name="velocity"> Скорость относительно базовой системы координат.</param>
+            <param name="referenceSystem"> Базовая система координат. Если она null, то базовая система координат — гелиоцентрическая.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если vector, basis или velocity равны null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.#ctor">
+            <summary>
+            Задает парметры конструкторами по умолчанию, а referenceSystem — null.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.#ctor(CoordinateSystems.CoordinateSystem)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="coordinateSystem"> Копируемая система координат. Не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.Vector">
+            <summary>
+            Вектор в базовой системе координат, направленный на эту систему координат. Не должен быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.Basis">
+            <summary>
+            Базис относительно базовой системы координат. Не должен быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.ReferenceSystem">
+            <summary>
+            Базовая система координат. Если равна null, то базовой системой координат считается корень
+            (в этом проекте корень — гелиоцентрическая система координат).
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.Velocity">
+            <summary>
+            Скорость относительно базовой системы координат. Не должна быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.TransitionMatrix">
+            <summary>
+            Матрица перехода от базовой к этой системе координат.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.TransitionMatrixRelativelyRoot">
+            <summary>
+            Матрица перехода от корня к этой системе координат.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.BasisRelativelyReferenceSystem">
+            <summary>
+            Базис относительно базовой системы координат.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.BasisRelativelyRoot">
+            <summary>
+            Базис относительно корня.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.RootBasis">
+            <summary>
+            Базис корня в этой системе координат.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.ReferenceSystemBasis">
+            <summary>
+            Базис базовой системы координат в этой системе координат.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.VectorFromRoot">
+            <summary>
+            Вектор к этой системе координат относительно корня.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.CoordinateSystem.VelocityFromRoot">
+            <summary>
+            Скорость относительно корня.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.ConvertTo(CoordinateSystems.CoordinateSystem,CoordinateSystems.Vector)">
+            <summary>
+            Переводит вектор point, заданный в этой системе координат в систему координат System.
+            </summary>
+            
+            <param name="system"> Новая система координат.</param>
+            <param name="point"> Переводимый вектор. Если отсутствует, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            Переведенный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null в параметр system.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.TurnTo(CoordinateSystems.Vector,System.Collections.Generic.List{CoordinateSystems.Vector})">
+            <summary>
+            Поворачивает эту систему координат осью X на точку target.
+            Точки из списка поворачиваются так, что их координаты в этой
+            системе координат не меняются.
+            </summary>
+            
+            <param name="target"> Точка в этой системе координат, на которую поворачивается эта.</param>
+            <param name="points"> Список точек, которые поворачиваются вместе с этой системой координат.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если в параметр target передается null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.GetVectorFromRoot(CoordinateSystems.Vector)">
+            <summary>
+            Возвращает вектор, переданный в параметре относительно корня. 
+            </summary>
+            
+            <param name="point"> Переводимый вектор. Если равен null, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            Вектор, переведенный в систему координат корня.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.GetVectorRelativelyReferenceSystem(CoordinateSystems.Vector)">
+            <summary>
+            Возвращает вектор, переданный в параметре относительно базовой системы координат. 
+            </summary>
+            
+            <param name="point"> Переводимый вектор. Если равен null, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            Вектор, переведенный в базовую систему координат.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.GetVelocityFromRoot(CoordinateSystems.Vector)">
+            <summary>
+            Возвращает вектор скорости, переданный в параметре относительно корня. 
+            </summary>
+            
+            <param name="velocity"> Переводимый вектор скорости. Если равен null, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            Вектор скорости, переведенный в систему координат корня.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.CoordinateSystem.GetVelocityRelativelyReferenceSystem(CoordinateSystems.Vector)">
+            <summary>
+            Возвращает вектор скорости, переданный в параметре относительно базовой системы координат. 
+            </summary>
+            
+            <param name="point"> Переводимый вектор скорости. Если равен null, то принимается за нулевой вектор.</param>
+            
+            <returns>
+            Вектор скорости, переведенный в базовую систему координат.
+            </returns>
+        </member>
+        <member name="T:CoordinateSystems.Matrix">
+            <summary>
+            Класс Matrix представляет матрицу чисел.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.Matrix.matrix"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.Matrix.#ctor(System.Int32,System.Int32)"/><br/>
+            2) <see cref="M:CoordinateSystems.Matrix.#ctor(CoordinateSystems.Matrix)"/><br/>
+            3) <see cref="M:CoordinateSystems.Matrix.#ctor(System.Double[0:,0:])"/><br/>
+            4) <see cref="M:CoordinateSystems.Matrix.#ctor(System.Int32)"/><br/>
+            5) <see cref="M:CoordinateSystems.Matrix.#ctor(CoordinateSystems.Basis)"/><br/>
+            6) <see cref="M:CoordinateSystems.Matrix.#ctor"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.Matrix.M"/><br/>
+            2) <see cref="P:CoordinateSystems.Matrix.N"/><br/>
+            3) <see cref="P:CoordinateSystems.Matrix.Determinant"/><br/>
+            4) <see cref="P:CoordinateSystems.Matrix.Transposed"/><br/>
+            5) <see cref="P:CoordinateSystems.Matrix.Inversed"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Matrix.Transpose"/><br/>
+            2) <see cref="M:CoordinateSystems.Matrix.Inverse"/><br/>
+            3) <see cref="M:CoordinateSystems.Matrix.Print"/><br/>
+            4) <see cref="M:CoordinateSystems.Matrix.Copy(CoordinateSystems.Matrix)"/><br/>
+            5) <see cref="M:CoordinateSystems.Matrix.GetRx(System.Double)"/><br/>
+            6) <see cref="M:CoordinateSystems.Matrix.GetRy(System.Double)"/><br/>
+            7) <see cref="M:CoordinateSystems.Matrix.GetRz(System.Double)"/><br/>
+            8) <see cref="M:CoordinateSystems.Matrix.GetEulerMatrix(System.Double,System.Double,System.Double)"/><br/>
+            9) <see cref="M:CoordinateSystems.Matrix.GetAxisRotationMatrix(CoordinateSystems.Vector,System.Double)"/><br/>
+            <br/>
+            Операторы:<br/>
+            1) <see cref="P:CoordinateSystems.Matrix.Item(System.Int32,System.Int32)"/><br/>
+            2) <see cref="M:CoordinateSystems.Matrix.op_Multiply(System.Double,CoordinateSystems.Matrix)"/><br/>
+            3) <see cref="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Matrix)"/><br/>
+            5) <see cref="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.UnitVector)"/><br/>
+            6) <see cref="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.Matrix.op_Addition(CoordinateSystems.Matrix,CoordinateSystems.Matrix)"/><br/>
+            8) <see cref="M:CoordinateSystems.Matrix.op_Subtraction(CoordinateSystems.Matrix,CoordinateSystems.Matrix)"/><br/>
+            9) <see cref="M:CoordinateSystems.Matrix.op_Division(CoordinateSystems.Matrix,System.Double)"/><br/>
+            10) <see cref="M:CoordinateSystems.Matrix.op_ExclusiveOr(CoordinateSystems.Matrix,System.Int32)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.Matrix.matrix">
+            <summary>
+            Матрица.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Матрица m * n
+            </summary>
+            
+            <param name="m"> Число строк. Должно быть положительно.</param>
+            <param name="n"> Число столбцов. Должно быть положительно.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если хотя бы один параметр неположительный.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor(CoordinateSystems.Matrix)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="matrix"> Копируемая матрица. Не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor(System.Double[0:,0:])">
+            <summary>
+            Копирование матрицы из массива.
+            </summary>
+            
+            <param name="matrix"> Копируемый массив. Не должен быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor(System.Int32)">
+            <summary>
+            Единичная матрица m * m
+            </summary>
+            
+            <param name="m"> Число строк. должно быть положительно.</param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если хотя параметр неположительный.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor(CoordinateSystems.Basis)">
+            <summary>
+            Копирование матрицы из базиса путем совмещения векторов: matrix = (i, j, k)
+            </summary>
+            
+            <param name="basis"> Копируемый базис.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.#ctor">
+            <summary>
+            Единичная матрица 3 * 3
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.M">
+            <summary>
+            Число строк
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.N">
+            <summary>
+            Число столбцов
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.Determinant">
+            <summary>
+            Определитель матрицы. 
+            </summary>
+            
+            <exception cref="T:System.Exception">
+            Вызывается, если матрица не квадратная.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.Transposed">
+            <summary>
+            Транспонированная матрица
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.Inversed">
+            <summary>
+            Инвертированная матрица
+            </summary>
+            
+            <exception cref="T:System.Exception">
+            Вызывается, если определитель равен 0 или матрица не квадратная.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.Transpose">
+            <summary>
+            Транспонирует матрицу.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.Copy(CoordinateSystems.Matrix)">
+            <summary>
+            Копирует матрицу.
+            </summary>
+            
+            <param name="matrix"> Копируемая матрица</param>
+            
+            <returns>
+            this
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.Print">
+            <summary>
+            Печатает матрицу в консоль.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.Inverse">
+            <summary>
+            Инвертирует матрицу.
+            </summary>
+            
+            <exception cref="T:System.Exception">
+            Вызывается, если определитель равен 0 или матрица не квадратная.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.GetRx(System.Double)">
+            <summary>
+            Матрица поворота вокруг оси X на angle радиан.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            
+            <returns>
+            Матрица поворота вокруг оси X на angle радиан.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.GetRy(System.Double)">
+            <summary>
+            Матрица поворота вокруг оси Y на angle радиан.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            
+            <returns>
+            Матрица поворота вокруг оси Y на angle радиан.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.GetRz(System.Double)">
+            <summary>
+            Матрица поворота вокруг оси Z на angle радиан.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            
+            <returns>
+            Матрица поворота вокруг оси Z на angle радиан.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.GetEulerMatrix(System.Double,System.Double,System.Double)">
+            <summary>
+            Матрица поворота по углам Эйлера.
+            </summary>
+            
+            <param name="precession"> Прецессия. Измеряется в радианах.</param>
+            <param name="nutation"> Нутация. Измеряется в радианах.</param>
+            <param name="rotation"> Поворот. Измеряется в радианах.</param>
+            
+            <returns>
+            Матрица поворота по углам Эйлера.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.GetAxisRotationMatrix(CoordinateSystems.Vector,System.Double)">
+            <summary>
+            Матрица поворота вокруг оси axis на angle радиан.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            <param name="axis"> Ось вращения. Не должна быть null.</param>
+            
+            <returns>
+            Матрица поворота вокруг оси axis на angle радиан.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если axis = null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче нулевого вектора.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Matrix.Item(System.Int32,System.Int32)">
+            <summary>
+            Элемент матрицы (i, j).
+            </summary>
+            
+            <param name="i"> Строка. Должна быть положительной.</param>
+            <param name="j"> Столбец. Должен быть положительным.</param>
+            
+            <returns>
+            Элемент матрицы (i, j).
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException"> </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Addition(CoordinateSystems.Matrix,CoordinateSystems.Matrix)">
+            <summary>
+            Складывает матрицы. Они должны быть одного размера.
+            </summary>
+            
+            <param name="matrix1"> Матрица. Не должна быть null.</param>
+            <param name="matrix2"> Матрица. Не должна быть null.</param>
+            
+            <returns>
+            Сумма матриц.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы одна из матриц равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрицы разного размера.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Subtraction(CoordinateSystems.Matrix,CoordinateSystems.Matrix)">
+            <summary>
+            Вычитает матрицы. Они должны быть одного размера.
+            </summary>
+            
+            <param name="matrix1"> Уменьшаемая матрица. Не должна быть null.</param>
+            <param name="matrix2"> Вычитаемая матрица. Не должна быть null.</param>
+            
+            <returns>
+            Разность матриц.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы одна из матриц равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрицы разного размера.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,System.Double)">
+            <summary>
+            Умножает матрицу на число.
+            </summary>
+            
+            <param name="matrix"> Матрица. Не должна быть null.</param>
+            <param name="number"> Число.</param>
+            
+            <returns>
+            Произведение матрицы на число.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если матрица равна null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Multiply(System.Double,CoordinateSystems.Matrix)">
+            <summary>
+            Умножает матрицу на число.
+            </summary>
+            
+            <param name="matrix"> Матрица. Не должна быть null.</param>
+            <param name="number"> Число.</param>
+            
+            <returns>
+            Произведение матрицы на число.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если матрица равна null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Division(CoordinateSystems.Matrix,System.Double)">
+            <summary>
+            Делит матрицу на число.
+            </summary>
+            
+            <param name="matrix"> Матрица. Не должна быть null.</param>
+            <param name="number"> Число.</param>
+            
+            <returns>
+            Матрица, деленная на число.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если матрица равна null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Matrix)">
+            <summary>
+            Умножает матрицы. Число столбцов первой матрицы должно быть равно числу строк второй.
+            </summary>
+            
+            <param name="matrix1"> Матрица. Не должна быть null.</param>
+            <param name="matrix2"> Матрица. Не должна быть null.</param>
+            
+            <returns>
+            Произведение матриц.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы одна из матриц равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если число столбцов первой матрицы не равно числу строк второй.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.Vector)">
+            <summary>
+            Умножает матрицу 3 * 3 на вектор.
+            </summary>
+            
+            <param name="matrix"> Матрица 3 * 3. Не должна быть null.</param>
+            <param name="vector"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Произведение матрицы на вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если вектор или матрица равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрица не 3 * 3.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_Multiply(CoordinateSystems.Matrix,CoordinateSystems.UnitVector)">
+            <summary>
+            Умножает матрицу 3 * 3 на единичный вектор.
+            </summary>
+            
+            <param name="matrix"> Матрица 3 * 3. Не должна быть null.</param>
+            <param name="vector"> Единичный ектор. Не должен быть null.</param>
+            
+            <returns>
+            Произведение матрицы на единичный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если вектор или матрица равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрица не 3 * 3.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Matrix.op_ExclusiveOr(CoordinateSystems.Matrix,System.Int32)">
+            <summary>
+            Возводит квадратную матрицу в степень.
+            </summary>
+            
+            <param name="matrix"> Квадратная матрица. Не должна быть null.</param>
+            <param name="number"> Показатель степени. Должен быть положителен.</param>
+            
+            <returns>
+            Матрица, возведенная в степень number.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если матрица равна null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если матрица не квадратная.
+            </exception>
+        </member>
+        <member name="T:CoordinateSystems.UnitVector">
+            <summary>
+            Класс UnitVector описывает единичный вектор в пространстве и поддерживает некоторые операции над ним.
+            Наследник класса <see cref="T:CoordinateSystems.Vector"/>.
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.Vector.x"/><br/>
+            2) <see cref="F:CoordinateSystems.Vector.y"/><br/>
+            3) <see cref="F:CoordinateSystems.Vector.z"/><br/>
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.UnitVector.#ctor"/><br/>
+            2) <see cref="M:CoordinateSystems.UnitVector.#ctor(System.Double,System.Double,System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.UnitVector.#ctor(System.Double,System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.UnitVector.#ctor(CoordinateSystems.Vector)"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.UnitVector.X"/><br/>
+            2) <see cref="P:CoordinateSystems.UnitVector.Y"/><br/>
+            3) <see cref="P:CoordinateSystems.UnitVector.Z"/><br/>
+            4) <see cref="P:CoordinateSystems.UnitVector.Length"/><br/>
+            5) <see cref="P:CoordinateSystems.Vector.Theta"/><br/>
+            6) <see cref="P:CoordinateSystems.Vector.Phi"/><br/>
+            7) <see cref="P:CoordinateSystems.Vector.XYprojection"/><br/>
+            8) <see cref="P:CoordinateSystems.Vector.XZprojection"/><br/>
+            9) <see cref="P:CoordinateSystems.Vector.YZprojection"/><br/>
+            10) <see cref="P:CoordinateSystems.UnitVector.UnitVectorX"/><br/>
+            11) <see cref="P:CoordinateSystems.UnitVector.UnitVectorY"/><br/>
+            12) <see cref="P:CoordinateSystems.UnitVector.UnitVectorZ"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Vector.TurnX(System.Double)"/><br/>
+            2) <see cref="M:CoordinateSystems.Vector.TurnY(System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.Vector.TurnZ(System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Vector.TurnAxis(CoordinateSystems.Vector,System.Double)"/><br/>
+            5) <see cref="M:CoordinateSystems.Vector.TurnEuler(System.Double,System.Double,System.Double)"/><br/>
+            6) <see cref="M:CoordinateSystems.Vector.GetAngle(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.Vector.MultiplyScalar(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.Vector.ToString"/><br/>
+            <br/>
+            Операторы:<br/>
+            1) <see cref="M:CoordinateSystems.Vector.op_Inequality(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.Vector.op_Equality(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:CoordinateSystems.Vector.op_Addition(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            6) <see cref="M:CoordinateSystems.Vector.op_UnaryNegation(CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.Vector.op_Subtraction(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.Vector.op_Division(CoordinateSystems.Vector,System.Double)"/><br/>
+            9) <see cref="M:CoordinateSystems.UnitVector.op_Multiply(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)"/><br/>
+            10) <see cref="M:CoordinateSystems.UnitVector.op_Addition(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)"/><br/>
+            11) <see cref="M:CoordinateSystems.UnitVector.op_UnaryNegation(CoordinateSystems.UnitVector)"/><br/>
+            12) <see cref="M:CoordinateSystems.UnitVector.op_Subtraction(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)"/><br/>
+            13) <see cref="P:CoordinateSystems.UnitVector.Item(System.Int32)"/><br/>
+            </remarks>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.#ctor">
+            <summary>
+            Единичный вектор x = y = z.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Единичный вектор с координатами, отношение которых равно отношению аргументов.
+            </summary>
+            
+            <param name="x"> Координата x.</param>
+            <param name="y"> Координата y.</param>
+            <param name="z"> Координата z.</param>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.#ctor(System.Double,System.Double)">
+            <summary>
+            Единичный вектор со сферическими координатами равными аргументам.
+            </summary>
+            
+            <param name="theta"> Зенитный угол. Измеряется в радианах. 0 &lt;= Theta &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="phi"> Азимутальный угол. Измеряется в радианах. -PI &lt;= Phi &lt;= <see cref="F:System.Math.PI"/></param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если theta или phi не соответствуют возможным.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.#ctor(CoordinateSystems.Vector)">
+            <summary>
+            Конструктор копирования вектора. Сохраняются углы копируемого вектора.
+            </summary>
+            
+            <param name="vector"> Копируемый вектор. Не должен быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.Length">
+            <summary>
+            Длина вектора. Всегда равна 1.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.X">
+            <summary>
+            Координата X.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.Y">
+            <summary>
+            Координата Z.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.Z">
+            <summary>
+            Координата X.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.UnitVectorX">
+            <summary>
+            Единичный вектор с координатами {1; 0; 0}.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.UnitVectorY">
+            <summary>
+            Единичный вектор с координатами {0; 1; 0}.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.UnitVectorZ">
+            <summary>
+            Единичный вектор с координатами {0; 0; 1}.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.op_Addition(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)">
+            <summary>
+            Складывает единичные вектора.
+            </summary>
+            
+            <param name="unitVector1"> Единичный вектор. Не должен быть null.</param>
+            <param name="unitVector2"> Единичный вектор. Не должен быть null.</param>
+            
+            <returns>
+            Единичный вектор, сонаправленный с суммой векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.op_Subtraction(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)">
+            <summary>
+            Вычитает единичные вектора.
+            </summary>
+            
+            <param name="unitVector1"> Уменьшаемый единичный вектор. Не должен быть null.</param>
+            <param name="unitVector2"> Вычитаемый единичный вектор. Не должен быть null.</param>
+            
+            <returns>
+            Единичный вектор, сонаправленный с разностью векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.op_UnaryNegation(CoordinateSystems.UnitVector)">
+            <summary>
+            Противоположный вектор.
+            </summary>
+            
+            <param name="unitVector"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Противоположный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.UnitVector.op_Multiply(CoordinateSystems.UnitVector,CoordinateSystems.UnitVector)">
+            <summary>
+            Векторно умножает единичные вектора.
+            </summary>
+            
+            <param name="unitVector1"> Единичный вектор. Не должен быть null.</param>
+            <param name="unitVector2"> Единичный вектор. Не должен быть null.</param>
+            
+            <returns>
+            Единичный вектор, сонаправленный с векторным произведением векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.UnitVector.Item(System.Int32)">
+            <summary>
+            Соответствующее поле:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </summary>
+            
+            <param name="i">
+            Индекс.<br/>
+            Соответствие полям:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </param>
+            
+            <returns>
+            Соответствующее поле:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если индекс не равен 0, 1 или 2.
+            </exception>
+        </member>
+        <member name="T:CoordinateSystems.Vector">
+            <summary>
+            Класс Vector описывает вектор в пространстве и поддерживает некоторые операции над ним.
+            <br/>
+            Конструкторы:<br/>
+            1) <see cref="M:CoordinateSystems.Vector.#ctor"/><br/>
+            2) <see cref="M:CoordinateSystems.Vector.#ctor(System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.Vector.#ctor(System.Double,System.Double,System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Vector.#ctor(System.Double,System.Double)"/><br/>
+            5) <see cref="M:CoordinateSystems.Vector.#ctor(CoordinateSystems.Vector)"/><br/>
+            </summary>
+            
+            <remarks>
+            Поля:<br/>
+            1) <see cref="F:CoordinateSystems.Vector.x"/><br/>
+            2) <see cref="F:CoordinateSystems.Vector.y"/><br/>
+            3) <see cref="F:CoordinateSystems.Vector.z"/><br/>
+            <br/>
+            Свойства:<br/>
+            1) <see cref="P:CoordinateSystems.Vector.X"/><br/>
+            2) <see cref="P:CoordinateSystems.Vector.Y"/><br/>
+            3) <see cref="P:CoordinateSystems.Vector.Z"/><br/>
+            4) <see cref="P:CoordinateSystems.Vector.Length"/><br/>
+            5) <see cref="P:CoordinateSystems.Vector.Theta"/><br/>
+            6) <see cref="P:CoordinateSystems.Vector.Phi"/><br/>
+            7) <see cref="P:CoordinateSystems.Vector.UnitVector"/><br/>
+            8) <see cref="P:CoordinateSystems.Vector.XYprojection"/><br/>
+            9) <see cref="P:CoordinateSystems.Vector.XZprojection"/><br/>
+            10) <see cref="P:CoordinateSystems.Vector.YZprojection"/><br/>
+            <br/>
+            Методы:<br/>
+            1) <see cref="M:CoordinateSystems.Vector.TurnX(System.Double)"/><br/>
+            2) <see cref="M:CoordinateSystems.Vector.TurnY(System.Double)"/><br/>
+            3) <see cref="M:CoordinateSystems.Vector.TurnZ(System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Vector.TurnAxis(CoordinateSystems.Vector,System.Double)"/><br/>
+            5) <see cref="M:CoordinateSystems.Vector.TurnEuler(System.Double,System.Double,System.Double)"/><br/>
+            6) <see cref="M:CoordinateSystems.Vector.GetAngle(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.Vector.MultiplyScalar(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.Vector.ToString"/><br/>
+            9) <see cref="M:CoordinateSystems.Vector.AreCoplanar(CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            <br/>
+            Операторы:<br/>
+            1) <see cref="M:CoordinateSystems.Vector.op_Inequality(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            2) <see cref="M:CoordinateSystems.Vector.op_Equality(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            3) <see cref="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,System.Double)"/><br/>
+            4) <see cref="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            5) <see cref="M:CoordinateSystems.Vector.op_Addition(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            6) <see cref="M:CoordinateSystems.Vector.op_UnaryNegation(CoordinateSystems.Vector)"/><br/>
+            7) <see cref="M:CoordinateSystems.Vector.op_Subtraction(CoordinateSystems.Vector,CoordinateSystems.Vector)"/><br/>
+            8) <see cref="M:CoordinateSystems.Vector.op_Division(CoordinateSystems.Vector,System.Double)"/><br/>
+            9) <see cref="P:CoordinateSystems.Vector.Item(System.Int32)"/><br/>
+            </remarks>
+        </member>
+        <member name="F:CoordinateSystems.Vector.x">
+            <summary>
+            Координата x
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Vector.y">
+            <summary>
+            Координата y
+            </summary>
+        </member>
+        <member name="F:CoordinateSystems.Vector.z">
+            <summary>
+            Координата z
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Vector.#ctor">
+            <summary>
+            Единичный вектор x = y = z.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Vector.#ctor(System.Double)">
+            <summary>
+            Вектор x = y = z = value.
+            </summary>
+            
+            <param name="value"> Значение координат.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Вектор с координатами, соответствующимиаргументам.
+            </summary>
+            
+            <param name="x"> Координата x.</param>
+            <param name="y"> Координата y.</param>
+            <param name="z"> Координата z.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.#ctor(System.Double,System.Double)">
+            <summary>
+            Единичный вектор со сферическими координатами равными аргументам.
+            </summary>
+            
+            <param name="theta"> Зенитный угол. Измеряется в радианах. 0 &lt;= Theta &lt;= <see cref="F:System.Math.PI"/></param>
+            <param name="phi"> Азимутальный угол. Измеряется в радианах. -<see cref="F:System.Math.PI"/> &lt;= Phi &lt;= <see cref="F:System.Math.PI"/></param>
+            
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если theta или phi не соответствуют возможным.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.#ctor(CoordinateSystems.Vector)">
+            <summary>
+            Конструктор копирования.
+            </summary>
+            
+            <param name="vector"> Копируемый вектор. Не должен быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.X">
+            <summary>
+            Координата X.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Y">
+            <summary>
+            Координата Y.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Z">
+            <summary>
+            Координата Y.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Length">
+            <summary>
+            Длина вектора. Должна быть положительной.
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если передается неположительное значение
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Theta">
+            <summary>
+            Зенитный угол.<br/>
+            Измеряется в радианах.<br/>
+            0 &lt;= Theta &lt;= <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если передается отрицательное или большее <see cref="F:System.Math.PI"/> значение.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Phi">
+            <summary>
+            Азимутальный угол.<br/>
+            Измеряется в радианах.<br/>
+            -PI &lt;= Phi &lt;= <see cref="F:System.Math.PI"/>
+            </summary>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если передается значение, меньшее -<see cref="F:System.Math.PI"/> или большее <see cref="F:System.Math.PI"/>.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.UnitVector">
+            <summary>
+            Единичный вектор с такими же углами. Не должен быть null.
+            </summary>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при передаче значения null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.XYprojection">
+            <summary>
+            Проекция вектора на ось XY.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Vector.XZprojection">
+            <summary>
+            Проекция вектора на ось XZ.
+            </summary>
+        </member>
+        <member name="P:CoordinateSystems.Vector.YZprojection">
+            <summary>
+            Проекция вектора на ось YZ.
+            </summary>
+        </member>
+        <member name="M:CoordinateSystems.Vector.TurnX(System.Double)">
+            <summary>
+            Поворачивает вектор вокруг оси X на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.TurnY(System.Double)">
+            <summary>
+            Поворачивает вектор вокруг оси Y на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.TurnZ(System.Double)">
+            <summary>
+            Поворачивает вектор вокруг оси Z на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.TurnAxis(CoordinateSystems.Vector,System.Double)">
+            <summary>
+            Поворачивает вектор вокруг заданной оси на заданный угол.
+            </summary>
+            
+            <param name="angle"> Угол поворота. Измеряется в радианах.</param>
+            <param name="axis"> Ось вращения. Не должна быть null.</param>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается при axis = null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается при передаче нулевого вектора.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.TurnEuler(System.Double,System.Double,System.Double)">
+            <summary>
+            Поворачивает вектор при помощи углов Эйлера.
+            </summary>
+            
+            <param name="precession"> Прецессия. Измеряется в радианах.</param>
+            <param name="nutation"> Нутация. Измеряется в радианах.</param>
+            <param name="rotation"> Вращение. Измеряется в радианах.</param>
+        </member>
+        <member name="M:CoordinateSystems.Vector.MultiplyScalar(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Возвращает скалярное произведение векторов.
+            </summary>
+            
+            <param name="vector1"> Вектор. Не должен быть null.</param>
+            <param name="vector2"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Скалярное произведение векторов.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Vector.GetAngle(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Возвращает угол между векторами в радианах.
+            </summary>
+            
+            <param name="vector1"> Вектор. Не должен быть null.</param>
+            <param name="vector2"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Угол между векторами в радианах.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Vector.ToString">
+            <summary>
+            Преобразует в строку: "[x] [y] [z]".
+            </summary>
+            
+            <returns>
+            Строка: "[x] [y] [z]".
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Vector.AreCoplanar(CoordinateSystems.Vector,CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Проверяет компланарность векторов.
+            </summary>
+            
+            <param name="vector1"> Вектор. Не должен быть null.</param>
+            <param name="vector2"> Вектор. Не должен быть null.</param>
+            <param name="vector3"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            true, если вектора компланарны.<br/>
+            false, если нет.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя б один из векторов равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Addition(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Складывает вектора.
+            </summary>
+            
+            <param name="vector1"> Вектор. Не должен быть null.</param>
+            <param name="vector2"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Сумма векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Subtraction(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Вычитает вектора.
+            </summary>
+            
+            <param name="vector1"> Уменьшаемый вектор. Не должен быть null.</param>
+            <param name="vector2"> Вычитаемый вектор. Не должен быть null.</param>
+            
+            <returns>
+            Разность векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_UnaryNegation(CoordinateSystems.Vector)">
+            <summary>
+            Противоположный вектор.
+            </summary>
+            
+            <param name="vector"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Противоположный вектор.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Векторно умножает вектора.
+            </summary>
+            
+            <param name="vector1"> Вектор. Не должен быть null.</param>
+            <param name="vector2"> Вектор. Не должен быть null.</param>
+            
+            <returns>
+            Векторное произведение векторов.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если хотя бы один параметр равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Multiply(CoordinateSystems.Vector,System.Double)">
+            <summary>
+            Умножает вектор на число.
+            </summary>
+            
+            <param name="vector"> Вектор. Не должен быть null.</param>
+            <param name="value"> Число.</param>
+            
+            <returns>
+            Вектор, умноженный на число.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если вектор равен null.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Division(CoordinateSystems.Vector,System.Double)">
+            <summary>
+            Делит вектор на число.
+            </summary>
+            
+            <param name="vector"> Вектор. Не должен быть null.</param>
+            <param name="value"> Число.</param>
+            
+            <returns>
+            Вектор, деленный на число.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если вектор равен null.
+            </exception>
+        </member>
+        <member name="P:CoordinateSystems.Vector.Item(System.Int32)">
+            <summary>
+            Соответствующее поле:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </summary>
+            
+            <param name="i">
+            Индекс.<br/>
+            Соответствие полям:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </param>
+            
+            <returns>
+            Соответствующее поле:<br/>
+            0 — x<br/>
+            1 — y<br/>
+            2 — z<br/>
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Вызывается, если индекс не равен 0, 1 или 2.
+            </exception>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Equality(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Проверяет равенство координат векторов. Если хотя бы один равен null, то проверяет равенство ссылок.
+            </summary>
+            
+            <param name="vector1"> Вектор.</param>
+            <param name="vector2"> Вектор. </param>
+            
+            <returns>
+            true, если ветора равны или оба равны null.<br/>
+            false, если вектора не равны или один равен null, а второй нет.
+            </returns>
+        </member>
+        <member name="M:CoordinateSystems.Vector.op_Inequality(CoordinateSystems.Vector,CoordinateSystems.Vector)">
+            <summary>
+            Проверяет равенство координат векторов. Если хотя бы один равен null, то проверяет равенство ссылок.
+            </summary>
+            
+            <param name="vector1"> Вектор.</param>
+            <param name="vector2"> Вектор. </param>
+            
+            <returns>
+            false, если ветора равны или оба равны null.<br/>
+            true, если вектора не равны или один равен null, а второй нет.
+            </returns>
+        </member>
+    </members>
+</doc>

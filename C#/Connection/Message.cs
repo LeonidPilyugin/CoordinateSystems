@@ -9,6 +9,124 @@ using CoordinateSystems;
 
 namespace Connection
 {
+    public class Message
+    {
+        public struct DataS
+        {
+            public int ID;
+            public enum Types { Picture, Got }
+            public List<Connector> WorkingConnectors;
+            public Types Type;
+            public Message Ask;
+
+            public DataS(int ID, List<Connector> WorkingConnectors, Types Type, Message Ask = null)
+            {
+                this.ID = ID;
+                this.WorkingConnectors = WorkingConnectors;
+                this.Type = Type;
+                this.Ask = Ask;
+            }
+        }
+        
+        public const double LIGHT_SPEED = 299792458.0;
+        protected LinkedList<Connector> path;
+        protected DataS data;
+
+        public Message(DataS data, LinkedList<Connector> path)
+        {
+            this.data = data;
+            this.path = path;
+        }
+
+        public DataS Data
+        {
+            get
+            {
+                return data;
+            }
+        }
+
+        public LinkedList<Connector> Path
+        {
+            get
+            {
+                return path;
+            }
+        }
+
+        public Connector Last
+        {
+            get
+            {
+                return Path.Last.Value;
+            }
+        }
+
+        public Connector First
+        {
+            get
+            {
+                return Path.First.Value;
+            }
+        }
+
+        static public int Time(Connector connector1, Connector connector2)
+        {
+            return (int)(Distance(connector1, connector2) / LIGHT_SPEED * 1000.0);
+        }
+
+        static public double Distance(Connector connector1, Connector connector2)
+        {
+            if (connector1 == null)
+            {
+                throw new ArgumentNullException("connector1 mustn't be null");
+            }
+            if (connector2 == null)
+            {
+                throw new ArgumentNullException("connector2 mustn't be null");
+            }
+            return (connector1.VectorFromRoot - connector2.VectorFromRoot).Length;
+        }
+
+        public void Send(Connector sender)
+        {
+            if (sender == null)
+            {
+                throw new ArgumentNullException("Sender mustn't be null");
+            }
+
+            Task.Run(() =>
+            {
+                // wait
+                System.Threading.Thread.Sleep(Time(sender, FindNext(sender)));
+                // call receiver
+                FindNext(sender).GetMessage(this);
+            });
+        }
+
+        public Connector FindNext(Connector connector)
+        {
+            if (connector == null)
+            {
+                throw new ArgumentNullException("Connector mustn't be null");
+            }
+
+            return Path.Find(connector).Next?.Value;
+        }
+
+        public Connector FindPrevious(Connector connector)
+        {
+            if (connector == null)
+            {
+                throw new ArgumentNullException("Connector mustn't be null");
+            }
+
+            return Path.Find(connector).Previous?.Value;
+        }
+    }
+
+
+    /*
     /// <summary>
     /// Перечисление MessageType содержит возможные типы сообщений.
     /// </summary>
@@ -290,4 +408,5 @@ namespace Connection
         }
         #endregion
     }
+    */
 }

@@ -149,8 +149,7 @@ namespace Agents
         /// 
         /// <param name="lagrangianPoint"> Точка Лагранжа.</param>
         /// <param name="basis"> Базис.</param>
-        /// <param name="vector"> Координаты.</param>
-        /// <param name="velocity"> Скорость.</param>
+        /// <param name="julianDate"> Юлианская дата.</param>
         /// <param name="connectorVector"> Вектор средства связи в системе координат этого ретрранслятора.</param>
         /// <param name="connectorBasis"> Базис средства связи в системе координат этого ретрранслятора.</param>
         /// <param name="view"> Область видимости средства связи.</param>
@@ -159,9 +158,9 @@ namespace Agents
         /// <exception cref="ArgumentNullException">
         /// Вызывается при передаче null.
         /// </exception>
-        public LagrangianRepeater(LagrangianPoint lagrangianPoint, string id, Vector vector, Basis basis, Vector velocity,
-            Vector connectorVector, Basis connectorBasis, View view) :
-            base(vector, basis, velocity)
+        public LagrangianRepeater(double julianDate, LagrangianPoint lagrangianPoint, string id,
+            Basis basis, Vector connectorVector, Basis connectorBasis, View view) :
+            base(UnitVector.UnitVectorX, basis, UnitVector.UnitVectorX)
         {
             switch (lagrangianPoint)
             {
@@ -179,6 +178,8 @@ namespace Agents
             }
 
             connector = new RepeaterConnector(id, connectorVector, connectorBasis, view, this);
+
+            UpdateParams(julianDate);
         }
 
         /// <summary>

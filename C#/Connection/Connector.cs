@@ -12,61 +12,354 @@ using static System.Math;
 
 namespace Connection
 {
-    /// <summary>
-    /// Класс Connector описывает средство связи. Наследник класса <see cref="Body"/>.
-    /// </summary>
-    /// 
-    /// <remarks>
-    /// Поля:<br/>
-    /// 1) <see cref="isAnalizing"/><br/>
-    /// 2) <see cref="view"/><br/>
-    /// 3) <see cref="workingConnectors"/><br/>
-    /// 4) <see cref="Body.id"/><br/>
-    /// 5) <see cref="Body.bodies"/><br/>
-    /// 6) <see cref="CoordinateSystem.vector"/><br/>
-    /// 7) <see cref="CoordinateSystem.velocity"/><br/>
-    /// 8) <see cref="CoordinateSystem.basis"/><br/>
-    /// 9) <see cref="CoordinateSystem.referenceSystem"/><br/>
-    /// <br/>
-    /// Конструкторы:<br/>
-    /// 1) <see cref="Connector(Connector)"/><br/>
-    /// 2) <see cref="Connector(string, Vector, Basis, View)"/><br/>
-    /// <br/>
-    /// Свойства:<br/>
-    /// 1) <see cref="View"/><br/>
-    /// 2) <see cref="WorkingConnectors"/><br/>
-    /// 3) <see cref="Body.Bodies"/><br/>
-    /// 4) <see cref="Body.ID"/><br/>
-    /// 5) <see cref="Vector"/><br/>
-    /// 6) <see cref="Basis"/><br/>
-    /// 7) <see cref="CoordinateSystem.ReferenceSystem"/><br/>
-    /// 8) <see cref="CoordinateSystem.Velocity"/><br/>
-    /// 9) <see cref="CoordinateSystem.TransitionMatrix"/><br/>
-    /// 10) <see cref="CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
-    /// 11) <see cref="CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
-    /// 12) <see cref="CoordinateSystem.BasisRelativelyRoot"/><br/>
-    /// 13) <see cref="CoordinateSystem.RootBasis"/><br/>
-    /// 14) <see cref="CoordinateSystem.ReferenceSystemBasis"/><br/>
-    /// 15) <see cref="CoordinateSystem.VectorFromRoot"/><br/>
-    /// 16) <see cref="CoordinateSystem.VelocityFromRoot"/><br/>
-    /// <br/>
-    /// Методы:<br/>
-    /// 1) <see cref="TurnTo(Body)"/><br/>
-    /// 2) <see cref="GetPath(Connector)"/><br/>
-    /// 3) <see cref="Send(Message)"/><br/>
-    /// 4) <see cref="Send(MessageType, Connector)"/><br/>
-    /// 5) <see cref="Analize(Message)"/><br/>
-    /// 6) <see cref="GetMessage(Message)"/><br/>
-    /// 7) <see cref="CanAccess(Body)"/><br/>
-    /// 8) <see cref="Body.IsInside(Vector)"/><br/>
-    /// 9) <see cref="Body.IsCrossing(Vector, Vector)"/><br/>
-    /// 10) <see cref="CoordinateSystem.ConvertTo(CoordinateSystem, Vector)"/><br/>
-    /// 11) <see cref="CoordinateSystem.GetVectorFromRoot(Vector)"/><br/>
-    /// 12) <see cref="CoordinateSystem.GetVectorRelativelyReferenceSystem(Vector)"/><br/>
-    /// 13) <see cref="CoordinateSystem.GetVelocityFromRoot(Vector)"/><br/>
-    /// 14) <see cref="CoordinateSystem.GetVelocityRelativelyReferenceSystem(Vector)"/><br/>
-    /// </remarks>
     public abstract class Connector : Body
+    {
+        #region data
+        protected bool isAnalizing; // В данный момент обрабатывает сообщение
+        protected bool isWorking; // Исправно работает
+        protected bool isSending; // В данный момент отправляет сообщение
+
+        protected int maxID; // Максимальный полученный ID
+
+        protected View view;
+        protected List<Connector> workingConnectors; // Коннекторы, которые считаются работающими
+        protected Dictionary<Message, CancellationTokenSource> sentMessages; // Отправленные сообщения, на которые ожидается ответ
+        protected Queue<Message> analisysQueue; // Очередь на анализ
+        protected Queue<Message> sendingQueue; // Очередь на отправку
+        #endregion
+
+        #region constructors
+        public Connector(string id, Vector vector, Basis basis, View view)
+        {
+            workingConnectors = new List<Connector>();
+            ID = id;
+            Vector = vector;
+            Basis = basis;
+            Velocity = new Vector(0.0, 0.0, 0.0);
+            View = view;
+            isAnalizing = isSending = false;
+            isWorking = true;
+            maxID = 0;
+            sentMessages = new Dictionary<Message, CancellationTokenSource>();
+            analisysQueue = new Queue<Message>();
+            sendingQueue = new Queue<Message>();
+        }
+
+        public Connector(Connector connector) :
+            this(connector.ID, connector.vector, connector.basis, connector.view)
+        {
+
+        }
+
+        /*static Connector()
+        {
+            workingConnectors = new List<Connector>();
+        }*/
+        #endregion
+
+        #region properties
+        public View View
+        {
+            get
+            {
+                return view;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("View mustn't be null");
+                }
+                view = value;
+            }
+        }
+
+        public List<Connector> WorkingConnectors
+        {
+            get
+            {
+                return workingConnectors;
+            }
+        }
+        #endregion
+
+        #region methods
+        new public void TurnTo(Vector target, List<Vector> points = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void TurnTo(Body point)
+        {
+            base.TurnTo(point.ConvertTo(this));
+            Thread.Sleep(1000);
+        }
+
+        protected LinkedList<Connector> GetPath(Connector stop)
+        {
+            // get graph
+            var graph = new AdjacencyGraph<Connector, TaggedEdge<Connector, double>>();
+            var costs = new Dictionary<Edge<Connector>, double>();
+            //var list = new List<Connector>(WorkingConnectors);
+
+            // get vertexes
+            foreach (Connector connector in WorkingConnectors)
+            {
+                graph.AddVertex(connector);
+            }
+
+            // get edges
+            for (int i = 0; i < WorkingConnectors.Count; i++)
+            {
+                for (int j = 0; j < WorkingConnectors.Count; j++)
+                {
+                    if (i != j && WorkingConnectors[i].CanAccess(WorkingConnectors[j]))
+                    {
+                        var edge = new TaggedEdge<Connector, double>(WorkingConnectors[i], WorkingConnectors[j],
+                            Message.Time(WorkingConnectors[i], WorkingConnectors[j]));
+                        graph.AddVerticesAndEdge(edge);
+                        costs.Add(edge, Message.Time(WorkingConnectors[i], WorkingConnectors[j]));
+                        //Console.WriteLine(WorkingConnectors[i].ID + " " + WorkingConnectors[j].ID);
+                    }
+                }
+            }
+
+            var edgeCost = AlgorithmExtensions.GetIndexer(costs);
+            var tryGetPath = graph.ShortestPathsDijkstra(edgeCost, this);
+            // get path
+            IEnumerable<TaggedEdge<Connector, double>> epath;
+            if (!tryGetPath(stop, out epath))
+            {
+                // can't get path
+                return null;
+            }
+
+            // convert path to linked list
+            var path = epath.ToList();
+            var result = new LinkedList<Connector>();
+            foreach (TaggedEdge<Connector, double> edge in path)
+            {
+                result.AddLast(edge.Source);
+            }
+            result.AddLast(stop);
+            return result;
+        }
+
+        protected void SimpleSend(Message message)
+        {
+            //Console.WriteLine(DateTime.Now + ": " + ID + " send " + message.Data.Type + " to " + message.FindNext(this).ID);
+
+            TurnTo(message.FindNext(this).ConvertTo(this));
+            message.Send(this);
+            if(message.Data.Type != Message.DataS.Types.Got)
+            {
+                WaitAnswer(message);
+            }
+
+
+            //Console.WriteLine(DateTime.Now + ": " + ID + " sent " + message.Data.Type + " to " + message.FindNext(this).ID);
+        }
+
+        protected void WaitAnswer(Message message)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Task wait = Task.Run(()=>
+            {
+                // Ждать ответа
+                Thread.Sleep(2 * Message.Time(this, message.FindNext(this)) + 1000 * 60);
+                // Удалить получателя из работающих средств связи
+                workingConnectors.Remove(message.FindNext(this));
+                // Удалить отосланное сообщение из словаря
+                sentMessages.Remove(message);
+                // Отправить сообщение новым путём
+                Send(CreateMessage(message.Data.Type, message.Last));
+            }, cts.Token);
+            sentMessages.Add(message, cts);
+        }
+
+        // доработать
+        public bool Send(Message.DataS.Types messageType, Connector receiver)
+        {
+            Message message = CreateMessage(messageType, receiver);
+
+
+            if (message != null)
+            {
+                Send(message);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // Случай, когда передано got
+        private void CheckOnGot(Message message)
+        {
+            if(message.Data.Type == Message.DataS.Types.Got)
+            {
+                // Завершает отсчёт времени
+                sentMessages[message.Data.Ask]?.Cancel();
+
+                // Удаляет из словаря
+                sentMessages.Remove(message.Data.Ask);
+            }
+        }
+
+        private void CheckOnResend(Message message)
+        {
+            if (message.Last != this)
+            {
+                // Отправить следующему
+                Send(message);
+            }
+        }
+
+        protected abstract void Analize(Message message);
+
+        public void GetMessage(Message message)
+        {
+            analisysQueue.Enqueue(message);
+            if (!isAnalizing)
+            {
+                Task.Run(() =>
+                {
+                    isAnalizing = true;
+                    do
+                    {
+                        CheckOnGot(message);
+                        CheckOnResend(message);
+                        Analize(message);
+                    } while (analisysQueue.Count > 0 && isWorking);
+
+                    isAnalizing = false;
+                });
+            }
+        }
+
+        public virtual bool CanAccess(Body receiver) // Добавить случай перекрытия отрезка телом
+        {
+            return (!Body.IsCrossing(this, receiver)) && (receiver.ConvertTo(this).Length < view.Length);
+        }
+
+
+
+        // Отправить сообщение
+        protected void Send(Message message)
+        {
+            sendingQueue.Enqueue(message);
+            if (!isSending)
+            {
+                Task.Run(() =>
+                {
+                    isSending = true;
+                    do
+                    {
+                        SimpleSend(sendingQueue.Dequeue());
+                    } while (sendingQueue.Count > 0 && isWorking);
+
+                    isSending = false;
+                });
+            }
+        }
+
+
+        // Возвращает сообщение по типу и получателю. Если до получателя не добраться, возвращает null.
+        protected Message CreateMessage(Message.DataS.Types type, Connector receiver)
+        {
+            var path = GetPath(receiver);
+            Message.DataS data = new Message.DataS(++maxID, workingConnectors, type);
+            if(path == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Message(new Message.DataS(++maxID, workingConnectors, type), path);
+            }
+        }
+
+        // Отвечает на получение сообщения.
+        protected void Answer(Message message)
+        {
+            var data = new Message.DataS(++maxID, workingConnectors, Message.DataS.Types.Got, message);
+            var path = new LinkedList<Connector>();
+            path.AddFirst(message.FindPrevious(this));
+            path.AddFirst(this);
+            var answer = new Message(data, path);
+            Send(answer);
+        }
+        #endregion
+
+
+        
+    }
+
+
+
+
+
+
+
+
+
+    /*/// <summary>
+        /// Класс Connector описывает средство связи. Наследник класса <see cref="Body"/>.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Поля:<br/>
+        /// 1) <see cref="isAnalizing"/><br/>
+        /// 2) <see cref="view"/><br/>
+        /// 3) <see cref="workingConnectors"/><br/>
+        /// 4) <see cref="Body.id"/><br/>
+        /// 5) <see cref="Body.bodies"/><br/>
+        /// 6) <see cref="CoordinateSystem.vector"/><br/>
+        /// 7) <see cref="CoordinateSystem.velocity"/><br/>
+        /// 8) <see cref="CoordinateSystem.basis"/><br/>
+        /// 9) <see cref="CoordinateSystem.referenceSystem"/><br/>
+        /// <br/>
+        /// Конструкторы:<br/>
+        /// 1) <see cref="Connector(Connector)"/><br/>
+        /// 2) <see cref="Connector(string, Vector, Basis, View)"/><br/>
+        /// <br/>
+        /// Свойства:<br/>
+        /// 1) <see cref="View"/><br/>
+        /// 2) <see cref="WorkingConnectors"/><br/>
+        /// 3) <see cref="Body.Bodies"/><br/>
+        /// 4) <see cref="Body.ID"/><br/>
+        /// 5) <see cref="Vector"/><br/>
+        /// 6) <see cref="Basis"/><br/>
+        /// 7) <see cref="CoordinateSystem.ReferenceSystem"/><br/>
+        /// 8) <see cref="CoordinateSystem.Velocity"/><br/>
+        /// 9) <see cref="CoordinateSystem.TransitionMatrix"/><br/>
+        /// 10) <see cref="CoordinateSystem.TransitionMatrixRelativelyRoot"/><br/>
+        /// 11) <see cref="CoordinateSystem.BasisRelativelyReferenceSystem"/><br/>
+        /// 12) <see cref="CoordinateSystem.BasisRelativelyRoot"/><br/>
+        /// 13) <see cref="CoordinateSystem.RootBasis"/><br/>
+        /// 14) <see cref="CoordinateSystem.ReferenceSystemBasis"/><br/>
+        /// 15) <see cref="CoordinateSystem.VectorFromRoot"/><br/>
+        /// 16) <see cref="CoordinateSystem.VelocityFromRoot"/><br/>
+        /// <br/>
+        /// Методы:<br/>
+        /// 1) <see cref="TurnTo(Body)"/><br/>
+        /// 2) <see cref="GetPath(Connector)"/><br/>
+        /// 3) <see cref="Send(Message)"/><br/>
+        /// 4) <see cref="Send(MessageType, Connector)"/><br/>
+        /// 5) <see cref="Analize(Message)"/><br/>
+        /// 6) <see cref="GetMessage(Message)"/><br/>
+        /// 7) <see cref="CanAccess(Body)"/><br/>
+        /// 8) <see cref="Body.IsInside(Vector)"/><br/>
+        /// 9) <see cref="Body.IsCrossing(Vector, Vector)"/><br/>
+        /// 10) <see cref="CoordinateSystem.ConvertTo(CoordinateSystem, Vector)"/><br/>
+        /// 11) <see cref="CoordinateSystem.GetVectorFromRoot(Vector)"/><br/>
+        /// 12) <see cref="CoordinateSystem.GetVectorRelativelyReferenceSystem(Vector)"/><br/>
+        /// 13) <see cref="CoordinateSystem.GetVelocityFromRoot(Vector)"/><br/>
+        /// 14) <see cref="CoordinateSystem.GetVelocityRelativelyReferenceSystem(Vector)"/><br/>
+        /// </remarks>
+        public abstract class Connector : Body
     {
         //public enum SendingResult { Successfully, ReceiverDontAnswer, ReceiverDontWork, CantSend };
         //public delegate void AnalizingFunction(Message message);
@@ -487,6 +780,6 @@ namespace Connection
             // Send new message
             Send(newMessage);
         }
-        */
-    }
+        
+    }*/
 }
